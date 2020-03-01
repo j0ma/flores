@@ -1,0 +1,1032 @@
+Namespace(activation_dropout=0.2, activation_fn='relu', adam_betas='(0.9, 0.98)', adam_eps=1e-08, adaptive_input=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, arch='transformer', attention_dropout=0.2, best_checkpoint_metric='loss', bpe=None, bucket_cap_mb=25, clip_norm=0.0, cpu=False, criterion='label_smoothed_cross_entropy', cross_self_attention=False, curriculum=0, data='data-bin/wiki_si_en_bpe5000/', dataset_impl=None, ddp_backend='c10d', decoder_attention_heads=2, decoder_embed_dim=512, decoder_embed_path=None, decoder_ffn_embed_dim=2048, decoder_input_dim=512, decoder_layerdrop=0, decoder_layers=5, decoder_layers_to_keep=None, decoder_learned_pos=False, decoder_normalize_before=True, decoder_output_dim=512, device_id=0, disable_validation=False, distributed_backend='nccl', distributed_init_method=None, distributed_no_spawn=False, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.4, empty_cache_freq=0, encoder_attention_heads=2, encoder_embed_dim=512, encoder_embed_path=None, encoder_ffn_embed_dim=2048, encoder_layerdrop=0, encoder_layers=5, encoder_layers_to_keep=None, encoder_learned_pos=False, encoder_normalize_before=True, fast_stat_sync=False, find_unused_parameters=False, fix_batches_to_gpus=False, fixed_validation_seed=None, fp16=False, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, keep_interval_updates=-1, keep_last_epochs=-1, label_smoothing=0.2, layer_wise_attention=False, layernorm_embedding=False, lazy_load=False, left_pad_source='True', left_pad_target='False', load_alignments=False, log_format=None, log_interval=1000, lr=[0.001], lr_scheduler='inverse_sqrt', max_epoch=100, max_sentences=None, max_sentences_valid=None, max_source_positions=1024, max_target_positions=1024, max_tokens=4000, max_tokens_valid=4000, max_update=0, maximize_best_checkpoint_metric=False, memory_efficient_fp16=False, min_loss_scale=0.0001, min_lr=1e-09, no_cross_attention=False, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_scale_embedding=False, no_token_positional_embeddings=False, num_workers=1, optimizer='adam', optimizer_overrides='{}', raw_text=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='/checkpoints/flores/checkpoints_en_si', save_interval=1, save_interval_updates=0, seed=1, sentence_avg=False, share_all_embeddings=True, share_decoder_input_output_embed=False, skip_invalid_size_inputs_valid_test=False, source_lang='en', target_lang='si', task='translation', tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, train_subset='train', truncate_source=False, update_freq=[4], upsample_primary=1, use_bmuf=False, user_dir=None, valid_subset='valid', validate_interval=1, warmup_init_lr=1e-07, warmup_updates=4000, weight_decay=0.0001)
+| [en] dictionary: 4976 types
+| [si] dictionary: 4976 types
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.en
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.si
+| data-bin/wiki_si_en_bpe5000/ valid en-si 2898 examples
+TransformerModel(
+  (encoder): TransformerEncoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+)
+| model transformer, criterion LabelSmoothedCrossEntropyCriterion
+| num. model params: 39331840 (num. trained: 39331840)
+| training on 1 GPUs
+| max tokens per GPU = 4000 and max sentences per GPU = None
+| no existing checkpoint found /checkpoints/flores/checkpoints_en_si/checkpoint_last.pt
+| loading train data for epoch 0
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.en
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.si
+| data-bin/wiki_si_en_bpe5000/ train en-si 404594 examples
+| epoch 001 | loss 10.560 | nll_loss 9.846 | ppl 920.29 | wps 5418 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 411 | lr 0.00010284 | gnorm 0.747 | clip 0.000 | oom 0.000 | wall 1018 | train_wall 986
+| epoch 001 | valid on 'valid' subset | loss 10.536 | nll_loss 9.808 | ppl 896.69 | num_updates 411
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint1.pt (epoch 1 @ 411 updates) (writing took 1.4620521068572998 seconds)
+| epoch 002 | loss 9.324 | nll_loss 8.195 | ppl 293.12 | wps 5406 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 822 | lr 0.000205579 | gnorm 0.518 | clip 0.000 | oom 0.000 | wall 2043 | train_wall 1975
+| epoch 002 | valid on 'valid' subset | loss 10.002 | nll_loss 8.972 | ppl 502 | num_updates 822 | best_loss 10.0017
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint2.pt (epoch 2 @ 822 updates) (writing took 9.349518060684204 seconds)
+Namespace(activation_dropout=0.2, activation_fn='relu', adam_betas='(0.9, 0.98)', adam_eps=1e-08, adaptive_input=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, arch='transformer', attention_dropout=0.2, best_checkpoint_metric='loss', bpe=None, bucket_cap_mb=25, clip_norm=0.0, cpu=False, criterion='label_smoothed_cross_entropy', cross_self_attention=False, curriculum=0, data='data-bin/wiki_si_en_bpe5000/', dataset_impl=None, ddp_backend='c10d', decoder_attention_heads=2, decoder_embed_dim=512, decoder_embed_path=None, decoder_ffn_embed_dim=2048, decoder_input_dim=512, decoder_layerdrop=0, decoder_layers=5, decoder_layers_to_keep=None, decoder_learned_pos=False, decoder_normalize_before=True, decoder_output_dim=512, device_id=0, disable_validation=False, distributed_backend='nccl', distributed_init_method=None, distributed_no_spawn=False, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.4, empty_cache_freq=0, encoder_attention_heads=2, encoder_embed_dim=512, encoder_embed_path=None, encoder_ffn_embed_dim=2048, encoder_layerdrop=0, encoder_layers=5, encoder_layers_to_keep=None, encoder_learned_pos=False, encoder_normalize_before=True, fast_stat_sync=False, find_unused_parameters=False, fix_batches_to_gpus=False, fixed_validation_seed=None, fp16=False, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, keep_interval_updates=-1, keep_last_epochs=-1, label_smoothing=0.2, layer_wise_attention=False, layernorm_embedding=False, lazy_load=False, left_pad_source='True', left_pad_target='False', load_alignments=False, log_format=None, log_interval=1000, lr=[0.001], lr_scheduler='inverse_sqrt', max_epoch=100, max_sentences=None, max_sentences_valid=None, max_source_positions=1024, max_target_positions=1024, max_tokens=4000, max_tokens_valid=4000, max_update=0, maximize_best_checkpoint_metric=False, memory_efficient_fp16=False, min_loss_scale=0.0001, min_lr=1e-09, no_cross_attention=False, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_scale_embedding=False, no_token_positional_embeddings=False, num_workers=1, optimizer='adam', optimizer_overrides='{}', raw_text=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='/checkpoints/flores/checkpoints_en_si', save_interval=1, save_interval_updates=0, seed=1, sentence_avg=False, share_all_embeddings=True, share_decoder_input_output_embed=False, skip_invalid_size_inputs_valid_test=False, source_lang='en', target_lang='si', task='translation', tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, train_subset='train', truncate_source=False, update_freq=[4], upsample_primary=1, use_bmuf=False, user_dir=None, valid_subset='valid', validate_interval=1, warmup_init_lr=1e-07, warmup_updates=4000, weight_decay=0.0001)
+| [en] dictionary: 4976 types
+| [si] dictionary: 4976 types
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.en
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.si
+| data-bin/wiki_si_en_bpe5000/ valid en-si 2898 examples
+TransformerModel(
+  (encoder): TransformerEncoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+)
+| model transformer, criterion LabelSmoothedCrossEntropyCriterion
+| num. model params: 39331840 (num. trained: 39331840)
+| training on 1 GPUs
+| max tokens per GPU = 4000 and max sentences per GPU = None
+| loaded checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint_last.pt (epoch 2 @ 822 updates)
+| loading train data for epoch 2
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.en
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.si
+| data-bin/wiki_si_en_bpe5000/ train en-si 404594 examples
+| epoch 003 | loss 8.515 | nll_loss 7.101 | ppl 137.27 | wps 5346 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 1233 | lr 0.000308319 | gnorm 0.460 | clip 0.000 | oom 0.000 | wall 1032 | train_wall 2977
+| epoch 003 | valid on 'valid' subset | loss 9.247 | nll_loss 7.918 | ppl 241.78 | num_updates 1233 | best_loss 9.24673
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint3.pt (epoch 3 @ 1233 updates) (writing took 9.18581771850586 seconds)
+| epoch 004 | loss 7.932 | nll_loss 6.321 | ppl 79.97 | wps 5326 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 1644 | lr 0.000411059 | gnorm 0.409 | clip 0.000 | oom 0.000 | wall 2081 | train_wall 3982
+| epoch 004 | valid on 'valid' subset | loss 8.930 | nll_loss 7.458 | ppl 175.87 | num_updates 1644 | best_loss 8.93034
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint4.pt (epoch 4 @ 1644 updates) (writing took 9.884183645248413 seconds)
+| epoch 005 | loss 7.556 | nll_loss 5.822 | ppl 56.56 | wps 5335 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 2055 | lr 0.000513799 | gnorm 0.389 | clip 0.000 | oom 0.000 | wall 3129 | train_wall 4985
+| epoch 005 | valid on 'valid' subset | loss 8.684 | nll_loss 7.065 | ppl 133.91 | num_updates 2055 | best_loss 8.6845
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint5.pt (epoch 5 @ 2055 updates) (writing took 8.613872528076172 seconds)
+| epoch 006 | loss 7.275 | nll_loss 5.450 | ppl 43.71 | wps 5343 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 2466 | lr 0.000616538 | gnorm 0.372 | clip 0.000 | oom 0.000 | wall 4174 | train_wall 5987
+| epoch 006 | valid on 'valid' subset | loss 8.433 | nll_loss 6.735 | ppl 106.5 | num_updates 2466 | best_loss 8.43277
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint6.pt (epoch 6 @ 2466 updates) (writing took 10.340839385986328 seconds)
+Namespace(activation_dropout=0.2, activation_fn='relu', adam_betas='(0.9, 0.98)', adam_eps=1e-08, adaptive_input=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, arch='transformer', attention_dropout=0.2, best_checkpoint_metric='loss', bpe=None, bucket_cap_mb=25, clip_norm=0.0, cpu=False, criterion='label_smoothed_cross_entropy', cross_self_attention=False, curriculum=0, data='data-bin/wiki_si_en_bpe5000/', dataset_impl=None, ddp_backend='c10d', decoder_attention_heads=2, decoder_embed_dim=512, decoder_embed_path=None, decoder_ffn_embed_dim=2048, decoder_input_dim=512, decoder_layerdrop=0, decoder_layers=5, decoder_layers_to_keep=None, decoder_learned_pos=False, decoder_normalize_before=True, decoder_output_dim=512, device_id=0, disable_validation=False, distributed_backend='nccl', distributed_init_method=None, distributed_no_spawn=False, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.4, empty_cache_freq=0, encoder_attention_heads=2, encoder_embed_dim=512, encoder_embed_path=None, encoder_ffn_embed_dim=2048, encoder_layerdrop=0, encoder_layers=5, encoder_layers_to_keep=None, encoder_learned_pos=False, encoder_normalize_before=True, fast_stat_sync=False, find_unused_parameters=False, fix_batches_to_gpus=False, fixed_validation_seed=None, fp16=False, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, keep_interval_updates=-1, keep_last_epochs=-1, label_smoothing=0.2, layer_wise_attention=False, layernorm_embedding=False, lazy_load=False, left_pad_source='True', left_pad_target='False', load_alignments=False, log_format=None, log_interval=1000, lr=[0.001], lr_scheduler='inverse_sqrt', max_epoch=100, max_sentences=None, max_sentences_valid=None, max_source_positions=1024, max_target_positions=1024, max_tokens=4000, max_tokens_valid=4000, max_update=0, maximize_best_checkpoint_metric=False, memory_efficient_fp16=False, min_loss_scale=0.0001, min_lr=1e-09, no_cross_attention=False, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_scale_embedding=False, no_token_positional_embeddings=False, num_workers=1, optimizer='adam', optimizer_overrides='{}', raw_text=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='/checkpoints/flores/checkpoints_en_si', save_interval=1, save_interval_updates=0, seed=1, sentence_avg=False, share_all_embeddings=True, share_decoder_input_output_embed=False, skip_invalid_size_inputs_valid_test=False, source_lang='en', target_lang='si', task='translation', tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, train_subset='train', truncate_source=False, update_freq=[4], upsample_primary=1, use_bmuf=False, user_dir=None, valid_subset='valid', validate_interval=1, warmup_init_lr=1e-07, warmup_updates=4000, weight_decay=0.0001)
+| [en] dictionary: 4976 types
+| [si] dictionary: 4976 types
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.en
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.si
+| data-bin/wiki_si_en_bpe5000/ valid en-si 2898 examples
+TransformerModel(
+  (encoder): TransformerEncoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+)
+| model transformer, criterion LabelSmoothedCrossEntropyCriterion
+| num. model params: 39331840 (num. trained: 39331840)
+| training on 1 GPUs
+| max tokens per GPU = 4000 and max sentences per GPU = None
+| loaded checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint_last.pt (epoch 6 @ 2466 updates)
+| loading train data for epoch 6
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.en
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.si
+| data-bin/wiki_si_en_bpe5000/ train en-si 404594 examples
+| epoch 007 | loss 7.053 | nll_loss 5.158 | ppl 35.69 | wps 5511 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 2877 | lr 0.000719278 | gnorm 0.349 | clip 0.000 | oom 0.000 | wall 1000 | train_wall 6957
+| epoch 007 | valid on 'valid' subset | loss 8.222 | nll_loss 6.426 | ppl 86.01 | num_updates 2877 | best_loss 8.22169
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint7.pt (epoch 7 @ 2877 updates) (writing took 8.425123691558838 seconds)
+| epoch 008 | loss 6.884 | nll_loss 4.937 | ppl 30.63 | wps 5515 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 3288 | lr 0.000822018 | gnorm 0.328 | clip 0.000 | oom 0.000 | wall 2013 | train_wall 7927
+| epoch 008 | valid on 'valid' subset | loss 8.241 | nll_loss 6.429 | ppl 86.14 | num_updates 3288 | best_loss 8.22169
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint8.pt (epoch 8 @ 3288 updates) (writing took 5.752328395843506 seconds)
+| epoch 009 | loss 6.764 | nll_loss 4.781 | ppl 27.49 | wps 5517 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 3699 | lr 0.000924758 | gnorm 0.320 | clip 0.000 | oom 0.000 | wall 3022 | train_wall 8896
+| epoch 009 | valid on 'valid' subset | loss 7.950 | nll_loss 6.040 | ppl 65.82 | num_updates 3699 | best_loss 7.94986
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint9.pt (epoch 9 @ 3699 updates) (writing took 8.263872385025024 seconds)
+| epoch 010 | loss 6.667 | nll_loss 4.654 | ppl 25.17 | wps 5521 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 4110 | lr 0.000986527 | gnorm 0.303 | clip 0.000 | oom 0.000 | wall 4033 | train_wall 9865
+| epoch 010 | valid on 'valid' subset | loss 7.925 | nll_loss 6.013 | ppl 64.6 | num_updates 4110 | best_loss 7.92454
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint10.pt (epoch 10 @ 4110 updates) (writing took 10.31153130531311 seconds)
+| epoch 011 | loss 6.577 | nll_loss 4.537 | ppl 23.22 | wps 5522 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 4521 | lr 0.000940617 | gnorm 0.286 | clip 0.000 | oom 0.000 | wall 5046 | train_wall 10833
+| epoch 011 | valid on 'valid' subset | loss 7.796 | nll_loss 5.807 | ppl 55.99 | num_updates 4521 | best_loss 7.79611
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint11.pt (epoch 11 @ 4521 updates) (writing took 10.120469808578491 seconds)
+| epoch 012 | loss 6.489 | nll_loss 4.424 | ppl 21.47 | wps 5524 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 4932 | lr 0.000900572 | gnorm 0.272 | clip 0.000 | oom 0.000 | wall 6059 | train_wall 11800
+| epoch 012 | valid on 'valid' subset | loss 7.689 | nll_loss 5.673 | ppl 51.02 | num_updates 4932 | best_loss 7.68858
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint12.pt (epoch 12 @ 4932 updates) (writing took 10.443082094192505 seconds)
+| epoch 013 | loss 6.417 | nll_loss 4.332 | ppl 20.14 | wps 5401 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 5343 | lr 0.000865242 | gnorm 0.257 | clip 0.000 | oom 0.000 | wall 7094 | train_wall 12791
+| epoch 013 | valid on 'valid' subset | loss 7.624 | nll_loss 5.584 | ppl 47.96 | num_updates 5343 | best_loss 7.6244
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint13.pt (epoch 13 @ 5343 updates) (writing took 10.099102258682251 seconds)
+| epoch 014 | loss 6.357 | nll_loss 4.254 | ppl 19.08 | wps 5345 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 5754 | lr 0.000833768 | gnorm 0.247 | clip 0.000 | oom 0.000 | wall 8140 | train_wall 13792
+| epoch 014 | valid on 'valid' subset | loss 7.577 | nll_loss 5.516 | ppl 45.77 | num_updates 5754 | best_loss 7.57699
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint14.pt (epoch 14 @ 5754 updates) (writing took 8.458660125732422 seconds)
+| epoch 015 | loss 6.307 | nll_loss 4.189 | ppl 18.24 | wps 5338 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 6165 | lr 0.000805496 | gnorm 0.242 | clip 0.000 | oom 0.000 | wall 9186 | train_wall 14794
+| epoch 015 | valid on 'valid' subset | loss 7.526 | nll_loss 5.437 | ppl 43.32 | num_updates 6165 | best_loss 7.52581
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint15.pt (epoch 15 @ 6165 updates) (writing took 9.956552743911743 seconds)
+| epoch 016 | loss 6.263 | nll_loss 4.134 | ppl 17.55 | wps 5343 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 6576 | lr 0.000779918 | gnorm 0.234 | clip 0.000 | oom 0.000 | wall 10232 | train_wall 15795
+| epoch 016 | valid on 'valid' subset | loss 7.487 | nll_loss 5.382 | ppl 41.7 | num_updates 6576 | best_loss 7.48685
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint16.pt (epoch 16 @ 6576 updates) (writing took 9.412446737289429 seconds)
+| epoch 017 | loss 6.225 | nll_loss 4.085 | ppl 16.97 | wps 5347 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 6987 | lr 0.000756632 | gnorm 0.234 | clip 0.000 | oom 0.000 | wall 11277 | train_wall 16796
+| epoch 017 | valid on 'valid' subset | loss 7.383 | nll_loss 5.244 | ppl 37.91 | num_updates 6987 | best_loss 7.38326
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint17.pt (epoch 17 @ 6987 updates) (writing took 10.24757170677185 seconds)
+| epoch 018 | loss 6.191 | nll_loss 4.040 | ppl 16.45 | wps 5346 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 7398 | lr 0.000735314 | gnorm 0.227 | clip 0.000 | oom 0.000 | wall 12323 | train_wall 17796
+| epoch 018 | valid on 'valid' subset | loss 7.380 | nll_loss 5.246 | ppl 37.96 | num_updates 7398 | best_loss 7.38029
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint18.pt (epoch 18 @ 7398 updates) (writing took 10.200879573822021 seconds)
+| epoch 019 | loss 6.161 | nll_loss 4.002 | ppl 16.03 | wps 5351 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 7809 | lr 0.000715702 | gnorm 0.226 | clip 0.000 | oom 0.000 | wall 13368 | train_wall 18797
+| epoch 019 | valid on 'valid' subset | loss 7.355 | nll_loss 5.200 | ppl 36.77 | num_updates 7809 | best_loss 7.35495
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint19.pt (epoch 19 @ 7809 updates) (writing took 9.14682388305664 seconds)
+| epoch 020 | loss 6.132 | nll_loss 3.965 | ppl 15.62 | wps 5340 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 8220 | lr 0.00069758 | gnorm 0.220 | clip 0.000 | oom 0.000 | wall 14414 | train_wall 19798
+| epoch 020 | valid on 'valid' subset | loss 7.361 | nll_loss 5.204 | ppl 36.87 | num_updates 8220 | best_loss 7.35495
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint20.pt (epoch 20 @ 8220 updates) (writing took 4.132577657699585 seconds)
+Namespace(activation_dropout=0.2, activation_fn='relu', adam_betas='(0.9, 0.98)', adam_eps=1e-08, adaptive_input=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, arch='transformer', attention_dropout=0.2, best_checkpoint_metric='loss', bpe=None, bucket_cap_mb=25, clip_norm=0.0, cpu=False, criterion='label_smoothed_cross_entropy', cross_self_attention=False, curriculum=0, data='data-bin/wiki_si_en_bpe5000/', dataset_impl=None, ddp_backend='c10d', decoder_attention_heads=2, decoder_embed_dim=512, decoder_embed_path=None, decoder_ffn_embed_dim=2048, decoder_input_dim=512, decoder_layerdrop=0, decoder_layers=5, decoder_layers_to_keep=None, decoder_learned_pos=False, decoder_normalize_before=True, decoder_output_dim=512, device_id=0, disable_validation=False, distributed_backend='nccl', distributed_init_method=None, distributed_no_spawn=False, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.4, empty_cache_freq=0, encoder_attention_heads=2, encoder_embed_dim=512, encoder_embed_path=None, encoder_ffn_embed_dim=2048, encoder_layerdrop=0, encoder_layers=5, encoder_layers_to_keep=None, encoder_learned_pos=False, encoder_normalize_before=True, fast_stat_sync=False, find_unused_parameters=False, fix_batches_to_gpus=False, fixed_validation_seed=None, fp16=False, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, keep_interval_updates=-1, keep_last_epochs=-1, label_smoothing=0.2, layer_wise_attention=False, layernorm_embedding=False, lazy_load=False, left_pad_source='True', left_pad_target='False', load_alignments=False, log_format=None, log_interval=1000, lr=[0.001], lr_scheduler='inverse_sqrt', max_epoch=100, max_sentences=None, max_sentences_valid=None, max_source_positions=1024, max_target_positions=1024, max_tokens=4000, max_tokens_valid=4000, max_update=0, maximize_best_checkpoint_metric=False, memory_efficient_fp16=False, min_loss_scale=0.0001, min_lr=1e-09, no_cross_attention=False, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_scale_embedding=False, no_token_positional_embeddings=False, num_workers=1, optimizer='adam', optimizer_overrides='{}', raw_text=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='/checkpoints/flores/checkpoints_en_si', save_interval=1, save_interval_updates=0, seed=1, sentence_avg=False, share_all_embeddings=True, share_decoder_input_output_embed=False, skip_invalid_size_inputs_valid_test=False, source_lang='en', target_lang='si', task='translation', tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, train_subset='train', truncate_source=False, update_freq=[4], upsample_primary=1, use_bmuf=False, user_dir=None, valid_subset='valid', validate_interval=1, warmup_init_lr=1e-07, warmup_updates=4000, weight_decay=0.0001)
+| [en] dictionary: 4976 types
+| [si] dictionary: 4976 types
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.en
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.si
+| data-bin/wiki_si_en_bpe5000/ valid en-si 2898 examples
+TransformerModel(
+  (encoder): TransformerEncoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+)
+| model transformer, criterion LabelSmoothedCrossEntropyCriterion
+| num. model params: 39331840 (num. trained: 39331840)
+| training on 1 GPUs
+| max tokens per GPU = 4000 and max sentences per GPU = None
+| loaded checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint_last.pt (epoch 20 @ 8220 updates)
+| loading train data for epoch 20
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.en
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.si
+| data-bin/wiki_si_en_bpe5000/ train en-si 404594 examples
+| epoch 021 | loss 6.109 | nll_loss 3.935 | ppl 15.3 | wps 5675 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 8631 | lr 0.000680768 | gnorm 0.219 | clip 0.000 | oom 0.000 | wall 973 | train_wall 20737
+| epoch 021 | valid on 'valid' subset | loss 7.294 | nll_loss 5.117 | ppl 34.71 | num_updates 8631 | best_loss 7.29353
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint21.pt (epoch 21 @ 8631 updates) (writing took 7.99261999130249 seconds)
+| epoch 022 | loss 6.085 | nll_loss 3.904 | ppl 14.97 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 9042 | lr 0.000665117 | gnorm 0.216 | clip 0.000 | oom 0.000 | wall 1958 | train_wall 21678
+| epoch 022 | valid on 'valid' subset | loss 7.248 | nll_loss 5.053 | ppl 33.2 | num_updates 9042 | best_loss 7.24805
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint22.pt (epoch 22 @ 9042 updates) (writing took 8.245182514190674 seconds)
+| epoch 023 | loss 6.065 | nll_loss 3.878 | ppl 14.71 | wps 5668 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 9453 | lr 0.000650497 | gnorm 0.218 | clip 0.000 | oom 0.000 | wall 2943 | train_wall 22619
+| epoch 023 | valid on 'valid' subset | loss 7.250 | nll_loss 5.044 | ppl 32.99 | num_updates 9453 | best_loss 7.24805
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint23.pt (epoch 23 @ 9453 updates) (writing took 4.0700483322143555 seconds)
+| epoch 024 | loss 6.043 | nll_loss 3.851 | ppl 14.43 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 9864 | lr 0.000636801 | gnorm 0.213 | clip 0.000 | oom 0.000 | wall 3925 | train_wall 23559
+| epoch 024 | valid on 'valid' subset | loss 7.213 | nll_loss 5.008 | ppl 32.17 | num_updates 9864 | best_loss 7.21306
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint24.pt (epoch 24 @ 9864 updates) (writing took 10.033859252929688 seconds)
+| epoch 025 | loss 6.026 | nll_loss 3.828 | ppl 14.2 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 10275 | lr 0.000623935 | gnorm 0.211 | clip 0.000 | oom 0.000 | wall 4912 | train_wall 24500
+| epoch 025 | valid on 'valid' subset | loss 7.222 | nll_loss 5.024 | ppl 32.53 | num_updates 10275 | best_loss 7.21306
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint25.pt (epoch 25 @ 10275 updates) (writing took 3.9643399715423584 seconds)
+| epoch 026 | loss 6.011 | nll_loss 3.809 | ppl 14.01 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 10686 | lr 0.000611818 | gnorm 0.212 | clip 0.000 | oom 0.000 | wall 5894 | train_wall 25441
+| epoch 026 | valid on 'valid' subset | loss 7.208 | nll_loss 4.989 | ppl 31.76 | num_updates 10686 | best_loss 7.20808
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint26.pt (epoch 26 @ 10686 updates) (writing took 10.208979368209839 seconds)
+| epoch 027 | loss 5.994 | nll_loss 3.787 | ppl 13.81 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 11097 | lr 0.000600381 | gnorm 0.211 | clip 0.000 | oom 0.000 | wall 6881 | train_wall 26381
+| epoch 027 | valid on 'valid' subset | loss 7.181 | nll_loss 4.967 | ppl 31.28 | num_updates 11097 | best_loss 7.18108
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint27.pt (epoch 27 @ 11097 updates) (writing took 8.209256887435913 seconds)
+| epoch 028 | loss 5.979 | nll_loss 3.768 | ppl 13.63 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 11508 | lr 0.000589563 | gnorm 0.209 | clip 0.000 | oom 0.000 | wall 7866 | train_wall 27322
+| epoch 028 | valid on 'valid' subset | loss 7.150 | nll_loss 4.914 | ppl 30.15 | num_updates 11508 | best_loss 7.1504
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint28.pt (epoch 28 @ 11508 updates) (writing took 8.459486246109009 seconds)
+| epoch 029 | loss 5.966 | nll_loss 3.751 | ppl 13.47 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 11919 | lr 0.000579309 | gnorm 0.209 | clip 0.000 | oom 0.000 | wall 8852 | train_wall 28263
+| epoch 029 | valid on 'valid' subset | loss 7.164 | nll_loss 4.935 | ppl 30.59 | num_updates 11919 | best_loss 7.1504
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint29.pt (epoch 29 @ 11919 updates) (writing took 5.396570920944214 seconds)
+| epoch 030 | loss 5.952 | nll_loss 3.734 | ppl 13.3 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 12330 | lr 0.000569572 | gnorm 0.208 | clip 0.000 | oom 0.000 | wall 9835 | train_wall 29204
+| epoch 030 | valid on 'valid' subset | loss 7.156 | nll_loss 4.917 | ppl 30.2 | num_updates 12330 | best_loss 7.1504
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint30.pt (epoch 30 @ 12330 updates) (writing took 4.613523960113525 seconds)
+| epoch 031 | loss 5.941 | nll_loss 3.718 | ppl 13.16 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 12741 | lr 0.00056031 | gnorm 0.208 | clip 0.000 | oom 0.000 | wall 10817 | train_wall 30145
+| epoch 031 | valid on 'valid' subset | loss 7.135 | nll_loss 4.901 | ppl 29.88 | num_updates 12741 | best_loss 7.13531
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint31.pt (epoch 31 @ 12741 updates) (writing took 9.012509107589722 seconds)
+| epoch 032 | loss 5.927 | nll_loss 3.701 | ppl 13.01 | wps 5666 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 13152 | lr 0.000551485 | gnorm 0.205 | clip 0.000 | oom 0.000 | wall 11804 | train_wall 31085
+| epoch 032 | valid on 'valid' subset | loss 7.123 | nll_loss 4.874 | ppl 29.32 | num_updates 13152 | best_loss 7.12327
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint32.pt (epoch 32 @ 13152 updates) (writing took 6.267014980316162 seconds)
+| epoch 033 | loss 5.919 | nll_loss 3.690 | ppl 12.91 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 13563 | lr 0.000543065 | gnorm 0.207 | clip 0.000 | oom 0.000 | wall 12787 | train_wall 32026
+| epoch 033 | valid on 'valid' subset | loss 7.150 | nll_loss 4.911 | ppl 30.09 | num_updates 13563 | best_loss 7.12327
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint33.pt (epoch 33 @ 13563 updates) (writing took 1.7065467834472656 seconds)
+| epoch 034 | loss 5.906 | nll_loss 3.674 | ppl 12.77 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 13974 | lr 0.00053502 | gnorm 0.205 | clip 0.000 | oom 0.000 | wall 13767 | train_wall 32967
+| epoch 034 | valid on 'valid' subset | loss 7.115 | nll_loss 4.869 | ppl 29.22 | num_updates 13974 | best_loss 7.11547
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint34.pt (epoch 34 @ 13974 updates) (writing took 6.367692232131958 seconds)
+| epoch 035 | loss 5.895 | nll_loss 3.660 | ppl 12.64 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 14385 | lr 0.000527321 | gnorm 0.203 | clip 0.000 | oom 0.000 | wall 14751 | train_wall 33908
+| epoch 035 | valid on 'valid' subset | loss 7.090 | nll_loss 4.827 | ppl 28.39 | num_updates 14385 | best_loss 7.09033
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint35.pt (epoch 35 @ 14385 updates) (writing took 7.7244908809661865 seconds)
+| epoch 036 | loss 5.887 | nll_loss 3.649 | ppl 12.55 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 14796 | lr 0.000519946 | gnorm 0.204 | clip 0.000 | oom 0.000 | wall 15736 | train_wall 34849
+| epoch 036 | valid on 'valid' subset | loss 7.067 | nll_loss 4.812 | ppl 28.08 | num_updates 14796 | best_loss 7.06658
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint36.pt (epoch 36 @ 14796 updates) (writing took 7.543238639831543 seconds)
+| epoch 037 | loss 5.878 | nll_loss 3.638 | ppl 12.45 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 15207 | lr 0.000512871 | gnorm 0.205 | clip 0.000 | oom 0.000 | wall 16721 | train_wall 35790
+| epoch 037 | valid on 'valid' subset | loss 7.066 | nll_loss 4.805 | ppl 27.96 | num_updates 15207 | best_loss 7.06613
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint37.pt (epoch 37 @ 15207 updates) (writing took 6.313842296600342 seconds)
+| epoch 038 | loss 5.868 | nll_loss 3.625 | ppl 12.34 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 15618 | lr 0.000506078 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 17705 | train_wall 36731
+| epoch 038 | valid on 'valid' subset | loss 7.078 | nll_loss 4.819 | ppl 28.23 | num_updates 15618 | best_loss 7.06613
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint38.pt (epoch 38 @ 15618 updates) (writing took 1.6963934898376465 seconds)
+| epoch 039 | loss 5.861 | nll_loss 3.616 | ppl 12.26 | wps 5666 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 16029 | lr 0.000499547 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 18684 | train_wall 37672
+| epoch 039 | valid on 'valid' subset | loss 7.065 | nll_loss 4.802 | ppl 27.9 | num_updates 16029 | best_loss 7.06532
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint39.pt (epoch 39 @ 16029 updates) (writing took 6.276341199874878 seconds)
+| epoch 040 | loss 5.851 | nll_loss 3.603 | ppl 12.15 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 16440 | lr 0.000493264 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 19667 | train_wall 38612
+| epoch 040 | valid on 'valid' subset | loss 7.037 | nll_loss 4.763 | ppl 27.15 | num_updates 16440 | best_loss 7.03682
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint40.pt (epoch 40 @ 16440 updates) (writing took 6.338279485702515 seconds)
+| epoch 041 | loss 5.843 | nll_loss 3.593 | ppl 12.07 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 16851 | lr 0.000487211 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 20651 | train_wall 39553
+| epoch 041 | valid on 'valid' subset | loss 7.047 | nll_loss 4.780 | ppl 27.47 | num_updates 16851 | best_loss 7.03682
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint41.pt (epoch 41 @ 16851 updates) (writing took 1.7106361389160156 seconds)
+| epoch 042 | loss 5.836 | nll_loss 3.584 | ppl 11.99 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 17262 | lr 0.000481376 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 21630 | train_wall 40494
+| epoch 042 | valid on 'valid' subset | loss 7.020 | nll_loss 4.752 | ppl 26.96 | num_updates 17262 | best_loss 7.02042
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint42.pt (epoch 42 @ 17262 updates) (writing took 6.322818756103516 seconds)
+| epoch 043 | loss 5.829 | nll_loss 3.575 | ppl 11.92 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 17673 | lr 0.000475746 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 22614 | train_wall 41435
+| epoch 043 | valid on 'valid' subset | loss 7.026 | nll_loss 4.751 | ppl 26.92 | num_updates 17673 | best_loss 7.02042
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint43.pt (epoch 43 @ 17673 updates) (writing took 1.701960802078247 seconds)
+| epoch 044 | loss 5.822 | nll_loss 3.566 | ppl 11.85 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 18084 | lr 0.000470308 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 23594 | train_wall 42376
+| epoch 044 | valid on 'valid' subset | loss 7.032 | nll_loss 4.756 | ppl 27.03 | num_updates 18084 | best_loss 7.02042
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint44.pt (epoch 44 @ 18084 updates) (writing took 1.6958107948303223 seconds)
+| epoch 045 | loss 5.816 | nll_loss 3.558 | ppl 11.78 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 18495 | lr 0.000465053 | gnorm 0.203 | clip 0.000 | oom 0.000 | wall 24573 | train_wall 43317
+| epoch 045 | valid on 'valid' subset | loss 7.067 | nll_loss 4.794 | ppl 27.73 | num_updates 18495 | best_loss 7.02042
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint45.pt (epoch 45 @ 18495 updates) (writing took 1.7379825115203857 seconds)
+| epoch 046 | loss 5.809 | nll_loss 3.549 | ppl 11.7 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 18906 | lr 0.000459971 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 25552 | train_wall 44258
+| epoch 046 | valid on 'valid' subset | loss 7.012 | nll_loss 4.730 | ppl 26.53 | num_updates 18906 | best_loss 7.01208
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint46.pt (epoch 46 @ 18906 updates) (writing took 6.312175512313843 seconds)
+| epoch 047 | loss 5.802 | nll_loss 3.540 | ppl 11.63 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 19317 | lr 0.000455051 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 26536 | train_wall 45199
+| epoch 047 | valid on 'valid' subset | loss 7.027 | nll_loss 4.744 | ppl 26.79 | num_updates 19317 | best_loss 7.01208
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint47.pt (epoch 47 @ 19317 updates) (writing took 1.7234280109405518 seconds)
+| epoch 048 | loss 5.798 | nll_loss 3.535 | ppl 11.59 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 19728 | lr 0.000450286 | gnorm 0.203 | clip 0.000 | oom 0.000 | wall 27515 | train_wall 46140
+| epoch 048 | valid on 'valid' subset | loss 6.988 | nll_loss 4.687 | ppl 25.76 | num_updates 19728 | best_loss 6.98811
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint48.pt (epoch 48 @ 19728 updates) (writing took 8.408360719680786 seconds)
+| epoch 049 | loss 5.791 | nll_loss 3.526 | ppl 11.52 | wps 5671 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 20139 | lr 0.000445668 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 28500 | train_wall 47081
+| epoch 049 | valid on 'valid' subset | loss 7.002 | nll_loss 4.711 | ppl 26.19 | num_updates 20139 | best_loss 6.98811
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint49.pt (epoch 49 @ 20139 updates) (writing took 1.7067551612854004 seconds)
+| epoch 050 | loss 5.785 | nll_loss 3.517 | ppl 11.45 | wps 5659 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 20550 | lr 0.000441188 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 29480 | train_wall 48022
+| epoch 050 | valid on 'valid' subset | loss 6.987 | nll_loss 4.703 | ppl 26.04 | num_updates 20550 | best_loss 6.98713
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint50.pt (epoch 50 @ 20550 updates) (writing took 7.801724433898926 seconds)
+| epoch 051 | loss 5.780 | nll_loss 3.512 | ppl 11.4 | wps 5668 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 20961 | lr 0.000436842 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 30464 | train_wall 48963
+| epoch 051 | valid on 'valid' subset | loss 6.976 | nll_loss 4.682 | ppl 25.66 | num_updates 20961 | best_loss 6.97602
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint51.pt (epoch 51 @ 20961 updates) (writing took 8.542358636856079 seconds)
+| epoch 052 | loss 5.774 | nll_loss 3.504 | ppl 11.35 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 21372 | lr 0.000432621 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 31450 | train_wall 49903
+| epoch 052 | valid on 'valid' subset | loss 6.947 | nll_loss 4.637 | ppl 24.89 | num_updates 21372 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint52.pt (epoch 52 @ 21372 updates) (writing took 6.384479999542236 seconds)
+| epoch 053 | loss 5.768 | nll_loss 3.497 | ppl 11.29 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 21783 | lr 0.00042852 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 32434 | train_wall 50845
+| epoch 053 | valid on 'valid' subset | loss 6.960 | nll_loss 4.663 | ppl 25.33 | num_updates 21783 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint53.pt (epoch 53 @ 21783 updates) (writing took 1.7213809490203857 seconds)
+| epoch 054 | loss 5.763 | nll_loss 3.490 | ppl 11.24 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 22194 | lr 0.000424534 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 33413 | train_wall 51785
+| epoch 054 | valid on 'valid' subset | loss 6.974 | nll_loss 4.675 | ppl 25.54 | num_updates 22194 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint54.pt (epoch 54 @ 22194 updates) (writing took 1.7111496925354004 seconds)
+| epoch 055 | loss 5.758 | nll_loss 3.484 | ppl 11.19 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 22605 | lr 0.000420657 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 34393 | train_wall 52726
+| epoch 055 | valid on 'valid' subset | loss 6.960 | nll_loss 4.661 | ppl 25.29 | num_updates 22605 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint55.pt (epoch 55 @ 22605 updates) (writing took 1.7198147773742676 seconds)
+| epoch 056 | loss 5.755 | nll_loss 3.479 | ppl 11.15 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 23016 | lr 0.000416884 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 35372 | train_wall 53667
+| epoch 056 | valid on 'valid' subset | loss 6.959 | nll_loss 4.652 | ppl 25.15 | num_updates 23016 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint56.pt (epoch 56 @ 23016 updates) (writing took 1.7133722305297852 seconds)
+| epoch 057 | loss 5.749 | nll_loss 3.472 | ppl 11.09 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 23427 | lr 0.000413211 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 36351 | train_wall 54608
+| epoch 057 | valid on 'valid' subset | loss 6.987 | nll_loss 4.698 | ppl 25.95 | num_updates 23427 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint57.pt (epoch 57 @ 23427 updates) (writing took 1.7186930179595947 seconds)
+| epoch 058 | loss 5.745 | nll_loss 3.466 | ppl 11.05 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 23838 | lr 0.000409633 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 37330 | train_wall 55549
+| epoch 058 | valid on 'valid' subset | loss 6.947 | nll_loss 4.644 | ppl 25.01 | num_updates 23838 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint58.pt (epoch 58 @ 23838 updates) (writing took 1.7233519554138184 seconds)
+| epoch 059 | loss 5.740 | nll_loss 3.460 | ppl 11.01 | wps 5661 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 24249 | lr 0.000406147 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 38310 | train_wall 56490
+| epoch 059 | valid on 'valid' subset | loss 6.955 | nll_loss 4.664 | ppl 25.36 | num_updates 24249 | best_loss 6.94696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint59.pt (epoch 59 @ 24249 updates) (writing took 3.148364305496216 seconds)
+| epoch 060 | loss 5.736 | nll_loss 3.455 | ppl 10.97 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 24660 | lr 0.000402748 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 39290 | train_wall 57431
+| epoch 060 | valid on 'valid' subset | loss 6.935 | nll_loss 4.634 | ppl 24.82 | num_updates 24660 | best_loss 6.93455
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint60.pt (epoch 60 @ 24660 updates) (writing took 6.248722553253174 seconds)
+| epoch 061 | loss 5.732 | nll_loss 3.449 | ppl 10.92 | wps 5668 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 25071 | lr 0.000399433 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 40274 | train_wall 58372
+| epoch 061 | valid on 'valid' subset | loss 6.938 | nll_loss 4.624 | ppl 24.66 | num_updates 25071 | best_loss 6.93455
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint61.pt (epoch 61 @ 25071 updates) (writing took 1.704106092453003 seconds)
+| epoch 062 | loss 5.728 | nll_loss 3.444 | ppl 10.88 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 25482 | lr 0.000396199 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 41253 | train_wall 59312
+| epoch 062 | valid on 'valid' subset | loss 6.956 | nll_loss 4.659 | ppl 25.26 | num_updates 25482 | best_loss 6.93455
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint62.pt (epoch 62 @ 25482 updates) (writing took 1.7153568267822266 seconds)
+| epoch 063 | loss 5.724 | nll_loss 3.440 | ppl 10.85 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 25893 | lr 0.000393042 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 42232 | train_wall 60253
+| epoch 063 | valid on 'valid' subset | loss 6.909 | nll_loss 4.588 | ppl 24.05 | num_updates 25893 | best_loss 6.90891
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint63.pt (epoch 63 @ 25893 updates) (writing took 6.290276527404785 seconds)
+| epoch 064 | loss 5.719 | nll_loss 3.433 | ppl 10.8 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 26304 | lr 0.000389959 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 43216 | train_wall 61194
+| epoch 064 | valid on 'valid' subset | loss 6.906 | nll_loss 4.594 | ppl 24.15 | num_updates 26304 | best_loss 6.90625
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint64.pt (epoch 64 @ 26304 updates) (writing took 6.634831666946411 seconds)
+| epoch 065 | loss 5.715 | nll_loss 3.427 | ppl 10.76 | wps 5659 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 26715 | lr 0.000386948 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 44201 | train_wall 62135
+| epoch 065 | valid on 'valid' subset | loss 6.902 | nll_loss 4.585 | ppl 24.01 | num_updates 26715 | best_loss 6.90248
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint65.pt (epoch 65 @ 26715 updates) (writing took 6.302551984786987 seconds)
+| epoch 066 | loss 5.711 | nll_loss 3.422 | ppl 10.72 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 27126 | lr 0.000384005 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 45184 | train_wall 63076
+| epoch 066 | valid on 'valid' subset | loss 6.911 | nll_loss 4.594 | ppl 24.16 | num_updates 27126 | best_loss 6.90248
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint66.pt (epoch 66 @ 27126 updates) (writing took 1.7120001316070557 seconds)
+| epoch 067 | loss 5.708 | nll_loss 3.419 | ppl 10.7 | wps 5666 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 27537 | lr 0.000381129 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 46163 | train_wall 64017
+| epoch 067 | valid on 'valid' subset | loss 6.903 | nll_loss 4.584 | ppl 23.98 | num_updates 27537 | best_loss 6.90248
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint67.pt (epoch 67 @ 27537 updates) (writing took 1.700953483581543 seconds)
+| epoch 068 | loss 5.706 | nll_loss 3.416 | ppl 10.67 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 27948 | lr 0.000378316 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 47142 | train_wall 64958
+| epoch 068 | valid on 'valid' subset | loss 6.904 | nll_loss 4.585 | ppl 24 | num_updates 27948 | best_loss 6.90248
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint68.pt (epoch 68 @ 27948 updates) (writing took 1.703188180923462 seconds)
+| epoch 069 | loss 5.702 | nll_loss 3.410 | ppl 10.63 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 28359 | lr 0.000375565 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 48121 | train_wall 65898
+| epoch 069 | valid on 'valid' subset | loss 6.938 | nll_loss 4.628 | ppl 24.73 | num_updates 28359 | best_loss 6.90248
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint69.pt (epoch 69 @ 28359 updates) (writing took 1.6989545822143555 seconds)
+| epoch 070 | loss 5.699 | nll_loss 3.406 | ppl 10.6 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 28770 | lr 0.000372872 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 49100 | train_wall 66839
+| epoch 070 | valid on 'valid' subset | loss 6.886 | nll_loss 4.566 | ppl 23.68 | num_updates 28770 | best_loss 6.88638
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint70.pt (epoch 70 @ 28770 updates) (writing took 6.387031555175781 seconds)
+| epoch 071 | loss 5.694 | nll_loss 3.401 | ppl 10.56 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 29181 | lr 0.000370237 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 50083 | train_wall 67779
+| epoch 071 | valid on 'valid' subset | loss 6.899 | nll_loss 4.585 | ppl 24 | num_updates 29181 | best_loss 6.88638
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint71.pt (epoch 71 @ 29181 updates) (writing took 1.706477165222168 seconds)
+| epoch 072 | loss 5.691 | nll_loss 3.397 | ppl 10.53 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 29592 | lr 0.000367657 | gnorm 0.199 | clip 0.000 | oom 0.000 | wall 51063 | train_wall 68720
+| epoch 072 | valid on 'valid' subset | loss 6.891 | nll_loss 4.570 | ppl 23.75 | num_updates 29592 | best_loss 6.88638
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint72.pt (epoch 72 @ 29592 updates) (writing took 1.6971242427825928 seconds)
+| epoch 073 | loss 5.688 | nll_loss 3.393 | ppl 10.51 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 30003 | lr 0.00036513 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 52042 | train_wall 69661
+| epoch 073 | valid on 'valid' subset | loss 6.886 | nll_loss 4.568 | ppl 23.71 | num_updates 30003 | best_loss 6.886
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint73.pt (epoch 73 @ 30003 updates) (writing took 7.05015754699707 seconds)
+| epoch 074 | loss 5.685 | nll_loss 3.388 | ppl 10.47 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 30414 | lr 0.000362655 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 53026 | train_wall 70602
+| epoch 074 | valid on 'valid' subset | loss 6.896 | nll_loss 4.577 | ppl 23.87 | num_updates 30414 | best_loss 6.886
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint74.pt (epoch 74 @ 30414 updates) (writing took 1.702214002609253 seconds)
+| epoch 075 | loss 5.682 | nll_loss 3.384 | ppl 10.44 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 30825 | lr 0.000360229 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 54005 | train_wall 71543
+| epoch 075 | valid on 'valid' subset | loss 6.913 | nll_loss 4.596 | ppl 24.18 | num_updates 30825 | best_loss 6.886
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint75.pt (epoch 75 @ 30825 updates) (writing took 2.4431867599487305 seconds)
+| epoch 076 | loss 5.679 | nll_loss 3.381 | ppl 10.42 | wps 5666 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 31236 | lr 0.000357851 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 54985 | train_wall 72484
+| epoch 076 | valid on 'valid' subset | loss 6.901 | nll_loss 4.580 | ppl 23.91 | num_updates 31236 | best_loss 6.886
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint76.pt (epoch 76 @ 31236 updates) (writing took 1.714606523513794 seconds)
+| epoch 077 | loss 5.676 | nll_loss 3.377 | ppl 10.39 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 31647 | lr 0.00035552 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 55964 | train_wall 73425
+| epoch 077 | valid on 'valid' subset | loss 6.885 | nll_loss 4.558 | ppl 23.56 | num_updates 31647 | best_loss 6.88524
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint77.pt (epoch 77 @ 31647 updates) (writing took 8.378748893737793 seconds)
+| epoch 078 | loss 5.673 | nll_loss 3.373 | ppl 10.36 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 32058 | lr 0.000353233 | gnorm 0.203 | clip 0.000 | oom 0.000 | wall 56950 | train_wall 74366
+| epoch 078 | valid on 'valid' subset | loss 6.892 | nll_loss 4.575 | ppl 23.83 | num_updates 32058 | best_loss 6.88524
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint78.pt (epoch 78 @ 32058 updates) (writing took 1.7116363048553467 seconds)
+| epoch 079 | loss 5.670 | nll_loss 3.369 | ppl 10.33 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 32469 | lr 0.000350991 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 57929 | train_wall 75306
+| epoch 079 | valid on 'valid' subset | loss 6.882 | nll_loss 4.563 | ppl 23.65 | num_updates 32469 | best_loss 6.88231
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint79.pt (epoch 79 @ 32469 updates) (writing took 6.24182391166687 seconds)
+| epoch 080 | loss 5.668 | nll_loss 3.366 | ppl 10.31 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 32880 | lr 0.00034879 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 58913 | train_wall 76247
+| epoch 080 | valid on 'valid' subset | loss 6.899 | nll_loss 4.587 | ppl 24.03 | num_updates 32880 | best_loss 6.88231
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint80.pt (epoch 80 @ 32880 updates) (writing took 1.70013427734375 seconds)
+| epoch 081 | loss 5.664 | nll_loss 3.362 | ppl 10.28 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 33291 | lr 0.00034663 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 59892 | train_wall 77188
+| epoch 081 | valid on 'valid' subset | loss 6.880 | nll_loss 4.561 | ppl 23.6 | num_updates 33291 | best_loss 6.88048
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint81.pt (epoch 81 @ 33291 updates) (writing took 6.283938884735107 seconds)
+| epoch 082 | loss 5.661 | nll_loss 3.357 | ppl 10.25 | wps 5663 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 33702 | lr 0.00034451 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 60875 | train_wall 78129
+| epoch 082 | valid on 'valid' subset | loss 6.875 | nll_loss 4.556 | ppl 23.52 | num_updates 33702 | best_loss 6.87543
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint82.pt (epoch 82 @ 33702 updates) (writing took 6.209287405014038 seconds)
+| epoch 083 | loss 5.659 | nll_loss 3.355 | ppl 10.23 | wps 5667 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 34113 | lr 0.000342429 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 61858 | train_wall 79069
+| epoch 083 | valid on 'valid' subset | loss 6.893 | nll_loss 4.574 | ppl 23.82 | num_updates 34113 | best_loss 6.87543
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint83.pt (epoch 83 @ 34113 updates) (writing took 1.7150068283081055 seconds)
+| epoch 084 | loss 5.656 | nll_loss 3.351 | ppl 10.21 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 34524 | lr 0.000340384 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 62837 | train_wall 80010
+| epoch 084 | valid on 'valid' subset | loss 6.857 | nll_loss 4.540 | ppl 23.27 | num_updates 34524 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint84.pt (epoch 84 @ 34524 updates) (writing took 6.352365255355835 seconds)
+| epoch 085 | loss 5.654 | nll_loss 3.349 | ppl 10.19 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 34935 | lr 0.000338376 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 63821 | train_wall 80950
+| epoch 085 | valid on 'valid' subset | loss 6.891 | nll_loss 4.575 | ppl 23.84 | num_updates 34935 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint85.pt (epoch 85 @ 34935 updates) (writing took 4.061574459075928 seconds)
+| epoch 086 | loss 5.651 | nll_loss 3.345 | ppl 10.16 | wps 5666 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 35346 | lr 0.000336403 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 64802 | train_wall 81891
+| epoch 086 | valid on 'valid' subset | loss 6.870 | nll_loss 4.552 | ppl 23.46 | num_updates 35346 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint86.pt (epoch 86 @ 35346 updates) (writing took 1.716456651687622 seconds)
+| epoch 087 | loss 5.649 | nll_loss 3.342 | ppl 10.14 | wps 5665 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 35757 | lr 0.000334464 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 65781 | train_wall 82832
+| epoch 087 | valid on 'valid' subset | loss 6.881 | nll_loss 4.558 | ppl 23.56 | num_updates 35757 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint87.pt (epoch 87 @ 35757 updates) (writing took 4.586354494094849 seconds)
+| epoch 088 | loss 5.647 | nll_loss 3.339 | ppl 10.12 | wps 5669 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 36168 | lr 0.000332558 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 66762 | train_wall 83772
+| epoch 088 | valid on 'valid' subset | loss 6.881 | nll_loss 4.556 | ppl 23.52 | num_updates 36168 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint88.pt (epoch 88 @ 36168 updates) (writing took 1.6957521438598633 seconds)
+| epoch 089 | loss 5.644 | nll_loss 3.335 | ppl 10.09 | wps 5668 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 36579 | lr 0.000330685 | gnorm 0.203 | clip 0.000 | oom 0.000 | wall 67741 | train_wall 84713
+| epoch 089 | valid on 'valid' subset | loss 6.883 | nll_loss 4.558 | ppl 23.56 | num_updates 36579 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint89.pt (epoch 89 @ 36579 updates) (writing took 1.6993112564086914 seconds)
+| epoch 090 | loss 5.640 | nll_loss 3.331 | ppl 10.06 | wps 5662 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 36990 | lr 0.000328842 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 68720 | train_wall 85654
+| epoch 090 | valid on 'valid' subset | loss 6.862 | nll_loss 4.537 | ppl 23.22 | num_updates 36990 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint90.pt (epoch 90 @ 36990 updates) (writing took 1.746884822845459 seconds)
+| epoch 091 | loss 5.638 | nll_loss 3.328 | ppl 10.04 | wps 5669 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 37401 | lr 0.000327031 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 69698 | train_wall 86594
+| epoch 091 | valid on 'valid' subset | loss 6.868 | nll_loss 4.538 | ppl 23.24 | num_updates 37401 | best_loss 6.85696
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint91.pt (epoch 91 @ 37401 updates) (writing took 1.7097032070159912 seconds)
+| epoch 092 | loss 5.636 | nll_loss 3.326 | ppl 10.03 | wps 5668 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 37812 | lr 0.000325248 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 70677 | train_wall 87534
+| epoch 092 | valid on 'valid' subset | loss 6.842 | nll_loss 4.508 | ppl 22.75 | num_updates 37812 | best_loss 6.8415
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint92.pt (epoch 92 @ 37812 updates) (writing took 6.258586883544922 seconds)
+| epoch 093 | loss 5.634 | nll_loss 3.323 | ppl 10.01 | wps 5666 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 38223 | lr 0.000323495 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 71661 | train_wall 88474
+| epoch 093 | valid on 'valid' subset | loss 6.861 | nll_loss 4.537 | ppl 23.21 | num_updates 38223 | best_loss 6.8415
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint93.pt (epoch 93 @ 38223 updates) (writing took 3.416154384613037 seconds)
+| epoch 094 | loss 5.632 | nll_loss 3.320 | ppl 9.99 | wps 5668 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 38634 | lr 0.00032177 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 72641 | train_wall 89415
+| epoch 094 | valid on 'valid' subset | loss 6.874 | nll_loss 4.538 | ppl 23.24 | num_updates 38634 | best_loss 6.8415
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint94.pt (epoch 94 @ 38634 updates) (writing took 1.7253053188323975 seconds)
+| epoch 095 | loss 5.630 | nll_loss 3.317 | ppl 9.97 | wps 5664 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 39045 | lr 0.000320072 | gnorm 0.204 | clip 0.000 | oom 0.000 | wall 73620 | train_wall 90356
+| epoch 095 | valid on 'valid' subset | loss 6.854 | nll_loss 4.527 | ppl 23.06 | num_updates 39045 | best_loss 6.8415
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint95.pt (epoch 95 @ 39045 updates) (writing took 3.9535305500030518 seconds)
+| epoch 096 | loss 5.628 | nll_loss 3.315 | ppl 9.95 | wps 5670 | ups 0 | wpb 13368.844 | bsz 984.414 | num_updates 39456 | lr 0.0003184 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 74601 | train_wall 91296
+| epoch 096 | valid on 'valid' subset | loss 6.854 | nll_loss 4.526 | ppl 23.04 | num_updates 39456 | best_loss 6.8415
+| saved checkpoint /checkpoints/flores/checkpoints_en_si/checkpoint96.pt (epoch 96 @ 39456 updates) (writing took 1.7233123779296875 seconds)
