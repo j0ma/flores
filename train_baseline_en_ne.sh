@@ -1,5 +1,7 @@
 CHECKPOINT_DIR="/checkpoints/flores/checkpoints_en_ne"
 
+mkdir -p $CHECKPOINT_DIR
+
 CUDA_VISIBLE_DEVICES=0 fairseq-train \
     data-bin/wiki_ne_en_bpe5000/ \
     --source-lang en --target-lang ne \
