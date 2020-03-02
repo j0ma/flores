@@ -1,0 +1,487 @@
+Namespace(activation_dropout=0.2, activation_fn='relu', adam_betas='(0.9, 0.98)', adam_eps=1e-08, adaptive_input=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, arch='transformer', attention_dropout=0.2, best_checkpoint_metric='loss', bpe=None, bucket_cap_mb=25, clip_norm=0.0, cpu=False, criterion='label_smoothed_cross_entropy', cross_self_attention=False, curriculum=0, data='data-bin/wiki_si_en_bpe5000/', dataset_impl=None, ddp_backend='c10d', decoder_attention_heads=2, decoder_embed_dim=512, decoder_embed_path=None, decoder_ffn_embed_dim=2048, decoder_input_dim=512, decoder_layerdrop=0, decoder_layers=5, decoder_layers_to_keep=None, decoder_learned_pos=False, decoder_normalize_before=True, decoder_output_dim=512, device_id=0, disable_validation=False, distributed_backend='nccl', distributed_init_method=None, distributed_no_spawn=False, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.4, empty_cache_freq=0, encoder_attention_heads=2, encoder_embed_dim=512, encoder_embed_path=None, encoder_ffn_embed_dim=2048, encoder_layerdrop=0, encoder_layers=5, encoder_layers_to_keep=None, encoder_learned_pos=False, encoder_normalize_before=True, fast_stat_sync=False, find_unused_parameters=False, fix_batches_to_gpus=False, fixed_validation_seed=None, fp16=False, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, keep_interval_updates=-1, keep_last_epochs=-1, label_smoothing=0.2, layer_wise_attention=False, layernorm_embedding=False, lazy_load=False, left_pad_source='True', left_pad_target='False', load_alignments=False, log_format=None, log_interval=1000, lr=[0.001], lr_scheduler='inverse_sqrt', max_epoch=100, max_sentences=None, max_sentences_valid=None, max_source_positions=1024, max_target_positions=1024, max_tokens=4000, max_tokens_valid=4000, max_update=0, maximize_best_checkpoint_metric=False, memory_efficient_fp16=False, min_loss_scale=0.0001, min_lr=1e-09, no_cross_attention=False, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_scale_embedding=False, no_token_positional_embeddings=False, num_workers=1, optimizer='adam', optimizer_overrides='{}', raw_text=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='/checkpoints/flores/checkpoints_si_en', save_interval=1, save_interval_updates=0, seed=1, sentence_avg=False, share_all_embeddings=True, share_decoder_input_output_embed=False, skip_invalid_size_inputs_valid_test=False, source_lang='si', target_lang='en', task='translation', tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, train_subset='train', truncate_source=False, update_freq=[4], upsample_primary=1, use_bmuf=False, user_dir=None, valid_subset='valid', validate_interval=1, warmup_init_lr=1e-07, warmup_updates=4000, weight_decay=0.0001)
+| [si] dictionary: 4976 types
+| [en] dictionary: 4976 types
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.si
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.en
+| data-bin/wiki_si_en_bpe5000/ valid si-en 2898 examples
+TransformerModel(
+  (encoder): TransformerEncoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+)
+| model transformer, criterion LabelSmoothedCrossEntropyCriterion
+| num. model params: 39331840 (num. trained: 39331840)
+| training on 1 GPUs
+| max tokens per GPU = 4000 and max sentences per GPU = None
+| no existing checkpoint found /checkpoints/flores/checkpoints_si_en/checkpoint_last.pt
+| loading train data for epoch 0
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.si
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.en
+| data-bin/wiki_si_en_bpe5000/ train si-en 404594 examples
+| epoch 001 | loss 10.109 | nll_loss 9.241 | ppl 605.28 | wps 5875 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 412 | lr 0.00010309 | gnorm 0.762 | clip 0.000 | oom 0.000 | wall 986 | train_wall 945
+| epoch 001 | valid on 'valid' subset | loss 9.992 | nll_loss 9.061 | ppl 534.18 | num_updates 412
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint1.pt (epoch 1 @ 412 updates) (writing took 1.4540441036224365 seconds)
+| epoch 002 | loss 8.362 | nll_loss 6.906 | ppl 119.92 | wps 5863 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 824 | lr 0.000206079 | gnorm 0.506 | clip 0.000 | oom 0.000 | wall 1979 | train_wall 1892
+| epoch 002 | valid on 'valid' subset | loss 9.195 | nll_loss 7.903 | ppl 239.39 | num_updates 824 | best_loss 9.19454
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint2.pt (epoch 2 @ 824 updates) (writing took 9.944929599761963 seconds)
+| epoch 003 | loss 7.657 | nll_loss 5.968 | ppl 62.58 | wps 5863 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 1236 | lr 0.000309069 | gnorm 0.441 | clip 0.000 | oom 0.000 | wall 2981 | train_wall 2838
+| epoch 003 | valid on 'valid' subset | loss 8.634 | nll_loss 7.088 | ppl 136.03 | num_updates 1236 | best_loss 8.63369
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint3.pt (epoch 3 @ 1236 updates) (writing took 9.975377082824707 seconds)
+| epoch 004 | loss 7.188 | nll_loss 5.349 | ppl 40.75 | wps 5876 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 1648 | lr 0.000412059 | gnorm 0.400 | clip 0.000 | oom 0.000 | wall 3980 | train_wall 3783
+| epoch 004 | valid on 'valid' subset | loss 8.281 | nll_loss 6.568 | ppl 94.89 | num_updates 1648 | best_loss 8.28126
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint4.pt (epoch 4 @ 1648 updates) (writing took 9.952758073806763 seconds)
+| epoch 005 | loss 6.870 | nll_loss 4.930 | ppl 30.48 | wps 5880 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 2060 | lr 0.000515048 | gnorm 0.369 | clip 0.000 | oom 0.000 | wall 4978 | train_wall 4726
+| epoch 005 | valid on 'valid' subset | loss 8.048 | nll_loss 6.260 | ppl 76.64 | num_updates 2060 | best_loss 8.04841
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint5.pt (epoch 5 @ 2060 updates) (writing took 9.948188543319702 seconds)
+| epoch 006 | loss 6.632 | nll_loss 4.618 | ppl 24.56 | wps 5890 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 2472 | lr 0.000618038 | gnorm 0.355 | clip 0.000 | oom 0.000 | wall 5975 | train_wall 5669
+| epoch 006 | valid on 'valid' subset | loss 7.846 | nll_loss 5.961 | ppl 62.28 | num_updates 2472 | best_loss 7.84647
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint6.pt (epoch 6 @ 2472 updates) (writing took 9.965048551559448 seconds)
+| epoch 007 | loss 6.446 | nll_loss 4.377 | ppl 20.78 | wps 5888 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 2884 | lr 0.000721028 | gnorm 0.340 | clip 0.000 | oom 0.000 | wall 6972 | train_wall 6611
+| epoch 007 | valid on 'valid' subset | loss 7.646 | nll_loss 5.695 | ppl 51.8 | num_updates 2884 | best_loss 7.64614
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint7.pt (epoch 7 @ 2884 updates) (writing took 9.996169805526733 seconds)
+| epoch 008 | loss 6.298 | nll_loss 4.185 | ppl 18.19 | wps 5894 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 3296 | lr 0.000824018 | gnorm 0.326 | clip 0.000 | oom 0.000 | wall 7968 | train_wall 7552
+| epoch 008 | valid on 'valid' subset | loss 7.512 | nll_loss 5.507 | ppl 45.48 | num_updates 3296 | best_loss 7.51218
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint8.pt (epoch 8 @ 3296 updates) (writing took 9.960360050201416 seconds)
+| epoch 009 | loss 6.190 | nll_loss 4.045 | ppl 16.51 | wps 5895 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 3708 | lr 0.000927007 | gnorm 0.309 | clip 0.000 | oom 0.000 | wall 8964 | train_wall 8494
+| epoch 009 | valid on 'valid' subset | loss 7.421 | nll_loss 5.345 | ppl 40.64 | num_updates 3708 | best_loss 7.42135
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint9.pt (epoch 9 @ 3708 updates) (writing took 9.959043025970459 seconds)
+| epoch 010 | loss 6.108 | nll_loss 3.940 | ppl 15.34 | wps 5899 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 4120 | lr 0.000985329 | gnorm 0.296 | clip 0.000 | oom 0.000 | wall 9959 | train_wall 9435
+| epoch 010 | valid on 'valid' subset | loss 7.355 | nll_loss 5.277 | ppl 38.77 | num_updates 4120 | best_loss 7.35512
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint10.pt (epoch 10 @ 4120 updates) (writing took 9.972194910049438 seconds)
+| epoch 011 | loss 6.025 | nll_loss 3.833 | ppl 14.25 | wps 5888 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 4532 | lr 0.000939475 | gnorm 0.274 | clip 0.000 | oom 0.000 | wall 10956 | train_wall 10376
+| epoch 011 | valid on 'valid' subset | loss 7.206 | nll_loss 5.082 | ppl 33.87 | num_updates 4532 | best_loss 7.20626
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint11.pt (epoch 11 @ 4532 updates) (writing took 9.960657119750977 seconds)
+| epoch 012 | loss 5.952 | nll_loss 3.741 | ppl 13.37 | wps 5899 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 4944 | lr 0.000899478 | gnorm 0.260 | clip 0.000 | oom 0.000 | wall 11951 | train_wall 11317
+| epoch 012 | valid on 'valid' subset | loss 7.143 | nll_loss 4.992 | ppl 31.82 | num_updates 4944 | best_loss 7.1431
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint12.pt (epoch 12 @ 4944 updates) (writing took 9.952477216720581 seconds)
+| epoch 013 | loss 5.885 | nll_loss 3.655 | ppl 12.6 | wps 5897 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 5356 | lr 0.000864191 | gnorm 0.248 | clip 0.000 | oom 0.000 | wall 12947 | train_wall 12257
+| epoch 013 | valid on 'valid' subset | loss 7.081 | nll_loss 4.907 | ppl 30.01 | num_updates 5356 | best_loss 7.08096
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint13.pt (epoch 13 @ 5356 updates) (writing took 9.949021577835083 seconds)
+| epoch 014 | loss 5.834 | nll_loss 3.591 | ppl 12.05 | wps 5900 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 5768 | lr 0.000832755 | gnorm 0.240 | clip 0.000 | oom 0.000 | wall 13942 | train_wall 13197
+| epoch 014 | valid on 'valid' subset | loss 7.045 | nll_loss 4.843 | ppl 28.69 | num_updates 5768 | best_loss 7.04484
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint14.pt (epoch 14 @ 5768 updates) (writing took 9.975723505020142 seconds)
+| epoch 015 | loss 5.790 | nll_loss 3.534 | ppl 11.59 | wps 5901 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 6180 | lr 0.000804518 | gnorm 0.235 | clip 0.000 | oom 0.000 | wall 14937 | train_wall 14137
+| epoch 015 | valid on 'valid' subset | loss 6.990 | nll_loss 4.763 | ppl 27.15 | num_updates 6180 | best_loss 6.9897
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint15.pt (epoch 15 @ 6180 updates) (writing took 9.958754301071167 seconds)
+| epoch 016 | loss 5.750 | nll_loss 3.484 | ppl 11.19 | wps 5902 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 6592 | lr 0.000778971 | gnorm 0.228 | clip 0.000 | oom 0.000 | wall 15932 | train_wall 15077
+| epoch 016 | valid on 'valid' subset | loss 6.916 | nll_loss 4.662 | ppl 25.32 | num_updates 6592 | best_loss 6.91559
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint16.pt (epoch 16 @ 6592 updates) (writing took 9.957227230072021 seconds)
+| epoch 017 | loss 5.715 | nll_loss 3.439 | ppl 10.85 | wps 5905 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 7004 | lr 0.000755713 | gnorm 0.222 | clip 0.000 | oom 0.000 | wall 16927 | train_wall 16017
+| epoch 017 | valid on 'valid' subset | loss 6.887 | nll_loss 4.616 | ppl 24.53 | num_updates 7004 | best_loss 6.88734
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint17.pt (epoch 17 @ 7004 updates) (writing took 9.983057022094727 seconds)
+| epoch 018 | loss 5.684 | nll_loss 3.400 | ppl 10.56 | wps 5902 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 7416 | lr 0.000734421 | gnorm 0.217 | clip 0.000 | oom 0.000 | wall 17921 | train_wall 16957
+| epoch 018 | valid on 'valid' subset | loss 6.843 | nll_loss 4.559 | ppl 23.57 | num_updates 7416 | best_loss 6.84287
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint18.pt (epoch 18 @ 7416 updates) (writing took 9.96562647819519 seconds)
+| epoch 019 | loss 5.660 | nll_loss 3.369 | ppl 10.33 | wps 5904 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 7828 | lr 0.000714833 | gnorm 0.219 | clip 0.000 | oom 0.000 | wall 18916 | train_wall 17897
+| epoch 019 | valid on 'valid' subset | loss 6.804 | nll_loss 4.513 | ppl 22.83 | num_updates 7828 | best_loss 6.80431
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint19.pt (epoch 19 @ 7828 updates) (writing took 9.973481178283691 seconds)
+| epoch 020 | loss 5.632 | nll_loss 3.334 | ppl 10.08 | wps 5904 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 8240 | lr 0.000696733 | gnorm 0.209 | clip 0.000 | oom 0.000 | wall 19911 | train_wall 18837
+| epoch 020 | valid on 'valid' subset | loss 6.809 | nll_loss 4.518 | ppl 22.91 | num_updates 8240 | best_loss 6.80431
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint20.pt (epoch 20 @ 8240 updates) (writing took 4.944050550460815 seconds)
+| epoch 021 | loss 5.609 | nll_loss 3.304 | ppl 9.88 | wps 5912 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 8652 | lr 0.000679942 | gnorm 0.207 | clip 0.000 | oom 0.000 | wall 20899 | train_wall 19776
+| epoch 021 | valid on 'valid' subset | loss 6.754 | nll_loss 4.428 | ppl 21.53 | num_updates 8652 | best_loss 6.75402
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint21.pt (epoch 21 @ 8652 updates) (writing took 9.963578462600708 seconds)
+| epoch 022 | loss 5.588 | nll_loss 3.278 | ppl 9.7 | wps 5907 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 9064 | lr 0.000664309 | gnorm 0.206 | clip 0.000 | oom 0.000 | wall 21893 | train_wall 20715
+| epoch 022 | valid on 'valid' subset | loss 6.737 | nll_loss 4.405 | ppl 21.18 | num_updates 9064 | best_loss 6.73737
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint22.pt (epoch 22 @ 9064 updates) (writing took 9.958317756652832 seconds)
+| epoch 023 | loss 5.569 | nll_loss 3.254 | ppl 9.54 | wps 5910 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 9476 | lr 0.000649707 | gnorm 0.204 | clip 0.000 | oom 0.000 | wall 22887 | train_wall 21654
+| epoch 023 | valid on 'valid' subset | loss 6.733 | nll_loss 4.404 | ppl 21.17 | num_updates 9476 | best_loss 6.73339
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint23.pt (epoch 23 @ 9476 updates) (writing took 9.983925580978394 seconds)
+| epoch 024 | loss 5.552 | nll_loss 3.232 | ppl 9.4 | wps 5903 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 9888 | lr 0.000636027 | gnorm 0.202 | clip 0.000 | oom 0.000 | wall 23881 | train_wall 22593
+| epoch 024 | valid on 'valid' subset | loss 6.726 | nll_loss 4.394 | ppl 21.03 | num_updates 9888 | best_loss 6.72603
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint24.pt (epoch 24 @ 9888 updates) (writing took 9.961694478988647 seconds)
+| epoch 025 | loss 5.535 | nll_loss 3.211 | ppl 9.26 | wps 5904 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 10300 | lr 0.000623177 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 24875 | train_wall 23533
+| epoch 025 | valid on 'valid' subset | loss 6.684 | nll_loss 4.330 | ppl 20.11 | num_updates 10300 | best_loss 6.68383
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint25.pt (epoch 25 @ 10300 updates) (writing took 9.956055641174316 seconds)
+| epoch 026 | loss 5.521 | nll_loss 3.192 | ppl 9.14 | wps 5903 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 10712 | lr 0.000611075 | gnorm 0.200 | clip 0.000 | oom 0.000 | wall 25870 | train_wall 24472
+| epoch 026 | valid on 'valid' subset | loss 6.670 | nll_loss 4.317 | ppl 19.93 | num_updates 10712 | best_loss 6.67028
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint26.pt (epoch 26 @ 10712 updates) (writing took 9.97396445274353 seconds)
+| epoch 027 | loss 5.506 | nll_loss 3.173 | ppl 9.02 | wps 5906 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 11124 | lr 0.000599652 | gnorm 0.198 | clip 0.000 | oom 0.000 | wall 26865 | train_wall 25411
+| epoch 027 | valid on 'valid' subset | loss 6.665 | nll_loss 4.300 | ppl 19.7 | num_updates 11124 | best_loss 6.66535
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint27.pt (epoch 27 @ 11124 updates) (writing took 9.981866359710693 seconds)
+| epoch 028 | loss 5.494 | nll_loss 3.158 | ppl 8.92 | wps 5904 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 11536 | lr 0.000588847 | gnorm 0.201 | clip 0.000 | oom 0.000 | wall 27859 | train_wall 26351
+| epoch 028 | valid on 'valid' subset | loss 6.616 | nll_loss 4.244 | ppl 18.95 | num_updates 11536 | best_loss 6.61628
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint28.pt (epoch 28 @ 11536 updates) (writing took 9.96352767944336 seconds)
+| epoch 029 | loss 5.480 | nll_loss 3.140 | ppl 8.82 | wps 5902 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 11948 | lr 0.000578605 | gnorm 0.195 | clip 0.000 | oom 0.000 | wall 28854 | train_wall 27291
+| epoch 029 | valid on 'valid' subset | loss 6.603 | nll_loss 4.213 | ppl 18.54 | num_updates 11948 | best_loss 6.60338
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint29.pt (epoch 29 @ 11948 updates) (writing took 9.9512619972229 seconds)
+| epoch 030 | loss 5.469 | nll_loss 3.127 | ppl 8.74 | wps 5902 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 12360 | lr 0.00056888 | gnorm 0.198 | clip 0.000 | oom 0.000 | wall 29849 | train_wall 28232
+| epoch 030 | valid on 'valid' subset | loss 6.611 | nll_loss 4.225 | ppl 18.69 | num_updates 12360 | best_loss 6.60338
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint30.pt (epoch 30 @ 12360 updates) (writing took 4.9248433113098145 seconds)
+| epoch 031 | loss 5.457 | nll_loss 3.111 | ppl 8.64 | wps 5818 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 12772 | lr 0.000559629 | gnorm 0.194 | clip 0.000 | oom 0.000 | wall 30852 | train_wall 29186
+| epoch 031 | valid on 'valid' subset | loss 6.575 | nll_loss 4.196 | ppl 18.33 | num_updates 12772 | best_loss 6.57478
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint31.pt (epoch 31 @ 12772 updates) (writing took 10.038726329803467 seconds)
+| epoch 032 | loss 5.446 | nll_loss 3.097 | ppl 8.55 | wps 3020 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 13184 | lr 0.000550816 | gnorm 0.192 | clip 0.000 | oom 0.000 | wall 32787 | train_wall 31055
+| epoch 032 | valid on 'valid' subset | loss 6.574 | nll_loss 4.181 | ppl 18.14 | num_updates 13184 | best_loss 6.57431
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint32.pt (epoch 32 @ 13184 updates) (writing took 10.04158616065979 seconds)
+| epoch 033 | loss 5.437 | nll_loss 3.085 | ppl 8.49 | wps 3018 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 13596 | lr 0.000542406 | gnorm 0.194 | clip 0.000 | oom 0.000 | wall 34723 | train_wall 32925
+| epoch 033 | valid on 'valid' subset | loss 6.587 | nll_loss 4.197 | ppl 18.34 | num_updates 13596 | best_loss 6.57431
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint33.pt (epoch 33 @ 13596 updates) (writing took 4.965880632400513 seconds)
+| epoch 034 | loss 5.427 | nll_loss 3.073 | ppl 8.42 | wps 3027 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 14008 | lr 0.00053437 | gnorm 0.193 | clip 0.000 | oom 0.000 | wall 36648 | train_wall 34789
+| epoch 034 | valid on 'valid' subset | loss 6.579 | nll_loss 4.187 | ppl 18.21 | num_updates 14008 | best_loss 6.57431
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint34.pt (epoch 34 @ 14008 updates) (writing took 4.956612825393677 seconds)
+| epoch 035 | loss 5.417 | nll_loss 3.061 | ppl 8.35 | wps 3035 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 14420 | lr 0.000526681 | gnorm 0.192 | clip 0.000 | oom 0.000 | wall 38568 | train_wall 36649
+| epoch 035 | valid on 'valid' subset | loss 6.542 | nll_loss 4.142 | ppl 17.66 | num_updates 14420 | best_loss 6.54216
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint35.pt (epoch 35 @ 14420 updates) (writing took 11.171615600585938 seconds)
+| epoch 036 | loss 5.409 | nll_loss 3.050 | ppl 8.28 | wps 5899 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 14832 | lr 0.000519314 | gnorm 0.192 | clip 0.000 | oom 0.000 | wall 39565 | train_wall 37589
+| epoch 036 | valid on 'valid' subset | loss 6.530 | nll_loss 4.134 | ppl 17.55 | num_updates 14832 | best_loss 6.52971
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint36.pt (epoch 36 @ 14832 updates) (writing took 9.993288040161133 seconds)
+| epoch 037 | loss 5.401 | nll_loss 3.040 | ppl 8.22 | wps 5901 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 15244 | lr 0.000512248 | gnorm 0.193 | clip 0.000 | oom 0.000 | wall 40559 | train_wall 38529
+| epoch 037 | valid on 'valid' subset | loss 6.523 | nll_loss 4.118 | ppl 17.36 | num_updates 15244 | best_loss 6.52282
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint37.pt (epoch 37 @ 15244 updates) (writing took 9.982490301132202 seconds)
+| epoch 038 | loss 5.392 | nll_loss 3.029 | ppl 8.16 | wps 5902 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 15656 | lr 0.000505463 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 41554 | train_wall 39469
+| epoch 038 | valid on 'valid' subset | loss 6.521 | nll_loss 4.108 | ppl 17.24 | num_updates 15656 | best_loss 6.52143
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint38.pt (epoch 38 @ 15656 updates) (writing took 9.977784395217896 seconds)
+| epoch 039 | loss 5.385 | nll_loss 3.019 | ppl 8.11 | wps 5898 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 16068 | lr 0.000498941 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 42550 | train_wall 40410
+| epoch 039 | valid on 'valid' subset | loss 6.515 | nll_loss 4.106 | ppl 17.22 | num_updates 16068 | best_loss 6.51534
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint39.pt (epoch 39 @ 16068 updates) (writing took 9.958894968032837 seconds)
+| epoch 040 | loss 5.378 | nll_loss 3.010 | ppl 8.06 | wps 5903 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 16480 | lr 0.000492665 | gnorm 0.192 | clip 0.000 | oom 0.000 | wall 43544 | train_wall 41351
+| epoch 040 | valid on 'valid' subset | loss 6.536 | nll_loss 4.133 | ppl 17.54 | num_updates 16480 | best_loss 6.51534
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint40.pt (epoch 40 @ 16480 updates) (writing took 4.922075510025024 seconds)
+| epoch 041 | loss 5.370 | nll_loss 3.001 | ppl 8 | wps 5839 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 16892 | lr 0.000486619 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 44545 | train_wall 42300
+| epoch 041 | valid on 'valid' subset | loss 6.528 | nll_loss 4.118 | ppl 17.36 | num_updates 16892 | best_loss 6.51534
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint41.pt (epoch 41 @ 16892 updates) (writing took 4.94465970993042 seconds)
+| epoch 042 | loss 5.363 | nll_loss 2.991 | ppl 7.95 | wps 5315 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 17304 | lr 0.000480791 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 45644 | train_wall 43347
+| epoch 042 | valid on 'valid' subset | loss 6.470 | nll_loss 4.053 | ppl 16.6 | num_updates 17304 | best_loss 6.47022
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint42.pt (epoch 42 @ 17304 updates) (writing took 9.977811098098755 seconds)
+| epoch 043 | loss 5.357 | nll_loss 2.984 | ppl 7.91 | wps 5542 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 17716 | lr 0.000475168 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 46702 | train_wall 44349
+| epoch 043 | valid on 'valid' subset | loss 6.493 | nll_loss 4.081 | ppl 16.92 | num_updates 17716 | best_loss 6.47022
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint43.pt (epoch 43 @ 17716 updates) (writing took 4.992193937301636 seconds)
+| epoch 044 | loss 5.350 | nll_loss 2.976 | ppl 7.87 | wps 5534 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 18128 | lr 0.000469737 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 47757 | train_wall 45353
+| epoch 044 | valid on 'valid' subset | loss 6.500 | nll_loss 4.075 | ppl 16.86 | num_updates 18128 | best_loss 6.47022
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint44.pt (epoch 44 @ 18128 updates) (writing took 5.164268493652344 seconds)
+| epoch 045 | loss 5.344 | nll_loss 2.967 | ppl 7.82 | wps 5795 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 18540 | lr 0.000464489 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 48767 | train_wall 46311
+| epoch 045 | valid on 'valid' subset | loss 6.470 | nll_loss 4.039 | ppl 16.44 | num_updates 18540 | best_loss 6.47022
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint45.pt (epoch 45 @ 18540 updates) (writing took 4.934997797012329 seconds)
+| epoch 046 | loss 5.338 | nll_loss 2.960 | ppl 7.78 | wps 5346 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 18952 | lr 0.000459412 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 49858 | train_wall 47352
+| epoch 046 | valid on 'valid' subset | loss 6.479 | nll_loss 4.047 | ppl 16.53 | num_updates 18952 | best_loss 6.47022
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint46.pt (epoch 46 @ 18952 updates) (writing took 4.923458814620972 seconds)
+| epoch 047 | loss 5.332 | nll_loss 2.952 | ppl 7.74 | wps 5886 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 19364 | lr 0.000454499 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 50850 | train_wall 48294
+| epoch 047 | valid on 'valid' subset | loss 6.480 | nll_loss 4.052 | ppl 16.59 | num_updates 19364 | best_loss 6.47022
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint47.pt (epoch 47 @ 19364 updates) (writing took 4.9513702392578125 seconds)
+| epoch 048 | loss 5.327 | nll_loss 2.946 | ppl 7.71 | wps 5884 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 19776 | lr 0.000449739 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 51843 | train_wall 49237
+| epoch 048 | valid on 'valid' subset | loss 6.460 | nll_loss 4.034 | ppl 16.38 | num_updates 19776 | best_loss 6.4599
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint48.pt (epoch 48 @ 19776 updates) (writing took 9.981328010559082 seconds)
+| epoch 049 | loss 5.322 | nll_loss 2.939 | ppl 7.67 | wps 5883 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 20188 | lr 0.000445126 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 52841 | train_wall 50181
+| epoch 049 | valid on 'valid' subset | loss 6.467 | nll_loss 4.036 | ppl 16.4 | num_updates 20188 | best_loss 6.4599
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint49.pt (epoch 49 @ 20188 updates) (writing took 4.929563999176025 seconds)
+| epoch 050 | loss 5.316 | nll_loss 2.932 | ppl 7.63 | wps 5873 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 20600 | lr 0.000440653 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 53836 | train_wall 51124
+| epoch 050 | valid on 'valid' subset | loss 6.481 | nll_loss 4.061 | ppl 16.69 | num_updates 20600 | best_loss 6.4599
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint50.pt (epoch 50 @ 20600 updates) (writing took 4.936367034912109 seconds)
+| epoch 051 | loss 5.312 | nll_loss 2.927 | ppl 7.6 | wps 5739 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 21012 | lr 0.000436311 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 54853 | train_wall 52091
+| epoch 051 | valid on 'valid' subset | loss 6.443 | nll_loss 4.017 | ppl 16.19 | num_updates 21012 | best_loss 6.44312
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint51.pt (epoch 51 @ 21012 updates) (writing took 10.001796245574951 seconds)
+| epoch 052 | loss 5.306 | nll_loss 2.919 | ppl 7.57 | wps 5784 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 21424 | lr 0.000432095 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 55869 | train_wall 53051
+| epoch 052 | valid on 'valid' subset | loss 6.434 | nll_loss 3.987 | ppl 15.86 | num_updates 21424 | best_loss 6.43364
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint52.pt (epoch 52 @ 21424 updates) (writing took 9.987340927124023 seconds)
+| epoch 053 | loss 5.302 | nll_loss 2.914 | ppl 7.54 | wps 5750 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 21836 | lr 0.000428 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 56890 | train_wall 54016
+| epoch 053 | valid on 'valid' subset | loss 6.457 | nll_loss 4.028 | ppl 16.32 | num_updates 21836 | best_loss 6.43364
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint53.pt (epoch 53 @ 21836 updates) (writing took 4.92434287071228 seconds)
+| epoch 054 | loss 5.298 | nll_loss 2.909 | ppl 7.51 | wps 5780 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 22248 | lr 0.000424018 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 57900 | train_wall 54976
+| epoch 054 | valid on 'valid' subset | loss 6.440 | nll_loss 4.002 | ppl 16.02 | num_updates 22248 | best_loss 6.43364
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint54.pt (epoch 54 @ 22248 updates) (writing took 4.931666851043701 seconds)
+| epoch 055 | loss 5.293 | nll_loss 2.902 | ppl 7.48 | wps 5748 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 22660 | lr 0.000420146 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 58916 | train_wall 55940
+| epoch 055 | valid on 'valid' subset | loss 6.419 | nll_loss 3.981 | ppl 15.79 | num_updates 22660 | best_loss 6.41941
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint55.pt (epoch 55 @ 22660 updates) (writing took 9.972569465637207 seconds)
+| epoch 056 | loss 5.288 | nll_loss 2.897 | ppl 7.45 | wps 5770 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 23072 | lr 0.000416378 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 59933 | train_wall 56902
+| epoch 056 | valid on 'valid' subset | loss 6.422 | nll_loss 3.979 | ppl 15.76 | num_updates 23072 | best_loss 6.41941
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint56.pt (epoch 56 @ 23072 updates) (writing took 4.971903562545776 seconds)
+| epoch 057 | loss 5.284 | nll_loss 2.891 | ppl 7.42 | wps 5749 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 23484 | lr 0.000412709 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 60950 | train_wall 57868
+| epoch 057 | valid on 'valid' subset | loss 6.411 | nll_loss 3.963 | ppl 15.59 | num_updates 23484 | best_loss 6.41072
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint57.pt (epoch 57 @ 23484 updates) (writing took 9.965355157852173 seconds)
+| epoch 058 | loss 5.280 | nll_loss 2.886 | ppl 7.39 | wps 5752 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 23896 | lr 0.000409136 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 61970 | train_wall 58834
+| epoch 058 | valid on 'valid' subset | loss 6.416 | nll_loss 3.981 | ppl 15.79 | num_updates 23896 | best_loss 6.41072
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint58.pt (epoch 58 @ 23896 updates) (writing took 4.926292896270752 seconds)
+| epoch 059 | loss 5.276 | nll_loss 2.881 | ppl 7.37 | wps 5780 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 24308 | lr 0.000405654 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 62981 | train_wall 59794
+| epoch 059 | valid on 'valid' subset | loss 6.426 | nll_loss 3.984 | ppl 15.83 | num_updates 24308 | best_loss 6.41072
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint59.pt (epoch 59 @ 24308 updates) (writing took 4.944031238555908 seconds)
+| epoch 060 | loss 5.272 | nll_loss 2.876 | ppl 7.34 | wps 5777 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 24720 | lr 0.000402259 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 63992 | train_wall 60755
+| epoch 060 | valid on 'valid' subset | loss 6.430 | nll_loss 3.980 | ppl 15.78 | num_updates 24720 | best_loss 6.41072
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint60.pt (epoch 60 @ 24720 updates) (writing took 4.957306146621704 seconds)
+| epoch 061 | loss 5.268 | nll_loss 2.871 | ppl 7.32 | wps 5777 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 25132 | lr 0.000398948 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 65004 | train_wall 61717
+| epoch 061 | valid on 'valid' subset | loss 6.400 | nll_loss 3.948 | ppl 15.44 | num_updates 25132 | best_loss 6.40035
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint61.pt (epoch 61 @ 25132 updates) (writing took 9.966810464859009 seconds)
+| epoch 062 | loss 5.264 | nll_loss 2.866 | ppl 7.29 | wps 5788 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 25544 | lr 0.000395718 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 66018 | train_wall 62676
+| epoch 062 | valid on 'valid' subset | loss 6.423 | nll_loss 3.981 | ppl 15.79 | num_updates 25544 | best_loss 6.40035
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint62.pt (epoch 62 @ 25544 updates) (writing took 4.936990976333618 seconds)
+| epoch 063 | loss 5.262 | nll_loss 2.863 | ppl 7.27 | wps 5776 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 25956 | lr 0.000392565 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 67029 | train_wall 63636
+| epoch 063 | valid on 'valid' subset | loss 6.414 | nll_loss 3.964 | ppl 15.61 | num_updates 25956 | best_loss 6.40035
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint63.pt (epoch 63 @ 25956 updates) (writing took 4.924714803695679 seconds)
+| epoch 064 | loss 5.258 | nll_loss 2.857 | ppl 7.25 | wps 5783 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 26368 | lr 0.000389486 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 68039 | train_wall 64596
+| epoch 064 | valid on 'valid' subset | loss 6.388 | nll_loss 3.931 | ppl 15.26 | num_updates 26368 | best_loss 6.38791
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint64.pt (epoch 64 @ 26368 updates) (writing took 9.979674816131592 seconds)
+| epoch 065 | loss 5.255 | nll_loss 2.853 | ppl 7.23 | wps 5797 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 26780 | lr 0.000386478 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 69052 | train_wall 65554
+| epoch 065 | valid on 'valid' subset | loss 6.383 | nll_loss 3.927 | ppl 15.21 | num_updates 26780 | best_loss 6.38341
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint65.pt (epoch 65 @ 26780 updates) (writing took 9.967832326889038 seconds)
+| epoch 066 | loss 5.251 | nll_loss 2.849 | ppl 7.2 | wps 5775 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 27192 | lr 0.000383539 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 70068 | train_wall 66516
+| epoch 066 | valid on 'valid' subset | loss 6.401 | nll_loss 3.959 | ppl 15.55 | num_updates 27192 | best_loss 6.38341
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint66.pt (epoch 66 @ 27192 updates) (writing took 4.955783843994141 seconds)
+| epoch 067 | loss 5.246 | nll_loss 2.843 | ppl 7.17 | wps 5760 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 27604 | lr 0.000380666 | gnorm 0.186 | clip 0.000 | oom 0.000 | wall 71082 | train_wall 67480
+| epoch 067 | valid on 'valid' subset | loss 6.387 | nll_loss 3.930 | ppl 15.24 | num_updates 27604 | best_loss 6.38341
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint67.pt (epoch 67 @ 27604 updates) (writing took 4.961746454238892 seconds)
+| epoch 068 | loss 5.244 | nll_loss 2.840 | ppl 7.16 | wps 5761 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 28016 | lr 0.000377857 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 72097 | train_wall 68444
+| epoch 068 | valid on 'valid' subset | loss 6.387 | nll_loss 3.932 | ppl 15.26 | num_updates 28016 | best_loss 6.38341
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint68.pt (epoch 68 @ 28016 updates) (writing took 4.946108102798462 seconds)
+| epoch 069 | loss 5.242 | nll_loss 2.837 | ppl 7.14 | wps 5730 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 28428 | lr 0.000375108 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 73116 | train_wall 69413
+| epoch 069 | valid on 'valid' subset | loss 6.400 | nll_loss 3.953 | ppl 15.49 | num_updates 28428 | best_loss 6.38341
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint69.pt (epoch 69 @ 28428 updates) (writing took 4.924078941345215 seconds)
+| epoch 070 | loss 5.237 | nll_loss 2.831 | ppl 7.12 | wps 5709 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 28840 | lr 0.000372419 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 74139 | train_wall 70386
+| epoch 070 | valid on 'valid' subset | loss 6.391 | nll_loss 3.940 | ppl 15.35 | num_updates 28840 | best_loss 6.38341
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint70.pt (epoch 70 @ 28840 updates) (writing took 4.932100057601929 seconds)
+| epoch 071 | loss 5.235 | nll_loss 2.828 | ppl 7.1 | wps 5673 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 29252 | lr 0.000369787 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 75168 | train_wall 71365
+| epoch 071 | valid on 'valid' subset | loss 6.377 | nll_loss 3.922 | ppl 15.16 | num_updates 29252 | best_loss 6.37724
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint71.pt (epoch 71 @ 29252 updates) (writing took 9.972564935684204 seconds)
+| epoch 072 | loss 5.231 | nll_loss 2.823 | ppl 7.08 | wps 5753 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 29664 | lr 0.000367211 | gnorm 0.187 | clip 0.000 | oom 0.000 | wall 76189 | train_wall 72331
+| epoch 072 | valid on 'valid' subset | loss 6.372 | nll_loss 3.912 | ppl 15.05 | num_updates 29664 | best_loss 6.37197
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint72.pt (epoch 72 @ 29664 updates) (writing took 10.242610931396484 seconds)
+| epoch 073 | loss 5.229 | nll_loss 2.820 | ppl 7.06 | wps 5843 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 30076 | lr 0.000364687 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 77194 | train_wall 73282
+| epoch 073 | valid on 'valid' subset | loss 6.362 | nll_loss 3.904 | ppl 14.97 | num_updates 30076 | best_loss 6.36206
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint73.pt (epoch 73 @ 30076 updates) (writing took 9.962210655212402 seconds)
+| epoch 074 | loss 5.226 | nll_loss 2.817 | ppl 7.04 | wps 5824 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 30488 | lr 0.000362214 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 78202 | train_wall 74235
+| epoch 074 | valid on 'valid' subset | loss 6.395 | nll_loss 3.947 | ppl 15.42 | num_updates 30488 | best_loss 6.36206
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint74.pt (epoch 74 @ 30488 updates) (writing took 4.943286180496216 seconds)
+| epoch 075 | loss 5.223 | nll_loss 2.812 | ppl 7.02 | wps 5834 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 30900 | lr 0.000359791 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 79204 | train_wall 75187
+| epoch 075 | valid on 'valid' subset | loss 6.369 | nll_loss 3.904 | ppl 14.97 | num_updates 30900 | best_loss 6.36206
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint75.pt (epoch 75 @ 30900 updates) (writing took 4.933701992034912 seconds)
+| epoch 076 | loss 5.220 | nll_loss 2.809 | ppl 7.01 | wps 5829 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 31312 | lr 0.000357416 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 80206 | train_wall 76139
+| epoch 076 | valid on 'valid' subset | loss 6.348 | nll_loss 3.886 | ppl 14.78 | num_updates 31312 | best_loss 6.34788
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint76.pt (epoch 76 @ 31312 updates) (writing took 9.965573072433472 seconds)
+| epoch 077 | loss 5.218 | nll_loss 2.806 | ppl 6.99 | wps 5833 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 31724 | lr 0.000355088 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 81212 | train_wall 77091
+| epoch 077 | valid on 'valid' subset | loss 6.367 | nll_loss 3.901 | ppl 14.94 | num_updates 31724 | best_loss 6.34788
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint77.pt (epoch 77 @ 31724 updates) (writing took 4.929672479629517 seconds)
+| epoch 078 | loss 5.215 | nll_loss 2.802 | ppl 6.97 | wps 5827 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 32136 | lr 0.000352804 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 82215 | train_wall 78043
+| epoch 078 | valid on 'valid' subset | loss 6.400 | nll_loss 3.948 | ppl 15.43 | num_updates 32136 | best_loss 6.34788
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint78.pt (epoch 78 @ 32136 updates) (writing took 4.945811033248901 seconds)
+| epoch 079 | loss 5.211 | nll_loss 2.798 | ppl 6.95 | wps 5823 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 32548 | lr 0.000350564 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 83219 | train_wall 78996
+| epoch 079 | valid on 'valid' subset | loss 6.360 | nll_loss 3.894 | ppl 14.87 | num_updates 32548 | best_loss 6.34788
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint79.pt (epoch 79 @ 32548 updates) (writing took 4.9508209228515625 seconds)
+| epoch 080 | loss 5.210 | nll_loss 2.796 | ppl 6.95 | wps 5821 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 32960 | lr 0.000348367 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 84222 | train_wall 79949
+| epoch 080 | valid on 'valid' subset | loss 6.335 | nll_loss 3.874 | ppl 14.66 | num_updates 32960 | best_loss 6.33532
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint80.pt (epoch 80 @ 32960 updates) (writing took 9.95976734161377 seconds)
+| epoch 081 | loss 5.207 | nll_loss 2.792 | ppl 6.93 | wps 5825 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 33372 | lr 0.000346209 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 85230 | train_wall 80902
+| epoch 081 | valid on 'valid' subset | loss 6.376 | nll_loss 3.913 | ppl 15.06 | num_updates 33372 | best_loss 6.33532
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint81.pt (epoch 81 @ 33372 updates) (writing took 4.95707893371582 seconds)
+| epoch 082 | loss 5.204 | nll_loss 2.788 | ppl 6.91 | wps 5827 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 33784 | lr 0.000344092 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 86233 | train_wall 81855
+| epoch 082 | valid on 'valid' subset | loss 6.333 | nll_loss 3.869 | ppl 14.61 | num_updates 33784 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint82.pt (epoch 82 @ 33784 updates) (writing took 9.960722208023071 seconds)
+| epoch 083 | loss 5.203 | nll_loss 2.787 | ppl 6.9 | wps 5822 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 34196 | lr 0.000342013 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 87241 | train_wall 82809
+| epoch 083 | valid on 'valid' subset | loss 6.361 | nll_loss 3.897 | ppl 14.9 | num_updates 34196 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint83.pt (epoch 83 @ 34196 updates) (writing took 5.115868330001831 seconds)
+| epoch 084 | loss 5.200 | nll_loss 2.783 | ppl 6.88 | wps 5825 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 34608 | lr 0.000339971 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 88244 | train_wall 83761
+| epoch 084 | valid on 'valid' subset | loss 6.351 | nll_loss 3.888 | ppl 14.8 | num_updates 34608 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint84.pt (epoch 84 @ 34608 updates) (writing took 4.930505990982056 seconds)
+| epoch 085 | loss 5.197 | nll_loss 2.780 | ppl 6.87 | wps 5827 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 35020 | lr 0.000337965 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 89246 | train_wall 84713
+| epoch 085 | valid on 'valid' subset | loss 6.371 | nll_loss 3.911 | ppl 15.04 | num_updates 35020 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint85.pt (epoch 85 @ 35020 updates) (writing took 4.953289270401001 seconds)
+| epoch 086 | loss 5.195 | nll_loss 2.777 | ppl 6.85 | wps 5820 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 35432 | lr 0.000335994 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 90250 | train_wall 85666
+| epoch 086 | valid on 'valid' subset | loss 6.371 | nll_loss 3.907 | ppl 15 | num_updates 35432 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint86.pt (epoch 86 @ 35432 updates) (writing took 4.929874420166016 seconds)
+| epoch 087 | loss 5.192 | nll_loss 2.774 | ppl 6.84 | wps 5830 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 35844 | lr 0.000334058 | gnorm 0.188 | clip 0.000 | oom 0.000 | wall 91252 | train_wall 86618
+| epoch 087 | valid on 'valid' subset | loss 6.352 | nll_loss 3.890 | ppl 14.82 | num_updates 35844 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint87.pt (epoch 87 @ 35844 updates) (writing took 4.953774929046631 seconds)
+| epoch 088 | loss 5.190 | nll_loss 2.771 | ppl 6.83 | wps 5828 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 36256 | lr 0.000332154 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 92254 | train_wall 87570
+| epoch 088 | valid on 'valid' subset | loss 6.348 | nll_loss 3.881 | ppl 14.74 | num_updates 36256 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint88.pt (epoch 88 @ 36256 updates) (writing took 4.957046747207642 seconds)
+| epoch 089 | loss 5.188 | nll_loss 2.768 | ppl 6.81 | wps 5824 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 36668 | lr 0.000330283 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 93257 | train_wall 88523
+| epoch 089 | valid on 'valid' subset | loss 6.364 | nll_loss 3.905 | ppl 14.98 | num_updates 36668 | best_loss 6.33276
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint89.pt (epoch 89 @ 36668 updates) (writing took 4.960575580596924 seconds)
+| epoch 090 | loss 5.185 | nll_loss 2.765 | ppl 6.8 | wps 5830 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 37080 | lr 0.000328443 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 94259 | train_wall 89475
+| epoch 090 | valid on 'valid' subset | loss 6.323 | nll_loss 3.855 | ppl 14.47 | num_updates 37080 | best_loss 6.32333
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint90.pt (epoch 90 @ 37080 updates) (writing took 9.967240571975708 seconds)
+| epoch 091 | loss 5.185 | nll_loss 2.764 | ppl 6.79 | wps 5830 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 37492 | lr 0.000326633 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 95266 | train_wall 90428
+| epoch 091 | valid on 'valid' subset | loss 6.341 | nll_loss 3.870 | ppl 14.62 | num_updates 37492 | best_loss 6.32333
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint91.pt (epoch 91 @ 37492 updates) (writing took 4.935509920120239 seconds)
+| epoch 092 | loss 5.182 | nll_loss 2.760 | ppl 6.77 | wps 5827 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 37904 | lr 0.000324853 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 96268 | train_wall 91380
+| epoch 092 | valid on 'valid' subset | loss 6.347 | nll_loss 3.881 | ppl 14.73 | num_updates 37904 | best_loss 6.32333
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint92.pt (epoch 92 @ 37904 updates) (writing took 4.926093339920044 seconds)
+| epoch 093 | loss 5.179 | nll_loss 2.757 | ppl 6.76 | wps 5828 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 38316 | lr 0.000323102 | gnorm 0.189 | clip 0.000 | oom 0.000 | wall 97271 | train_wall 92333
+| epoch 093 | valid on 'valid' subset | loss 6.382 | nll_loss 3.925 | ppl 15.19 | num_updates 38316 | best_loss 6.32333
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint93.pt (epoch 93 @ 38316 updates) (writing took 4.92931866645813 seconds)
+| epoch 094 | loss 5.178 | nll_loss 2.756 | ppl 6.75 | wps 5838 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 38728 | lr 0.000321379 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 98272 | train_wall 93283
+| epoch 094 | valid on 'valid' subset | loss 6.337 | nll_loss 3.869 | ppl 14.61 | num_updates 38728 | best_loss 6.32333
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint94.pt (epoch 94 @ 38728 updates) (writing took 4.935916900634766 seconds)
+| epoch 095 | loss 5.176 | nll_loss 2.753 | ppl 6.74 | wps 5830 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 39140 | lr 0.000319683 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 99274 | train_wall 94235
+| epoch 095 | valid on 'valid' subset | loss 6.322 | nll_loss 3.853 | ppl 14.45 | num_updates 39140 | best_loss 6.32231
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint95.pt (epoch 95 @ 39140 updates) (writing took 9.978053092956543 seconds)
+| epoch 096 | loss 5.174 | nll_loss 2.750 | ppl 6.73 | wps 5842 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 39552 | lr 0.000318014 | gnorm 0.192 | clip 0.000 | oom 0.000 | wall 100279 | train_wall 95186
+| epoch 096 | valid on 'valid' subset | loss 6.336 | nll_loss 3.868 | ppl 14.6 | num_updates 39552 | best_loss 6.32231
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint96.pt (epoch 96 @ 39552 updates) (writing took 4.953139305114746 seconds)
+| epoch 097 | loss 5.172 | nll_loss 2.748 | ppl 6.72 | wps 5835 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 39964 | lr 0.00031637 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 101280 | train_wall 96136
+| epoch 097 | valid on 'valid' subset | loss 6.324 | nll_loss 3.854 | ppl 14.46 | num_updates 39964 | best_loss 6.32231
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint97.pt (epoch 97 @ 39964 updates) (writing took 4.9385786056518555 seconds)
+| epoch 098 | loss 5.170 | nll_loss 2.745 | ppl 6.7 | wps 5837 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 40376 | lr 0.000314752 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 102281 | train_wall 97087
+| epoch 098 | valid on 'valid' subset | loss 6.347 | nll_loss 3.885 | ppl 14.77 | num_updates 40376 | best_loss 6.32231
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint98.pt (epoch 98 @ 40376 updates) (writing took 4.940229654312134 seconds)
+| epoch 099 | loss 5.168 | nll_loss 2.742 | ppl 6.69 | wps 5840 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 40788 | lr 0.000313158 | gnorm 0.191 | clip 0.000 | oom 0.000 | wall 103281 | train_wall 98037
+| epoch 099 | valid on 'valid' subset | loss 6.307 | nll_loss 3.839 | ppl 14.31 | num_updates 40788 | best_loss 6.30745
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint99.pt (epoch 99 @ 40788 updates) (writing took 9.966188669204712 seconds)
+| epoch 100 | loss 5.166 | nll_loss 2.741 | ppl 6.68 | wps 5829 | ups 0 | wpb 14004.650 | bsz 982.024 | num_updates 41200 | lr 0.000311588 | gnorm 0.190 | clip 0.000 | oom 0.000 | wall 104289 | train_wall 98990
+| epoch 100 | valid on 'valid' subset | loss 6.330 | nll_loss 3.861 | ppl 14.53 | num_updates 41200 | best_loss 6.30745
+| saved checkpoint /checkpoints/flores/checkpoints_si_en/checkpoint100.pt (epoch 100 @ 41200 updates) (writing took 4.918885707855225 seconds)
+| done training in 104296.7 seconds

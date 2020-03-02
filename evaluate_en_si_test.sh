@@ -6,5 +6,4 @@ fairseq-generate \
     --path $CHECKPOINT_DIR \
     --beam 5 --lenpen 1.2 \
     --gen-subset test \
-    --remove-bpe=sentencepiece \
-    --sacrebleu
+    --remove-bpe=sentencepiece # note: no sacrebleu here
