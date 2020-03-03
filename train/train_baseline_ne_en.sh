@@ -1,5 +1,3 @@
-#CHECKPOINT_DIR="/checkpoints/flores/checkpoints_ne_en"
-
 echo "This is train_baseline_ne_en.sh"
 echo "Checkpoint directory: $CHECKPOINT_DIR"
 exit 0

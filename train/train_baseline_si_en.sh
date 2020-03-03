@@ -1,5 +1,6 @@
-#CHECKPOINT_DIR="/checkpoints/flores/checkpoints_si_en"
-
+echo "This is train_baseline_si_en.sh"
+echo "Checkpoint directory: $CHECKPOINT_DIR"
+exit 0
 mkdir -p $CHECKPOINT_DIR
 
 CUDA_VISIBLE_DEVICES=0 fairseq-train \

@@ -1,0 +1,2 @@
+- old log files from azure/aws located in `./log/old_from_awsazure`
+- all training encapsulated in `train_all.sh`
