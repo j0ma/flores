@@ -1,2 +1,9 @@
 - old log files from azure/aws located in `./log/old_from_awsazure`
-- all training encapsulated in `train_all.sh`
+- all training encapsulated in `train.sh`
+    - goal: running "make train" should do all the training
+- makefile contains two targets:
+    - `make init` does all the data folder initialization
+    - `make train` does all the training
+    - `make evaluate` does all the evaluation
+    - `make all` does init -> train -> evaluate
+- if want to use custom checkpoints folder need to pass it as arg to make

@@ -15,7 +15,7 @@ train_fairseq () {
     CHECKPOINT_DIR=$3
 
     CUDA_VISIBLE_DEVICES=0 fairseq-train \
-        $DATA_FOLDER \
+        $DATA_DIR \
         --source-lang $SRC_LANG --target-lang $TGT_LANG \
         --arch transformer --share-all-embeddings \
         --encoder-layers 5 --decoder-layers 5 \
@@ -45,12 +45,12 @@ train () {
     echo "About to train baseline for $SRC_LANG_CAP - $TGT_LANG_CAP ..."
 
     TIME_SUFFIX=$(date -Iminutes | sed s/':'/'-'/g)
-    LOG_FOLDER="./log/"$TIME_SUFFIX
-    mkdir -p $LOG_FOLDER
+    LOG_DIR="./log/"$TIME_SUFFIX
+    mkdir -p $LOG_DIR
 
     # create path for log file
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
-    LOG_OUTPUT_PATH="$LOG_FOLDER/$LOG_FILE"
+    LOG_OUTPUT_PATH="$LOG_DIR/$LOG_FILE"
     echo "Logging output to: $LOG_OUTPUT_PATH"
 
     # create path to checkpoint directory
@@ -68,16 +68,16 @@ train () {
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
     then
-        DATA_FOLDER="data-bin/wiki_si_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_si_en_bpe5000/"
     else
-        DATA_FOLDER="data-bin/wiki_ne_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_ne_en_bpe5000/"
     fi
     
-    echo "Data folder is: "$DATA_FOLDER
+    echo "Data folder is: "$DATA_DIR
 
     # actually run the training script and pass in necessary env variable
     echo "Beginning training..."
-    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_FOLDER > $LOG_OUTPUT_PATH
+    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR > $LOG_OUTPUT_PATH
 }
 
 # 1. Train NE - EN
