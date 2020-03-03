@@ -1,4 +1,4 @@
-CHECKPOINT_DIR="/checkpoints/flores/checkpoints_en_si"
+#CHECKPOINT_DIR="/checkpoints/flores/checkpoints_en_si"
 
 mkdir -p $CHECKPOINT_DIR
 
@@ -19,4 +19,4 @@ CUDA_VISIBLE_DEVICES=0 fairseq-train \
     --lr 1e-3 --min-lr 1e-9 \
     --max-tokens 4000 \
     --update-freq 4 \
-    --max-epoch 100 --save-interval 1 --save-dir $CHECKPOINT_DIR
+    --max-epoch 100 --save-interval 10 --save-dir $CHECKPOINT_DIR

@@ -1,10 +1,10 @@
-CHECKPOINT_DIR="/checkpoints/flores/checkpoints_ne_en"
+#CHECKPOINT_DIR="/checkpoints/flores/checkpoints_si_en"
 
 mkdir -p $CHECKPOINT_DIR
 
 CUDA_VISIBLE_DEVICES=0 fairseq-train \
-    data-bin/wiki_ne_en_bpe5000/ \
-    --source-lang ne --target-lang en \
+    data-bin/wiki_si_en_bpe5000/ \
+    --source-lang si --target-lang en \
     --arch transformer --share-all-embeddings \
     --encoder-layers 5 --decoder-layers 5 \
     --encoder-embed-dim 512 --decoder-embed-dim 512 \
@@ -19,4 +19,4 @@ CUDA_VISIBLE_DEVICES=0 fairseq-train \
     --lr 1e-3 --min-lr 1e-9 \
     --max-tokens 4000 \
     --update-freq 4 \
-    --max-epoch 100 --save-interval 1 --save-dir $CHECKPOINT_DIR
+    --max-epoch 100 --save-interval 10 --save-dir $CHECKPOINT_DIR
