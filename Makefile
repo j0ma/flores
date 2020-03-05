@@ -1,7 +1,11 @@
 all: init train evaluate
 
-init:
+init: install download
+
+install:
 	pip install fairseq sacrebleu sentencepiece
+
+download:
 	bash download-data.sh
 	bash prepare-neen.sh
 	bash prepare-sien.sh
