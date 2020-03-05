@@ -61,15 +61,4 @@ evaluate () {
 
 }
 
-# 1. Evaluate NE - EN
-evaluate "ne" "en"
-
-# 2. Evaluate EN - NE
-evaluate "en" "ne"
-
-# 3. Evaluate SI - EN
-evaluate "si" "en"
-
-# 4. Evaluate EN - SI
-evaluate "en" "si"
-
+evaluate $1 $2

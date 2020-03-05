@@ -1,12 +1,11 @@
 echo "================ FLORES BASELINE REPRODUCTION SCRIPT ================"
 
-echo """
-About to train the following language pairs:
-- NE-EN
-- EN-NE
-- SI-EN
-- EN-SI
-"""
+SRC_LANG=$1
+TGT_LANG=$2
+SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
+TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
+
+echo "About to train the supervised for the following language pair: "$SRC_LANG_CAP"-"$TGT_LANG_CAP
 
 train_fairseq () {
 
@@ -54,16 +53,11 @@ train () {
     echo "Logging output to: $LOG_OUTPUT_PATH"
 
     # create path to checkpoint directory
-    if [ -z ${CHECKPOINT_DIR+IMEMPTY} ]; 
-    then 
-        echo "Checkpoint directory unset! Setting to default value..."
-        CHECKPOINT_DIR="./checkpoints/checkpoints_"$SRC_LANG"_"$TGT_LANG
-        mkdir -p $CHECKPOINT_DIR
-        echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'"; 
-    else 
-        echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'"; 
-    fi
+    CHECKPOINT_DIR="./checkpoints/checkpoints_"$SRC_LANG"_"$TGT_LANG
+    echo "Checkpoint directory unset! Setting to default value..."
+    echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'"; 
     echo "Creating checkpoint directory if it doesn't exist..."
+    mkdir -p $CHECKPOINT_DIR
 
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
@@ -80,15 +74,5 @@ train () {
     train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR > $LOG_OUTPUT_PATH
 }
 
-# 1. Train NE - EN
-train "ne" "en"
-
-# 2. Train EN - NE
-train "en" "ne"
-
-# 3. Train SI - EN
-train "si" "en"
-
-# 4. Train EN - SI
-train "en" "si"
+train $1 $2
 
