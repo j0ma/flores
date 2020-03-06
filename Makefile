@@ -1,4 +1,4 @@
-all: init train evaluate
+all: init train_all evaluate_all
 
 init: install download
 
@@ -10,7 +10,7 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
-train:
+train_all:
 	# 1. Train NE - EN
 	bash ./train.sh "ne" "en"
 
@@ -23,8 +23,7 @@ train:
 	# 4. Train EN - SI
 	bash ./train.sh "en" "si"
 
-
-evaluate:
+evaluate_all:
 	# 1. Evaluate NE - EN
 	bash evaluate.sh "ne" "en"
 

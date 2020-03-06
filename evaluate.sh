@@ -1,7 +1,7 @@
 evaluate_fairseq () {
     SRC_LANG=$1
     TGT_LANG=$2
-    CHECKPOINT_DIR=$3
+    CHECKPOINT_PATH=$3
     DATA_DIR=$4
 
     if [ "$SRC_LANG" = "en" ];
@@ -9,7 +9,7 @@ evaluate_fairseq () {
         fairseq-generate \
             $DATA_DIR \
             --source-lang $SRC_LANG --target-lang $TGT_LANG \
-            --path $CHECKPOINT_DIR \
+            --path $CHECKPOINT_PATH \
             --beam 5 --lenpen 1.2 \
             --gen-subset test \
             --remove-bpe=sentencepiece # note: no sacrebleu here
@@ -17,7 +17,7 @@ evaluate_fairseq () {
         fairseq-generate \
             $DATA_DIR \
             --source-lang $SRC_LANG --target-lang $TGT_LANG \
-            --path $CHECKPOINT_DIR \
+            --path $CHECKPOINT_PATH \
             --beam 5 --lenpen 1.2 \
             --gen-subset test \
             --remove-bpe=sentencepiece \
@@ -37,15 +37,9 @@ evaluate () {
     RESULTS_OUTPUT_PATH="$RESULTS_FOLDER/$RESULTS_FILE"
     echo "Saving output to: $RESULTS_OUTPUT_PATH"
 
-    # create path to checkpoint directory
-    if [ -z ${CHECKPOINT_DIR+IMEMPTY} ]; 
-    then 
-        echo "Checkpoint directory unset! Setting to default value..."
-        CHECKPOINT_DIR="./checkpoints/checkpoints_"$SRC_LANG"_"$TGT_LANG
-        echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'"; 
-    else 
-        echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'"; 
-    fi
+    # infer checkpoint directory
+    CHECKPOINT_PATH="./checkpoints/checkpoints_"$SRC_LANG"_"$TGT_LANG"/checkpoint_best.pt"
+    echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
@@ -57,7 +51,7 @@ evaluate () {
     echo "Data folder is: "$DATA_DIR
 
     echo "About to evaluate..."
-    evaluate_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR > $RESULTS_OUTPUT_PATH
+    evaluate_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_PATH $DATA_DIR > $RESULTS_OUTPUT_PATH
 
 }
 
