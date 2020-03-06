@@ -1,3 +1,40 @@
+# FLoRes Low Resource MT Benchmark (my own fork)
+
+This repository is my own fork of FAIR's FLoRes repository.
+
+My main reason for forking was to create training and evaluation scripts that are well-automated.
+
+## Reproduced results
+
+### Case: Reproduction on Brandeis
+
+In the subsequent reproductions, I used a Titan RTX GPU, which decreased the training time to about 5 minutes per epoch.
+
+| Lang. pair | Reported | Reproduced | Difference | Cloud provider |
+|------------|----------|------------|------------|----------------|
+|   EN-NE    |   4.3    |    xxx     |    xxx     |   Brandeis     |
+|   NE-EN    |   7.6    |    xxx     |    xxx     |   Brandeis     |
+|   EN-SI    |   1.2    |    xxx     |    xxx     |   Brandeis     |
+|   SI-EN    |   7.2    |    xxx     |    xxx     |   Brandeis     |
+
+### Case: Reproduction on AWS/Azure
+
+In all experiments, the GPU used was a Tesla K80. Overall, I ran everything for 100 epochs, with about 20 min per epoch being the average runtime. 
+
+| Lang. pair | Reported | Reproduced | Difference | Cloud provider |
+|------------|----------|------------|------------|----------------|
+|   EN-NE    |   4.3    |    4.69    |    0.39    |     AWS        |
+|   NE-EN    |   7.6    |    7.66    |    0.06    |    Azure       |
+|   EN-SI    |   1.2    |    1.48    |    0.28    |     AWS        |
+|   SI-EN    |   7.2    |    6.94    |    0.26    |     AWS        |
+
+## Notes
+- old log files from azure/aws located in `./log/old_from_awsazure`
+- old eval files located in `evaluate/old-eval-scripts` 
+- old eval results located in `evalute/aws-azure-results`
+
+---
+
 # FLoRes Low Resource MT Benchmark
 
 This repository contains data and baselines from the paper:  
