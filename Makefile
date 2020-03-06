@@ -29,7 +29,7 @@ train_all:
 
 evaluate_all:
 	export TIME_SUFFIX=$(date -Iminutes | sed s/":"/"-"/g)
-	export RESULTS_FOLDER="./evaluate/"{$TIME_SUFFIX}
+	export RESULTS_FOLDER="./evaluate/"${TIME_SUFFIX}
 	mkdir -p ${RESULTS_FOLDER}
 
 	# 1. Evaluate NE - EN
