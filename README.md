@@ -6,16 +6,18 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
-### Case: Reproduction on Brandeis
+### Case: Reproduction on Brandeis hardware
 
-In the subsequent reproductions, I used a Titan RTX GPU, which decreased the training time to about 5 minutes per epoch.
+In the next reproduction, I used a Titan RTX GPU, which decreased the training time to about 5 minutes per epoch.
 
-| Lang. pair | Reported | Reproduced | Difference | Cloud provider |
-|------------|----------|------------|------------|----------------|
-|   EN-NE    |   4.3    |    xxx     |    xxx     |   Brandeis     |
-|   NE-EN    |   7.6    |    xxx     |    xxx     |   Brandeis     |
-|   EN-SI    |   1.2    |    xxx     |    xxx     |   Brandeis     |
-|   SI-EN    |   7.2    |    xxx     |    xxx     |   Brandeis     |
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    4.58     |    0.28     |   Brandeis     |
+|   NE-EN    |   7.6    |    7.74     |    0.14     |   Brandeis     |
+|   EN-SI    |   1.2    |    1.31     |    0.11     |   Brandeis     |
+|   SI-EN    |   7.2    |    6.77     |    -0.43    |   Brandeis     |
+
+Interestingly, evaluation is just as slow here as it was on Azure/AWS.
 
 ### Case: Reproduction on AWS/Azure
 
@@ -26,7 +28,7 @@ In all experiments, the GPU used was a Tesla K80. Overall, I ran everything for 
 |   EN-NE    |   4.3    |    4.69    |    0.39    |     AWS        |
 |   NE-EN    |   7.6    |    7.66    |    0.06    |    Azure       |
 |   EN-SI    |   1.2    |    1.48    |    0.28    |     AWS        |
-|   SI-EN    |   7.2    |    6.94    |    0.26    |     AWS        |
+|   SI-EN    |   7.2    |    6.94    |    -0.26   |     AWS        |
 
 ## Notes
 - old log files from azure/aws located in `./log/old_from_awsazure`
