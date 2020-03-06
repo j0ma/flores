@@ -28,9 +28,7 @@ evaluate_fairseq () {
 evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
-    TIME_SUFFIX=$(date -Iminutes | sed s/':'/'-'/g)
-    RESULTS_FOLDER="./evaluate/"$TIME_SUFFIX
-    mkdir -p $RESULTS_FOLDER
+    RESULTS_FOLDER=$3
 
     # create path for log file
     RESULTS_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"

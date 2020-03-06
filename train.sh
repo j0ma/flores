@@ -39,13 +39,10 @@ train () {
 
     SRC_LANG=$1
     TGT_LANG=$2
+    LOG_DIR=$3
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
     echo "About to train baseline for $SRC_LANG_CAP - $TGT_LANG_CAP ..."
-
-    TIME_SUFFIX=$(date -Iminutes | sed s/':'/'-'/g)
-    LOG_DIR="./log/"$TIME_SUFFIX
-    mkdir -p $LOG_DIR
 
     # create path for log file
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
@@ -74,5 +71,5 @@ train () {
     train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR > $LOG_OUTPUT_PATH
 }
 
-train $1 $2
+train $1 $2 $3
 
