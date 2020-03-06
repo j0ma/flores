@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 all: init train_all evaluate_all
 
 init: install download
@@ -11,36 +13,36 @@ download:
 	bash prepare-sien.sh
 
 train_all:
-	TIME_SUFFIX=$(date -Iminutes | sed s/':'/'-'/g)
-	export LOG_FOLDER="./log/"${TIME_SUFFIX}
-	mkdir -p ${LOG_FOLDER}
+
+	# 0. create log folder
+	bash ./create_log_folder.sh
 
 	# 1. Train NE - EN
-	bash ./train.sh "ne" "en" ${LOG_FOLDER}
+	bash ./train.sh "ne" "en"
 
 	# 2. Train EN - NE
-	bash ./train.sh "en" "ne" ${LOG_FOLDER}
+	bash ./train.sh "en" "ne"
 
 	# 3. Train SI - EN
-	bash ./train.sh "si" "en" ${LOG_FOLDER}
+	bash ./train.sh "si" "en"
 
 	# 4. Train EN - SI
-	bash ./train.sh "en" "si" ${LOG_FOLDER}
+	bash ./train.sh "en" "si"
 
 evaluate_all:
-	export TIME_SUFFIX=$(date -Iminutes | sed s/":"/"-"/g)
-	export RESULTS_FOLDER="./evaluate/"${TIME_SUFFIX}
-	mkdir -p ${RESULTS_FOLDER}
+
+	# 0. create results folder
+	bash ./create_results_folder.sh
 
 	# 1. Evaluate NE - EN
-	bash evaluate.sh "ne" "en" ${RESULTS_FOLDER}
+	bash evaluate.sh "ne" "en"
 
 	# 2. Evaluate EN - NE
-	bash evaluate.sh "en" "ne" ${RESULTS_FOLDER}
+	bash evaluate.sh "en" "ne"
 
 	# 3. Evaluate SI - EN
-	bash evaluate.sh "si" "en" ${RESULTS_FOLDER}
+	bash evaluate.sh "si" "en"
 
 	# 4. Evaluate EN - SI
-	bash evaluate.sh "en" "si" ${RESULTS_FOLDER}
+	bash evaluate.sh "en" "si"
 

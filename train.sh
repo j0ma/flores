@@ -12,6 +12,7 @@ train_fairseq () {
     SRC_LANG=$1
     TGT_LANG=$2
     CHECKPOINT_DIR=$3
+    DATA_DIR=$4
 
     CUDA_VISIBLE_DEVICES=0 fairseq-train \
         $DATA_DIR \
@@ -39,7 +40,9 @@ train () {
 
     SRC_LANG=$1
     TGT_LANG=$2
-    LOG_DIR=$3
+    LOG_DIR="./log/"$(ls -t ./log | head -1)
+    echo $LOG_DIR
+    exit 0
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
     echo "About to train baseline for $SRC_LANG_CAP - $TGT_LANG_CAP ..."

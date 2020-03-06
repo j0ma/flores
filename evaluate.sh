@@ -28,11 +28,11 @@ evaluate_fairseq () {
 evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
-    RESULTS_FOLDER=$3
+    RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
     # create path for log file
     RESULTS_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
-    RESULTS_OUTPUT_PATH="$RESULTS_FOLDER/$RESULTS_FILE"
+    RESULTS_OUTPUT_PATH="$RESULTS_DIR/$RESULTS_FILE"
     echo "Saving output to: $RESULTS_OUTPUT_PATH"
 
     # infer checkpoint directory
