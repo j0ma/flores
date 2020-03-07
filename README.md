@@ -6,7 +6,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
-### Case: Reproduction on Brandeis hardware
+### Case: Reproduction on Brandeis hardware vol 2
 
 Second re-reun on Brandeis hardware to investigate whether there is randomness between runs on same GPU
 
