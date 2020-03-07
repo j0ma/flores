@@ -1,4 +1,4 @@
-echo "================ FLORES BASELINE REPRODUCTION SCRIPT ================"
+echo "================ FLORES BASELINE REPRODUCTION SCRIPT WITH FP16 TRAINING ================"
 
 SRC_LANG=$1
 TGT_LANG=$2
