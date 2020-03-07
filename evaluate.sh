@@ -36,7 +36,9 @@ evaluate () {
     echo "Saving output to: $RESULTS_OUTPUT_PATH"
 
     # infer checkpoint directory
-    CHECKPOINT_PATH="./checkpoints/checkpoints_"$SRC_LANG"_"$TGT_LANG"/checkpoint_best.pt"
+    TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
+    CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
+    CHECKPOINT_PATH=$CHECKPOINT_DIR"/checkpoint_best.pt"
     echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
     # infer data directory

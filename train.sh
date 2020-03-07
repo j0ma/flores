@@ -41,8 +41,6 @@ train () {
     SRC_LANG=$1
     TGT_LANG=$2
     LOG_DIR="./log/"$(ls -t ./log | head -1)
-    echo $LOG_DIR
-    exit 0
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
     echo "About to train baseline for $SRC_LANG_CAP - $TGT_LANG_CAP ..."
@@ -53,7 +51,8 @@ train () {
     echo "Logging output to: $LOG_OUTPUT_PATH"
 
     # create path to checkpoint directory
-    CHECKPOINT_DIR="./checkpoints/checkpoints_"$SRC_LANG"_"$TGT_LANG
+    TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
+    CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
     echo "Checkpoint directory unset! Setting to default value..."
     echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'"; 
     echo "Creating checkpoint directory if it doesn't exist..."

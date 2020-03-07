@@ -14,8 +14,9 @@ download:
 
 train_all:
 
-	# 0. create log folder
+	# 0. create log & checkpoint folder
 	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
 
 	# 1. Train NE - EN
 	bash ./train.sh "ne" "en"
