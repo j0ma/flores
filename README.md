@@ -8,6 +8,17 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### Case: Reproduction on Brandeis hardware
 
+Second re-reun on Brandeis hardware to investigate whether there is randomness between runs on same GPU
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    4.58     |    0.28     |   Brandeis     |
+|   NE-EN    |   7.6    |    7.74     |    0.14     |   Brandeis     |
+|   EN-SI    |   1.2    |    1.31     |    0.11     |   Brandeis     |
+|   SI-EN    |   7.2    |    6.77     |    -0.43    |   Brandeis     |
+
+### Case: Reproduction on Brandeis hardware
+
 In the next reproduction, I used a Titan RTX GPU, which decreased the training time to about 5 minutes per epoch.
 
 | Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
