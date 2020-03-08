@@ -6,6 +6,15 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
+### Case: Reproduction on Brandeis hardware & FP16 training
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    4.59     |    0.29     |   Brandeis     |
+|   NE-EN    |   7.6    |    7.39     |    -0.21    |   Brandeis     |
+|   EN-SI    |   1.2    |    1.24     |    0.04     |   Brandeis     |
+|   SI-EN    |   7.2    |    6.69     |    -0.51    |   Brandeis     |
+
 ### Case: Reproduction on Brandeis hardware vol 2
 
 Second re-reun on Brandeis hardware to investigate whether there is randomness between runs on same GPU
