@@ -1,7 +1,3 @@
-SHELL := /bin/bash
-
-all: init train_all evaluate_all
-
 init: install download
 
 install:
@@ -11,6 +7,42 @@ download:
 	bash download-data.sh
 	bash prepare-neen.sh
 	bash prepare-sien.sh
+
+train_all_fp16_largebatch:
+
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_largebatch.sh "ne" "en"
+
+	# 2. Train EN - NE
+	bash ./train_fp16_largebatch.sh "en" "ne"
+
+	# 3. Train SI - EN
+	bash ./train_fp16_largebatch.sh "si" "en"
+
+	# 4. Train EN - SI
+	bash ./train_fp16_largebatch.sh "en" "si"
+
+train_all_fp16:
+
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16.sh "ne" "en"
+
+	# 2. Train EN - NE
+	bash ./train_fp16.sh "en" "ne"
+
+	# 3. Train SI - EN
+	bash ./train_fp16.sh "si" "en"
+
+	# 4. Train EN - SI
+	bash ./train_fp16.sh "en" "si"
 
 train_all:
 
@@ -30,23 +62,6 @@ train_all:
 	# 4. Train EN - SI
 	bash ./train.sh "en" "si"
 
-train_all_fp16:
-
-	# 0. create log & checkpoint folder
-	bash ./create_log_folder.sh
-	bash ./create_checkpoint_folder.sh
-
-	# 1. Train NE - EN
-	bash ./train_fp16.sh "ne" "en"
-
-	# 2. Train EN - NE
-	bash ./train_fp16.sh "en" "ne"
-
-	# 3. Train SI - EN
-	bash ./train_fp16.sh "si" "en"
-
-	# 4. Train EN - SI
-	bash ./train_fp16.sh "en" "si"
 
 evaluate_all:
 
