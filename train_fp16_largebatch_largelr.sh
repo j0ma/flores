@@ -1,12 +1,3 @@
-echo "================ FLORES BASELINE REPRODUCTION SCRIPT WITH FP16 TRAINING & LARGER BATCH SIZE ================"
-
-SRC_LANG=$1
-TGT_LANG=$2
-SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
-TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
-
-echo "About to train the supervised for the following language pair: "$SRC_LANG_CAP"-"$TGT_LANG_CAP
-
 train_fairseq () {
 
     SRC_LANG=$1
@@ -28,7 +19,7 @@ train_fairseq () {
         --label-smoothing 0.2 --criterion label_smoothed_cross_entropy \
         --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0 \
         --lr-scheduler inverse_sqrt --warmup-updates 4000 --warmup-init-lr 1e-7 \
-        --lr 1e-3 --min-lr 1e-9 \
+        --lr 5e-3 --min-lr 5e-4 \
         --max-tokens 16000 \
         --max-epoch 100 \
         --save-interval 10 \
@@ -43,12 +34,14 @@ train () {
     LOG_DIR="./log/"$(ls -t ./log | head -1)
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
-    echo "About to train baseline for $SRC_LANG_CAP - $TGT_LANG_CAP ..."
 
     # create path for log file
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
     LOG_OUTPUT_PATH="$LOG_DIR/$LOG_FILE"
-    echo "Logging output to: $LOG_OUTPUT_PATH"
+
+    echo "================ FLORES BASELINE + FP16 TRAINING + LARGER BATCH SIZE + LARGER LEARNING RATE ================" >> $LOG_OUTPUT_PATH
+    echo "About to train the supervised baseline for the following language pair: "$SRC_LANG_CAP"-"$TGT_LANG_CAP >> $LOG_OUTPUT_PATH
+    echo "Logging output to: $LOG_OUTPUT_PATH" >> $LOG_OUTPUT_PATH
 
     # create path to checkpoint directory
     TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
@@ -69,11 +62,11 @@ train () {
     echo "Data folder is: "$DATA_DIR
 
     # actually run the training script and pass in necessary env variable
-    echo "Beginning training..." > $LOG_OUTPUT_PATH
-    echo "Time at beginning: "$(date) > $LOG_OUTPUT_PATH
-    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR > $LOG_OUTPUT_PATH
-    echo "Done training." > $LOG_OUTPUT_PATH
-    echo "Time at end: "$(date) > $LOG_OUTPUT_PATH
+    echo "Beginning training..." >> $LOG_OUTPUT_PATH
+    echo "Time at beginning: "$(date) >> $LOG_OUTPUT_PATH
+    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR >> $LOG_OUTPUT_PATH
+    echo "Done training." >> $LOG_OUTPUT_PATH
+    echo "Time at end: "$(date) >> $LOG_OUTPUT_PATH
 }
 
 train $1 $2 $3
