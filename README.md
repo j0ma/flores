@@ -6,7 +6,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
-## Summary: All settings so far
+### All settings so far
 
 | Lang. pair | Reported |  AWS/Azure  | Brandeis (vanilla) |  Vanilla + FP16  |  FP16 + LargeBatch |
 |------------|----------|-------------|--------------------|------------------|--------------------|
@@ -38,7 +38,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### Reproduction on Brandeis hardware vol 2
 
-Second re-reun on Brandeis hardware to investigate whether there is randomness between runs on same GPU
+Second re-run on Brandeis hardware to investigate whether there is randomness between runs on same GPU
 
 | Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
 |------------|----------|-------------|-------------|----------------|
