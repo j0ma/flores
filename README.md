@@ -6,6 +6,18 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
+### Case: Larger batch size, with FP16
+- Batch size enlarged using `--max-tokens 16000` 
+- FP16 `--fp16`
+- Removed `--update_freq 4`
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    3.99     |    -0.31    |   Brandeis     |
+|   NE-EN    |   7.6    |    7.10     |    -0.21    |   Brandeis     |
+|   EN-SI    |   1.2    |    1.06     |    -0.14    |   Brandeis     |
+|   SI-EN    |   7.2    |    5.82     |    -1.38    |   Brandeis     |
+
 ### Case: Reproduction on Brandeis hardware & FP16 training
 
 | Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
