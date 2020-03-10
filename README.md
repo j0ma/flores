@@ -6,7 +6,16 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
-### Case: Larger batch size, with FP16
+## Summary: All settings so far
+
+| Lang. pair | Reported |  AWS/Azure  | Brandeis (vanilla) |  Vanilla + FP16  |  FP16 + LargeBatch |
+|------------|----------|-------------|--------------------|------------------|--------------------|
+|   EN-NE    |   4.3    |    4.69     |       4.58         |      4.59        |        3.99        |
+|   NE-EN    |   7.6    |    7.66     |       7.74         |      7.39        |        7.10        |
+|   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |
+|   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |
+
+### Larger batch size, with FP16
 - Batch size enlarged using `--max-tokens 16000` 
 - FP16 `--fp16`
 - Removed `--update_freq 4`
@@ -18,7 +27,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.06     |    -0.14    |   Brandeis     |
 |   SI-EN    |   7.2    |    5.82     |    -1.38    |   Brandeis     |
 
-### Case: Reproduction on Brandeis hardware & FP16 training
+### Reproduction on Brandeis hardware & FP16 training
 
 | Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
 |------------|----------|-------------|-------------|----------------|
@@ -27,7 +36,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.24     |    0.04     |   Brandeis     |
 |   SI-EN    |   7.2    |    6.69     |    -0.51    |   Brandeis     |
 
-### Case: Reproduction on Brandeis hardware vol 2
+### Reproduction on Brandeis hardware vol 2
 
 Second re-reun on Brandeis hardware to investigate whether there is randomness between runs on same GPU
 
@@ -38,7 +47,7 @@ Second re-reun on Brandeis hardware to investigate whether there is randomness b
 |   EN-SI    |   1.2    |    1.31     |    0.11     |   Brandeis     |
 |   SI-EN    |   7.2    |    6.77     |    -0.43    |   Brandeis     |
 
-### Case: Reproduction on Brandeis hardware
+### Reproduction on Brandeis hardware
 
 In the next reproduction, I used a Titan RTX GPU, which decreased the training time to about 5 minutes per epoch.
 
@@ -51,7 +60,7 @@ In the next reproduction, I used a Titan RTX GPU, which decreased the training t
 
 Interestingly, evaluation is just as slow here as it was on Azure/AWS.
 
-### Case: Reproduction on AWS/Azure
+### Reproduction on AWS/Azure
 
 In all experiments, the GPU used was a Tesla K80. Overall, I ran everything for 100 epochs, with about 20 min per epoch being the average runtime. 
 
