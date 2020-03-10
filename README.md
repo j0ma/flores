@@ -20,7 +20,14 @@ My main reason for forking was to create training and evaluation scripts that ar
 - FP16 `--fp16`
 - Removed `--update_freq 4`
 - Learning rate first set to `--lr 5e-3` -> error
-- Then set learning rate to `--lr 5e-4`
+- Then set learning rate to `--lr 5e-4` -> no error
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    4.03     |    -0.27    |   Brandeis     |
+|   NE-EN    |   7.6    |    6.48     |    -1.12    |   Brandeis     |
+|   EN-SI    |   1.2    |    1.13     |    -0.07    |   Brandeis     |
+|   SI-EN    |   7.2    |    5.39     |    -1.81    |   Brandeis     |
 
 ### Larger batch size, with FP16
 - Batch size enlarged using `--max-tokens 16000` 

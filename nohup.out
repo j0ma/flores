@@ -96,3 +96,107 @@ CHECKPOINT_DIR is set to './checkpoints/2020-03-09T09-55-04-00/checkpoints_en_si
 Creating checkpoint directory if it doesn't exist...
 Data folder is: data-bin/wiki_si_en_bpe5000/
 Beginning training...
+# 0. create log & checkpoint folder
+bash ./create_log_folder.sh
+./log/2020-03-10T00-32-04-00
+bash ./create_checkpoint_folder.sh
+./checkpoints/2020-03-10T00-32-04-00
+# 1. Train NE - EN
+bash ./train_fp16_largebatch_largelr.sh "ne" "en"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-32-04-00/checkpoints_ne_en'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+# 2. Train EN - NE
+bash ./train_fp16_largebatch_largelr.sh "en" "ne"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-32-04-00/checkpoints_en_ne'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+# 3. Train SI - EN
+bash ./train_fp16_largebatch_largelr.sh "si" "en"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-32-04-00/checkpoints_si_en'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_si_en_bpe5000/
+# 4. Train EN - SI
+bash ./train_fp16_largebatch_largelr.sh "en" "si"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-32-04-00/checkpoints_en_si'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_si_en_bpe5000/
+# 0. create log & checkpoint folder
+bash ./create_log_folder.sh
+./log/2020-03-10T00-39-04-00
+bash ./create_checkpoint_folder.sh
+./checkpoints/2020-03-10T00-39-04-00
+# 1. Train NE - EN
+bash ./train_fp16_largebatch_largelr.sh "ne" "en"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-39-04-00/checkpoints_ne_en'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+Traceback (most recent call last):
+  File "/home/jonne/miniconda3/envs/flores/bin/fairseq-train", line 8, in <module>
+    sys.exit(cli_main())
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq_cli/train.py", line 333, in cli_main
+    main(args)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq_cli/train.py", line 86, in main
+    train(args, trainer, task, epoch_itr)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq_cli/train.py", line 127, in train
+    log_output = trainer.train_step(samples)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq/trainer.py", line 433, in train_step
+    grad_norm = self.optimizer.clip_grad_norm(self.args.clip_norm)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq/optim/fp16_optimizer.py", line 146, in clip_grad_norm
+    ).format(self.min_loss_scale))
+FloatingPointError: Minimum loss scale reached (0.0001). Your loss is probably exploding. Try lowering the learning rate, using gradient clipping or increasing the batch size.
+# 2. Train EN - NE
+bash ./train_fp16_largebatch_largelr.sh "en" "ne"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-39-04-00/checkpoints_en_ne'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+./train_fp16_largebatch_largelr.sh: line 1: 50466 Terminated              CUDA_VISIBLE_DEVICES=0 fairseq-train $DATA_DIR --source-lang $SRC_LANG --target-lang $TGT_LANG --arch transformer --share-all-embeddings --encoder-layers 5 --decoder-layers 5 --encoder-embed-dim 512 --decoder-embed-dim 512 --encoder-ffn-embed-dim 2048 --decoder-ffn-embed-dim 2048 --encoder-attention-heads 2 --decoder-attention-heads 2 --encoder-normalize-before --decoder-normalize-before --dropout 0.4 --attention-dropout 0.2 --relu-dropout 0.2 --weight-decay 0.0001 --label-smoothing 0.2 --criterion label_smoothed_cross_entropy --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0 --lr-scheduler inverse_sqrt --warmup-updates 4000 --warmup-init-lr 1e-7 --lr 5e-3 --min-lr 1e-9 --max-tokens 16000 --max-epoch 100 --save-interval 10 --save-dir $CHECKPOINT_DIR --fp16
+# 3. Train SI - EN
+bash ./train_fp16_largebatch_largelr.sh "si" "en"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-39-04-00/checkpoints_si_en'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_si_en_bpe5000/
+./train_fp16_largebatch_largelr.sh: line 1: 51007 Terminated              CUDA_VISIBLE_DEVICES=0 fairseq-train $DATA_DIR --source-lang $SRC_LANG --target-lang $TGT_LANG --arch transformer --share-all-embeddings --encoder-layers 5 --decoder-layers 5 --encoder-embed-dim 512 --decoder-embed-dim 512 --encoder-ffn-embed-dim 2048 --decoder-ffn-embed-dim 2048 --encoder-attention-heads 2 --decoder-attention-heads 2 --encoder-normalize-before --decoder-normalize-before --dropout 0.4 --attention-dropout 0.2 --relu-dropout 0.2 --weight-decay 0.0001 --label-smoothing 0.2 --criterion label_smoothed_cross_entropy --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0 --lr-scheduler inverse_sqrt --warmup-updates 4000 --warmup-init-lr 1e-7 --lr 5e-4 --min-lr 1e-9 --max-tokens 16000 --max-epoch 100 --save-interval 10 --save-dir $CHECKPOINT_DIR --fp16
+# 4. Train EN - SI
+bash ./train_fp16_largebatch_largelr.sh "en" "si"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T00-39-04-00/checkpoints_en_si'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_si_en_bpe5000/
+./train_fp16_largebatch_largelr.sh: line 1: 51134 Terminated              CUDA_VISIBLE_DEVICES=0 fairseq-train $DATA_DIR --source-lang $SRC_LANG --target-lang $TGT_LANG --arch transformer --share-all-embeddings --encoder-layers 5 --decoder-layers 5 --encoder-embed-dim 512 --decoder-embed-dim 512 --encoder-ffn-embed-dim 2048 --decoder-ffn-embed-dim 2048 --encoder-attention-heads 2 --decoder-attention-heads 2 --encoder-normalize-before --decoder-normalize-before --dropout 0.4 --attention-dropout 0.2 --relu-dropout 0.2 --weight-decay 0.0001 --label-smoothing 0.2 --criterion label_smoothed_cross_entropy --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0 --lr-scheduler inverse_sqrt --warmup-updates 4000 --warmup-init-lr 1e-7 --lr 5e-4 --min-lr 1e-9 --max-tokens 16000 --max-epoch 100 --save-interval 10 --save-dir $CHECKPOINT_DIR --fp16
+# 0. create log & checkpoint folder
+bash ./create_log_folder.sh
+./log/2020-03-10T01-03-04-00
+bash ./create_checkpoint_folder.sh
+./checkpoints/2020-03-10T01-03-04-00
+# 1. Train NE - EN
+bash ./train_fp16_largebatch_largelr.sh "ne" "en"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T01-03-04-00/checkpoints_ne_en'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+# 2. Train EN - NE
+bash ./train_fp16_largebatch_largelr.sh "en" "ne"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T01-03-04-00/checkpoints_en_ne'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+# 3. Train SI - EN
+bash ./train_fp16_largebatch_largelr.sh "si" "en"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T01-03-04-00/checkpoints_si_en'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_si_en_bpe5000/
+# 4. Train EN - SI
+bash ./train_fp16_largebatch_largelr.sh "en" "si"
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-10T01-03-04-00/checkpoints_en_si'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_si_en_bpe5000/
