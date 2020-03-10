@@ -70,8 +70,11 @@ train () {
     echo "Data folder is: "$DATA_DIR
 
     # actually run the training script and pass in necessary env variable
-    echo "Beginning training..."
+    echo "Beginning training..." > $LOG_OUTPUT_PATH
+    echo "Time at beginning: "$(date) > $LOG_OUTPUT_PATH
     train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR > $LOG_OUTPUT_PATH
+    echo "Done training." > $LOG_OUTPUT_PATH
+    echo "Time at end: "$(date) > $LOG_OUTPUT_PATH
 }
 
 train $1 $2 $3
