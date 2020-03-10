@@ -19,7 +19,7 @@ train_fairseq () {
         --label-smoothing 0.2 --criterion label_smoothed_cross_entropy \
         --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0 \
         --lr-scheduler inverse_sqrt --warmup-updates 4000 --warmup-init-lr 1e-7 \
-        --lr 5e-3 --min-lr 5e-4 \
+        --lr 5e-4 --min-lr 1e-9 \
         --max-tokens 16000 \
         --max-epoch 100 \
         --save-interval 10 \

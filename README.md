@@ -15,6 +15,13 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |
 |   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |
 
+### Larger batch size, with FP16, also larger learning rate
+- Batch size enlarged using `--max-tokens 16000` 
+- FP16 `--fp16`
+- Removed `--update_freq 4`
+- Learning rate first set to `--lr 5e-3` -> error
+- Then set learning rate to `--lr 5e-4`
+
 ### Larger batch size, with FP16
 - Batch size enlarged using `--max-tokens 16000` 
 - FP16 `--fp16`
