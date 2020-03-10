@@ -1,4 +1,4 @@
-# FLoRes Low Resource MT Benchmark (my own fork)
+# FLoRes Low Resource MT Benchmark (fork)
 
 This repository is my own fork of FAIR's FLoRes repository.
 
