@@ -8,12 +8,12 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### All settings so far
 
-| Lang. pair | Reported |  AWS/Azure  | Brandeis (vanilla) |  Vanilla + FP16  |  FP16 + LargeBatch |
-|------------|----------|-------------|--------------------|------------------|--------------------|
-|   EN-NE    |   4.3    |    4.69     |       4.58         |      4.59        |        3.99        |
-|   NE-EN    |   7.6    |    7.66     |       7.74         |      7.39        |        7.10        |
-|   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |
-|   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |
+| Lang. pair | Reported |  AWS/Azure  | Brandeis (vanilla) |  Vanilla + FP16  |  FP16 + LargeBatch | FP16 + LB + LR |
+|------------|----------|-------------|--------------------|------------------|--------------------|----------------|
+|   EN-NE    |   4.3    |    4.69     |       4.58         |      4.59        |        3.99        |     4.03       |
+|   NE-EN    |   7.6    |    7.66     |       7.74         |      7.39        |        7.10        |     6.48       |
+|   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |     1.13       |
+|   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |     5.39       |
 
 ### Larger batch size, with FP16, also larger learning rate
 - Batch size enlarged using `--max-tokens 16000` 
