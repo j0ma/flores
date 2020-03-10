@@ -8,23 +8,23 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
-train_all_fp16_largebatch_largelr:
+train_all_fp16_largebatch_lr5e-4:
 
 	# 0. create log & checkpoint folder
 	bash ./create_log_folder.sh
 	bash ./create_checkpoint_folder.sh
 
 	# 1. Train NE - EN
-	bash ./train_fp16_largebatch_largelr.sh "ne" "en"
+	bash ./train_fp16_largebatch_lr5e-4.sh "ne" "en"
 
 	# 2. Train EN - NE
-	bash ./train_fp16_largebatch_largelr.sh "en" "ne"
+	bash ./train_fp16_largebatch_lr5e-4.sh "en" "ne"
 
 	# 3. Train SI - EN
-	bash ./train_fp16_largebatch_largelr.sh "si" "en"
+	bash ./train_fp16_largebatch_lr5e-4.sh "si" "en"
 
 	# 4. Train EN - SI
-	bash ./train_fp16_largebatch_largelr.sh "en" "si"
+	bash ./train_fp16_largebatch_lr5e-4.sh "en" "si"
 
 train_all_fp16_largebatch:
 
