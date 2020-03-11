@@ -8,12 +8,22 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### All settings so far
 
-| Lang. pair | Reported |  AWS/Azure  |     Brandeis       |      FP16        |  FP16 + LargeBatch | FP16 + LB + LR=5e-4 | FP16 + LB + LR=7e-4 |
-|------------|----------|-------------|--------------------|------------------|--------------------|---------------------|---------------------|
-|   EN-NE    |   4.3    |    4.69     |       4.58         |      4.59        |        3.99        |       4.03          |       4.04          |
-|   NE-EN    |   7.6    |    7.66     |       7.74         |      7.39        |        7.10        |       6.48          |       6.87          |
-|   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |       1.13          |       1.10          |
-|   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |       5.39          |       5.65          |
+| Lang. pair | Reported |  AWS/Azure  |     Brandeis       |      FP16        |  FP16 + LargeBatch | FP16 + LB + LR=5e-4 | FP16 + LB + LR=7e-4 | FP16 + LB + seed12345 |
+|------------|----------|-------------|--------------------|------------------|--------------------|---------------------|---------------------|-----------------------|
+|   EN-NE    |   4.3    |    4.69     |       4.58         |      4.59        |        3.99        |       4.03          |       4.04          |        4.33           |
+|   NE-EN    |   7.6    |    7.66     |       7.74         |      7.39        |        7.10        |       6.48          |       6.87          |        6.97           |
+|   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |       1.13          |       1.10          |        1.41           |
+|   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |       5.39          |       5.65          |        6.13           |
+
+### Larger batch size, random seed
+- Like experiment below, except with a random seed of `12345`
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    4.33     |    0.03     |   Brandeis     |
+|   NE-EN    |   7.6    |    6.97     |    -0.63    |   Brandeis     |
+|   EN-SI    |   1.2    |    1.41     |    0.21     |   Brandeis     |
+|   SI-EN    |   7.2    |    6.13     |    -1.07    |   Brandeis     |
 
 ### Larger batch size, FP16, learning rate 7e-4
 - Batch size enlarged using `--max-tokens 16000` 
