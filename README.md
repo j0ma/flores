@@ -8,14 +8,29 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### All settings so far
 
-| Lang. pair | Reported |  AWS/Azure  | Brandeis (vanilla) |  Vanilla + FP16  |  FP16 + LargeBatch | FP16 + LB + LR |
-|------------|----------|-------------|--------------------|------------------|--------------------|----------------|
-|   EN-NE    |   4.3    |    4.69     |       4.58         |      4.59        |        3.99        |     4.03       |
-|   NE-EN    |   7.6    |    7.66     |       7.74         |      7.39        |        7.10        |     6.48       |
-|   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |     1.13       |
-|   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |     5.39       |
+| Lang. pair | Reported |  AWS/Azure  |     Brandeis       |      FP16        |  FP16 + LargeBatch | FP16 + LB + LR=5e-4 | FP16 + LB + LR=7e-4 |
+|------------|----------|-------------|--------------------|------------------|--------------------|---------------------|---------------------|
+|   EN-NE    |   4.3    |    4.69     |       4.58         |      4.59        |        3.99        |       4.03          |       4.04          |
+|   NE-EN    |   7.6    |    7.66     |       7.74         |      7.39        |        7.10        |       6.48          |       6.87          |
+|   EN-SI    |   1.2    |    1.48     |       1.31         |      1.24        |        1.06        |       1.13          |       1.10          |
+|   SI-EN    |   7.2    |    6.94     |       6.77         |      6.69        |        5.82        |       5.39          |       5.65          |
 
-### Larger batch size, with FP16, also larger learning rate
+### Larger batch size, FP16, learning rate 7e-4
+- Batch size enlarged using `--max-tokens 16000` 
+- FP16 `--fp16`
+- Removed `--update_freq 4`
+- Learning rate set to `7e-14`
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    4.04     |    -0.26    |   Brandeis     |
+|   NE-EN    |   7.6    |    6.87     |    -0.73    |   Brandeis     |
+|   EN-SI    |   1.2    |    1.10     |    -0.10    |   Brandeis     |
+|   SI-EN    |   7.2    |    5.65     |    -1.55    |   Brandeis     |
+
+Training time: 8.91 hours on single Titan RTX
+
+### Larger batch size, with FP16, learning rate 5e-4
 - Batch size enlarged using `--max-tokens 16000` 
 - FP16 `--fp16`
 - Removed `--update_freq 4`
@@ -29,6 +44,8 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.13     |    -0.07    |   Brandeis     |
 |   SI-EN    |   7.2    |    5.39     |    -1.81    |   Brandeis     |
 
+Training time: 8.91 hours on single Titan RTX
+
 ### Larger batch size, with FP16
 - Batch size enlarged using `--max-tokens 16000` 
 - FP16 `--fp16`
@@ -41,6 +58,8 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.06     |    -0.14    |   Brandeis     |
 |   SI-EN    |   7.2    |    5.82     |    -1.38    |   Brandeis     |
 
+Training time: 8.91 hours on single Titan RTX
+
 ### Reproduction on Brandeis hardware & FP16 training
 
 | Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
@@ -49,6 +68,8 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   NE-EN    |   7.6    |    7.39     |    -0.21    |   Brandeis     |
 |   EN-SI    |   1.2    |    1.24     |    0.04     |   Brandeis     |
 |   SI-EN    |   7.2    |    6.69     |    -0.51    |   Brandeis     |
+
+Training time: 12.59 hours on single Titan RTX
 
 ### Reproduction on Brandeis hardware vol 2
 
@@ -61,6 +82,8 @@ Second re-run on Brandeis hardware to investigate whether there is randomness be
 |   EN-SI    |   1.2    |    1.31     |    0.11     |   Brandeis     |
 |   SI-EN    |   7.2    |    6.77     |    -0.43    |   Brandeis     |
 
+Training time: ~26 hours on single Titan RTX
+
 ### Reproduction on Brandeis hardware
 
 In the next reproduction, I used a Titan RTX GPU, which decreased the training time to about 5 minutes per epoch.
@@ -71,6 +94,8 @@ In the next reproduction, I used a Titan RTX GPU, which decreased the training t
 |   NE-EN    |   7.6    |    7.74     |    0.14     |   Brandeis     |
 |   EN-SI    |   1.2    |    1.31     |    0.11     |   Brandeis     |
 |   SI-EN    |   7.2    |    6.77     |    -0.43    |   Brandeis     |
+
+Training time: ~26 hours on single Titan RTX
 
 Interestingly, evaluation is just as slow here as it was on Azure/AWS.
 
