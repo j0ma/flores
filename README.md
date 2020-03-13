@@ -15,6 +15,18 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.48     |  1.31    |  1.24  |    1.06    |       1.13          |       1.10          |        1.41           |     1.53     |
 |   SI-EN    |   7.2    |    6.94     |  6.77    |  6.69  |    5.82    |       5.39          |       5.65          |        6.13           |     6.00     |
 
+### FP16 + Large batch + clip_norm=0.1
+
+- `batch size=16000`
+- `clip_norm=0.1`
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    4.03     |    -0.27    |   Brandeis     |
+|   NE-EN    |   7.6    |    7.34     |    -0.26    |   Brandeis     |
+|   EN-SI    |   1.2    |    1.05     |    -0.15    |   Brandeis     |
+|   SI-EN    |   7.2    |    6.08     |    -1.12    |   Brandeis     |
+
 ### Batch size 20k
 - Regular learning rate: `1e-3`
 - FP16 training
