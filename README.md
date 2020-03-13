@@ -15,6 +15,15 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.48     |  1.31    |  1.24  |    1.06    |       1.13          |       1.10          |        1.41           |     1.53     |
 |   SI-EN    |   7.2    |    6.94     |  6.77    |  6.69  |    5.82    |       5.39          |       5.65          |        6.13           |     6.00     |
 
+### FP16 + LB + `clip_norm=0.1` + `lr=5e-3`
+
+- SI-EN and EN-SI work just fine
+- NE-EN and EN-NE seem to have a problem with the loss scale
+
+```
+FloatingPointError: Minimum loss scale reached (0.0001). Your loss is probably exploding. Try lowering the learning rate, using gradient clipping or increasing the batch size.
+```
+
 ### FP16 + Large batch + clip_norm=0.1
 
 - `batch size=16000`
