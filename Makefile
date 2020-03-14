@@ -8,6 +8,42 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+train_all_fp16_largebatch_lr3e-3_gc0.1:
+
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_largebatch_lr3e-3_gc0.1.sh "ne" "en"
+
+	# 2. Train EN - NE
+	bash ./train_fp16_largebatch_lr3e-3_gc0.1.sh "en" "ne"
+
+	# 3. Train SI - EN
+	bash ./train_fp16_largebatch_lr3e-3_gc0.1.sh "si" "en"
+
+	# 4. Train EN - SI
+	bash ./train_fp16_largebatch_lr3e-3_gc0.1.sh "en" "si"
+
+train_all_fp16_largebatch_lr5e-3_gc0.1:
+
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_largebatch_lr5e-3_gc0.1.sh "ne" "en"
+
+	# 2. Train EN - NE
+	bash ./train_fp16_largebatch_lr5e-3_gc0.1.sh "en" "ne"
+
+	# 3. Train SI - EN
+	bash ./train_fp16_largebatch_lr5e-3_gc0.1.sh "si" "en"
+
+	# 4. Train EN - SI
+	bash ./train_fp16_largebatch_lr5e-3_gc0.1.sh "en" "si"
+
 train_all_fp16_largebatch_gc0.1:
 
 	# 0. create log & checkpoint folder
