@@ -48,6 +48,25 @@ FP16+LB+min_lr0.1          0     0     0     0
     - increasing the MINIMUM learning rate seems to do nothing
     - overall, messing with the actual learning rate seems dangerous
 
+### Random seed experiments
+
+==> baseline_en_ne.log <==
+| Translated 2835 sentences (82807 tokens) in 377.4s (7.51 sentences/s, 219.39 tokens/s)
+| Generate test with beam=5: BLEU4 = 4.29, 31.4/8.2/2.6/0.9 (BP=0.879, ratio=0.886, syslen=38794, reflen=43802)
+
+==> baseline_en_si.log <==
+| Translated 2766 sentences (131288 tokens) in 963.6s (2.87 sentences/s, 136.24 tokens/s)
+| Generate test with beam=5: BLEU4 = 1.00, 11.7/1.8/0.4/0.1 (BP=1.000, ratio=1.888, syslen=87449, reflen=46318)
+
+==> baseline_ne_en.log <==
+| Translated 2835 sentences (94153 tokens) in 397.5s (7.13 sentences/s, 236.88 tokens/s)
+| Generate test with beam=5: BLEU = 7.83 40.1/12.0/4.6/2.0 (BP = 0.961 ratio = 0.962 hyp_len = 49143 ref_len = 51076)
+
+==> baseline_si_en.log <==
+| Translated 2766 sentences (79387 tokens) in 318.4s (8.69 sentences/s, 249.35 tokens/s)
+| Generate test with beam=5: BLEU = 6.90 43.5/13.1/4.9/1.8 (BP = 0.821 ratio = 0.835 hyp_len = 42406 ref_len = 50772)
+
+
 ### FP16 + LB + default LR + min_lr=1e-8
 
 | Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
