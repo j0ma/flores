@@ -8,6 +8,26 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+
+exp13: train_all_fp16_seed11 evaluate_all
+
+train_all_fp16_seed11:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 11
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 11
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 11
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 11
+
 exp12: train_all_fp16_seed10 evaluate_all
 
 train_all_fp16_seed10:
@@ -16,16 +36,16 @@ train_all_fp16_seed10:
 	bash ./create_checkpoint_folder.sh
 
 	# 1. Train NE - EN
-	bash ./train_fp16_seed10.sh "ne" "en"
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 10
 
 	# 2. Train EN - NE
-	bash ./train_fp16_seed10.sh "en" "ne"
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 10
 
 	# 3. Train SI - EN
-	bash ./train_fp16_seed10.sh "si" "en"
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 10
 
 	# 4. Train EN - SI
-	bash ./train_fp16_seed10.sh "en" "si"
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 10
 
 exp11: train_all_fp16_largebatch_minlr1e-8 evaluate_all
 
