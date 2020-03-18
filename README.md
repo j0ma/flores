@@ -21,8 +21,32 @@ FP16 + LB + seed12345   4.33  6.97  1.41  6.13
 FP16 + BS20k            4.17  7.02  1.53     6
 FP16+LB+CN0.1           4.03  7.34  1.05  6.08
 FP16+LB+CN=0.1+LR=3e-3  3.03  6.11  0.75  6.03
-FP16+LB+min_lr0.1       3.99   7.1  1.06   7.2
+FP16+LB+min_lr0.1       3.99   7.1  1.06  5.82
 ```
+
+- Comparison to FP16+LB
+    - Let's take the overall results table and diff each row with the FP16+LB experimental condition (use pandas for this)
+
+```
+Lang. pair             EN-NE NE-EN EN-SI SI-EN
+FP16 + LB                  0     0     0     0
+FP16 + LB + LR=5e-4     0.04 -0.62  0.07 -0.43
+FP16 + LB + LR=7e-4     0.05 -0.23  0.04 -0.17
+FP16 + LB + seed12345   0.34 -0.13  0.35  0.31
+FP16 + BS20k            0.18 -0.08  0.47  0.18
+FP16+LB+CN0.1           0.04  0.24 -0.01  0.26
+FP16+LB+CN=0.1+LR=3e-3 -0.96 -0.99 -0.31  0.21
+FP16+LB+min_lr0.1          0     0     0     0
+```
+
+- Overall notes (after exp11)
+    - FP16 by itself does not hurt
+    - going for larger batch seems to hurt all languages (quite a bit)
+    - lowering the learning rate to `5e-4` or `7e-4` from the original `1e-3` only marginally improves EN -> X translation but hurts X -> EN much more
+    - going even larger with the batch size (20k) seems to improve EN -> X translation and hurt X -> EN translation a bit.
+    - `clip_norm=0.1` seems to improve everythin except EN-SI but even there the decrease is minimal.
+    - tweaking the MINIMUM learning rate seems to do nothing
+    - overall, messing with the actual learning rate seems dangerous
 
 ### FP16 + LB + default LR + min_lr=1e-8
 
