@@ -15,6 +15,15 @@ My main reason for forking was to create training and evaluation scripts that ar
 |   EN-SI    |   1.2    |    1.48     |  1.31    |  1.24  |    1.06    |       1.13          |       1.10          |        1.41           |     1.53     |     1.05      |   0.75                 |
 |   SI-EN    |   7.2    |    6.94     |  6.77    |  6.69  |    5.82    |       5.39          |       5.65          |        6.13           |     6.00     |     6.08      |   6.03                 |
 
+### FP16 + LB + default LR + min_lr=1e-8
+
+| Lang. pair | Reported | Reproduced  | Difference  | Cloud provider |
+|------------|----------|-------------|-------------|----------------|
+|   EN-NE    |   4.3    |    3.99     |    -1.27    |   Brandeis     |
+|   NE-EN    |   7.6    |    7.10     |    -1.49    |   Brandeis     |
+|   EN-SI    |   1.2    |    1.06     |    -0.45    |   Brandeis     |
+|   SI-EN    |   7.2    |    5.82     |    -1.17    |   Brandeis     |
+
 ### FP16 + LB + `clip_norm=0.1` + `lr=3e-3`
 
 - log files erroneously say `lr=5e-3`
