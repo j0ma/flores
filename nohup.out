@@ -414,3 +414,47 @@ Saving output to: ./evaluate/2020-03-14T23-35-04-00/baseline_en_si.log
 CHECKPOINT_PATH is: ./checkpoints/2020-03-14T14-40-04-00/checkpoints_en_si/checkpoint_best.pt
 Data folder is: data-bin/wiki_si_en_bpe5000/
 About to evaluate...
+# 0. create log & checkpoint folder
+bash ./create_log_folder.sh
+./log/2020-03-17T23-18-04-00
+bash ./create_checkpoint_folder.sh
+./checkpoints/2020-03-17T23-18-04-00
+# 1. Train NE - EN
+bash ./train_fp16_seed10.sh "ne" "en"
+Logging output to: ./log/2020-03-17T23-18-04-00/baseline_ne_en.log
+# 2. Train EN - NE
+bash ./train_fp16_seed10.sh "en" "ne"
+Logging output to: ./log/2020-03-17T23-18-04-00/baseline_en_ne.log
+# 3. Train SI - EN
+bash ./train_fp16_seed10.sh "si" "en"
+Logging output to: ./log/2020-03-17T23-18-04-00/baseline_si_en.log
+# 4. Train EN - SI
+bash ./train_fp16_seed10.sh "en" "si"
+Logging output to: ./log/2020-03-17T23-18-04-00/baseline_en_si.log
+# 0. create results folder
+bash ./create_results_folder.sh
+./evaluate/2020-03-18T11-54-04-00
+# 1. Evaluate NE - EN
+bash evaluate.sh "ne" "en"
+Saving output to: ./evaluate/2020-03-18T11-54-04-00/baseline_ne_en.log
+CHECKPOINT_PATH is: ./checkpoints/2020-03-17T23-18-04-00/checkpoints_ne_en/checkpoint_best.pt
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+About to evaluate...
+# 2. Evaluate EN - NE
+bash evaluate.sh "en" "ne"
+Saving output to: ./evaluate/2020-03-18T11-54-04-00/baseline_en_ne.log
+CHECKPOINT_PATH is: ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_ne/checkpoint_best.pt
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+About to evaluate...
+# 3. Evaluate SI - EN
+bash evaluate.sh "si" "en"
+Saving output to: ./evaluate/2020-03-18T11-54-04-00/baseline_si_en.log
+CHECKPOINT_PATH is: ./checkpoints/2020-03-17T23-18-04-00/checkpoints_si_en/checkpoint_best.pt
+Data folder is: data-bin/wiki_si_en_bpe5000/
+About to evaluate...
+# 4. Evaluate EN - SI
+bash evaluate.sh "en" "si"
+Saving output to: ./evaluate/2020-03-18T11-54-04-00/baseline_en_si.log
+CHECKPOINT_PATH is: ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint_best.pt
+Data folder is: data-bin/wiki_si_en_bpe5000/
+About to evaluate...

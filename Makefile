@@ -8,6 +8,25 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+exp12: train_all_fp16_seed10 evaluate_all
+
+train_all_fp16_seed10:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_seed10.sh "ne" "en"
+
+	# 2. Train EN - NE
+	bash ./train_fp16_seed10.sh "en" "ne"
+
+	# 3. Train SI - EN
+	bash ./train_fp16_seed10.sh "si" "en"
+
+	# 4. Train EN - SI
+	bash ./train_fp16_seed10.sh "en" "si"
+
 exp11: train_all_fp16_largebatch_minlr1e-8 evaluate_all
 
 train_all_fp16_largebatch_minlr1e-8:

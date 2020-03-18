@@ -1,0 +1,416 @@
+================ FLORES BASELINE WITH CLIP_NORM=0.1 AND SEED=10  ================
+About to train the supervised for the following language pair: EN-SI
+Checkpoint directory unset! Setting to default value...
+CHECKPOINT_DIR is set to './checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si'
+Creating checkpoint directory if it doesn't exist...
+Data folder is: data-bin/wiki_si_en_bpe5000/
+Beginning training...
+Time at beginning: Wed Mar 18 09:14:29 EDT 2020
+Namespace(activation_dropout=0.2, activation_fn='relu', adam_betas='(0.9, 0.98)', adam_eps=1e-08, adaptive_input=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, arch='transformer', attention_dropout=0.2, best_checkpoint_metric='loss', bpe=None, bucket_cap_mb=25, clip_norm=0.1, cpu=False, criterion='label_smoothed_cross_entropy', cross_self_attention=False, curriculum=0, data='data-bin/wiki_si_en_bpe5000/', dataset_impl=None, ddp_backend='c10d', decoder_attention_heads=2, decoder_embed_dim=512, decoder_embed_path=None, decoder_ffn_embed_dim=2048, decoder_input_dim=512, decoder_layerdrop=0, decoder_layers=5, decoder_layers_to_keep=None, decoder_learned_pos=False, decoder_normalize_before=True, decoder_output_dim=512, device_id=0, disable_validation=False, distributed_backend='nccl', distributed_init_method=None, distributed_no_spawn=False, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.4, empty_cache_freq=0, encoder_attention_heads=2, encoder_embed_dim=512, encoder_embed_path=None, encoder_ffn_embed_dim=2048, encoder_layerdrop=0, encoder_layers=5, encoder_layers_to_keep=None, encoder_learned_pos=False, encoder_normalize_before=True, fast_stat_sync=False, find_unused_parameters=False, fix_batches_to_gpus=False, fixed_validation_seed=None, fp16=True, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, keep_interval_updates=-1, keep_last_epochs=-1, label_smoothing=0.2, layer_wise_attention=False, layernorm_embedding=False, lazy_load=False, left_pad_source='True', left_pad_target='False', load_alignments=False, log_format=None, log_interval=1000, lr=[0.001], lr_scheduler='inverse_sqrt', max_epoch=100, max_sentences=None, max_sentences_valid=None, max_source_positions=1024, max_target_positions=1024, max_tokens=4000, max_tokens_valid=4000, max_update=0, maximize_best_checkpoint_metric=False, memory_efficient_fp16=False, min_loss_scale=0.0001, min_lr=1e-09, no_cross_attention=False, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_scale_embedding=False, no_token_positional_embeddings=False, num_workers=1, optimizer='adam', optimizer_overrides='{}', raw_text=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si', save_interval=10, save_interval_updates=0, seed=10, sentence_avg=False, share_all_embeddings=True, share_decoder_input_output_embed=False, skip_invalid_size_inputs_valid_test=False, source_lang='en', target_lang='si', task='translation', tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, train_subset='train', truncate_source=False, update_freq=[4], upsample_primary=1, use_bmuf=False, user_dir=None, valid_subset='valid', validate_interval=1, warmup_init_lr=1e-07, warmup_updates=4000, weight_decay=0.0001)
+| [en] dictionary: 4976 types
+| [si] dictionary: 4976 types
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.en
+| loaded 2898 examples from: data-bin/wiki_si_en_bpe5000/valid.si-en.si
+| data-bin/wiki_si_en_bpe5000/ valid en-si 2898 examples
+TransformerModel(
+  (encoder): TransformerEncoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embed_tokens): Embedding(4976, 512, padding_idx=1)
+    (embed_positions): SinusoidalPositionalEmbedding()
+    (layers): ModuleList(
+      (0): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerDecoderLayer(
+        (self_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (encoder_attn): MultiheadAttention(
+          (k_proj): Linear(in_features=512, out_features=512, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=512, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (encoder_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+)
+| model transformer, criterion LabelSmoothedCrossEntropyCriterion
+| num. model params: 39331840 (num. trained: 39331840)
+| training on 1 GPUs
+| max tokens per GPU = 4000 and max sentences per GPU = None
+| no existing checkpoint found ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint_last.pt
+| loading train data for epoch 0
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.en
+| loaded 404594 examples from: data-bin/wiki_si_en_bpe5000/train.si-en.si
+| data-bin/wiki_si_en_bpe5000/ train en-si 404594 examples
+| WARNING: overflow detected, setting loss scale to: 64.0
+| WARNING: overflow detected, setting loss scale to: 32.0
+| WARNING: overflow detected, setting loss scale to: 16.0
+| epoch 001 | loss 10.522 | nll_loss 9.797 | ppl 889.47 | wps 55161 | ups 4 | wpb 13361.015 | bsz 983.083 | num_updates 408 | lr 0.00010209 | gnorm 0.774 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 99 | train_wall 75
+| epoch 001 | valid on 'valid' subset | loss 10.605 | nll_loss 9.879 | ppl 941.88 | num_updates 408
+| epoch 002 | loss 9.296 | nll_loss 8.157 | ppl 285.43 | wps 58182 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 819 | lr 0.00020483 | gnorm 0.527 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 194 | train_wall 149
+| epoch 002 | valid on 'valid' subset | loss 9.892 | nll_loss 8.864 | ppl 466.08 | num_updates 819
+| epoch 003 | loss 8.501 | nll_loss 7.083 | ppl 135.55 | wps 58213 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 1230 | lr 0.000307569 | gnorm 0.468 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 289 | train_wall 223
+| epoch 003 | valid on 'valid' subset | loss 9.260 | nll_loss 7.907 | ppl 239.96 | num_updates 1230
+| epoch 004 | loss 7.927 | nll_loss 6.315 | ppl 79.64 | wps 58423 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 1641 | lr 0.000410309 | gnorm 0.426 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 384 | train_wall 297
+| epoch 004 | valid on 'valid' subset | loss 8.913 | nll_loss 7.388 | ppl 167.51 | num_updates 1641
+| epoch 005 | loss 7.547 | nll_loss 5.809 | ppl 56.08 | wps 57273 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 2052 | lr 0.000513049 | gnorm 0.383 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 481 | train_wall 372
+| epoch 005 | valid on 'valid' subset | loss 8.630 | nll_loss 7.021 | ppl 129.84 | num_updates 2052
+| epoch 006 | loss 7.265 | nll_loss 5.437 | ppl 43.33 | wps 57985 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 2463 | lr 0.000615788 | gnorm 0.364 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 576 | train_wall 448
+| epoch 006 | valid on 'valid' subset | loss 8.442 | nll_loss 6.735 | ppl 106.52 | num_updates 2463
+| epoch 007 | loss 7.053 | nll_loss 5.158 | ppl 35.71 | wps 57395 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 2874 | lr 0.000718528 | gnorm 0.354 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 673 | train_wall 523
+| epoch 007 | valid on 'valid' subset | loss 8.230 | nll_loss 6.432 | ppl 86.36 | num_updates 2874
+| epoch 008 | loss 6.889 | nll_loss 4.943 | ppl 30.77 | wps 57712 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 3285 | lr 0.000821268 | gnorm 0.344 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 768 | train_wall 598
+| epoch 008 | valid on 'valid' subset | loss 8.090 | nll_loss 6.230 | ppl 75.05 | num_updates 3285
+| epoch 009 | loss 6.763 | nll_loss 4.779 | ppl 27.45 | wps 58410 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 3696 | lr 0.000924008 | gnorm 0.325 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 863 | train_wall 672
+| epoch 009 | valid on 'valid' subset | loss 7.960 | nll_loss 6.072 | ppl 67.29 | num_updates 3696
+| epoch 010 | loss 6.672 | nll_loss 4.661 | ppl 25.29 | wps 57656 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 4107 | lr 0.000986887 | gnorm 0.312 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 959 | train_wall 747
+| epoch 010 | valid on 'valid' subset | loss 7.832 | nll_loss 5.890 | ppl 59.28 | num_updates 4107
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint10.pt (epoch 10 @ 4107 updates) (writing took 0.689075231552124 seconds)
+| epoch 011 | loss 6.577 | nll_loss 4.539 | ppl 23.24 | wps 58846 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 4518 | lr 0.000940929 | gnorm 0.287 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1054 | train_wall 820
+| epoch 011 | valid on 'valid' subset | loss 7.848 | nll_loss 5.869 | ppl 58.43 | num_updates 4518 | best_loss 7.83201
+| epoch 012 | loss 6.491 | nll_loss 4.427 | ppl 21.52 | wps 57874 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 4929 | lr 0.000900846 | gnorm 0.273 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1150 | train_wall 894
+| epoch 012 | valid on 'valid' subset | loss 7.724 | nll_loss 5.699 | ppl 51.95 | num_updates 4929 | best_loss 7.72443
+| epoch 013 | loss 6.419 | nll_loss 4.335 | ppl 20.18 | wps 57551 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 5340 | lr 0.000865485 | gnorm 0.260 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1246 | train_wall 969
+| epoch 013 | valid on 'valid' subset | loss 7.586 | nll_loss 5.519 | ppl 45.84 | num_updates 5340 | best_loss 7.58635
+| epoch 014 | loss 6.362 | nll_loss 4.260 | ppl 19.17 | wps 58490 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 5751 | lr 0.000833985 | gnorm 0.254 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1341 | train_wall 1043
+| epoch 014 | valid on 'valid' subset | loss 7.554 | nll_loss 5.474 | ppl 44.44 | num_updates 5751 | best_loss 7.55407
+| epoch 015 | loss 6.309 | nll_loss 4.194 | ppl 18.3 | wps 57861 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 6162 | lr 0.000805692 | gnorm 0.245 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1436 | train_wall 1117
+| epoch 015 | valid on 'valid' subset | loss 7.485 | nll_loss 5.389 | ppl 41.89 | num_updates 6162 | best_loss 7.48484
+| epoch 016 | loss 6.266 | nll_loss 4.138 | ppl 17.6 | wps 57448 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 6573 | lr 0.000780096 | gnorm 0.238 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1533 | train_wall 1193
+| epoch 016 | valid on 'valid' subset | loss 7.488 | nll_loss 5.394 | ppl 42.06 | num_updates 6573 | best_loss 7.48845
+| epoch 017 | loss 6.228 | nll_loss 4.089 | ppl 17.01 | wps 58423 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 6984 | lr 0.000756794 | gnorm 0.234 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1628 | train_wall 1267
+| epoch 017 | valid on 'valid' subset | loss 7.418 | nll_loss 5.285 | ppl 38.98 | num_updates 6984 | best_loss 7.41829
+| epoch 018 | loss 6.194 | nll_loss 4.044 | ppl 16.5 | wps 58799 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 7395 | lr 0.000735463 | gnorm 0.231 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1722 | train_wall 1340
+| epoch 018 | valid on 'valid' subset | loss 7.381 | nll_loss 5.247 | ppl 37.97 | num_updates 7395 | best_loss 7.38111
+| epoch 019 | loss 6.164 | nll_loss 4.007 | ppl 16.07 | wps 58218 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 7806 | lr 0.00071584 | gnorm 0.227 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1817 | train_wall 1415
+| epoch 019 | valid on 'valid' subset | loss 7.347 | nll_loss 5.185 | ppl 36.37 | num_updates 7806 | best_loss 7.34692
+| epoch 020 | loss 6.137 | nll_loss 3.972 | ppl 15.69 | wps 58488 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 8217 | lr 0.000697707 | gnorm 0.223 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 1911 | train_wall 1489
+| epoch 020 | valid on 'valid' subset | loss 7.331 | nll_loss 5.155 | ppl 35.64 | num_updates 8217 | best_loss 7.33055
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint20.pt (epoch 20 @ 8217 updates) (writing took 0.9765408039093018 seconds)
+| WARNING: overflow detected, setting loss scale to: 32.0
+| epoch 021 | loss 6.113 | nll_loss 3.941 | ppl 15.35 | wps 57287 | ups 4 | wpb 13368.710 | bsz 982.971 | num_updates 8627 | lr 0.000680926 | gnorm 0.220 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2009 | train_wall 1564
+| epoch 021 | valid on 'valid' subset | loss 7.330 | nll_loss 5.145 | ppl 35.37 | num_updates 8627 | best_loss 7.32976
+| epoch 022 | loss 6.088 | nll_loss 3.909 | ppl 15.02 | wps 58132 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 9038 | lr 0.000665264 | gnorm 0.220 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2104 | train_wall 1638
+| epoch 022 | valid on 'valid' subset | loss 7.292 | nll_loss 5.120 | ppl 34.78 | num_updates 9038 | best_loss 7.29165
+| epoch 023 | loss 6.067 | nll_loss 3.882 | ppl 14.74 | wps 57556 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 9449 | lr 0.000650634 | gnorm 0.216 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2200 | train_wall 1713
+| epoch 023 | valid on 'valid' subset | loss 7.283 | nll_loss 5.088 | ppl 34.01 | num_updates 9449 | best_loss 7.28273
+| epoch 024 | loss 6.050 | nll_loss 3.859 | ppl 14.51 | wps 58203 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 9860 | lr 0.00063693 | gnorm 0.217 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2295 | train_wall 1787
+| epoch 024 | valid on 'valid' subset | loss 7.292 | nll_loss 5.111 | ppl 34.56 | num_updates 9860 | best_loss 7.29209
+| epoch 025 | loss 6.031 | nll_loss 3.835 | ppl 14.27 | wps 58332 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 10271 | lr 0.000624056 | gnorm 0.213 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2390 | train_wall 1861
+| epoch 025 | valid on 'valid' subset | loss 7.227 | nll_loss 5.026 | ppl 32.59 | num_updates 10271 | best_loss 7.22697
+| epoch 026 | loss 6.013 | nll_loss 3.812 | ppl 14.04 | wps 57427 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 10682 | lr 0.000611933 | gnorm 0.211 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2487 | train_wall 1937
+| epoch 026 | valid on 'valid' subset | loss 7.217 | nll_loss 4.989 | ppl 31.75 | num_updates 10682 | best_loss 7.21658
+| epoch 027 | loss 5.998 | nll_loss 3.793 | ppl 13.86 | wps 58156 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 11093 | lr 0.00060049 | gnorm 0.212 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2582 | train_wall 2010
+| epoch 027 | valid on 'valid' subset | loss 7.170 | nll_loss 4.957 | ppl 31.06 | num_updates 11093 | best_loss 7.16963
+| epoch 028 | loss 5.984 | nll_loss 3.775 | ppl 13.69 | wps 58356 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 11504 | lr 0.000589665 | gnorm 0.211 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2677 | train_wall 2084
+| epoch 028 | valid on 'valid' subset | loss 7.170 | nll_loss 4.940 | ppl 30.7 | num_updates 11504 | best_loss 7.17032
+| epoch 029 | loss 5.969 | nll_loss 3.756 | ppl 13.51 | wps 58177 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 11915 | lr 0.000579406 | gnorm 0.208 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2772 | train_wall 2158
+| epoch 029 | valid on 'valid' subset | loss 7.171 | nll_loss 4.941 | ppl 30.71 | num_updates 11915 | best_loss 7.17069
+| epoch 030 | loss 5.956 | nll_loss 3.739 | ppl 13.35 | wps 58114 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 12326 | lr 0.000569664 | gnorm 0.209 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 2867 | train_wall 2233
+| epoch 030 | valid on 'valid' subset | loss 7.160 | nll_loss 4.939 | ppl 30.68 | num_updates 12326 | best_loss 7.15953
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint30.pt (epoch 30 @ 12326 updates) (writing took 1.0309193134307861 seconds)
+| epoch 031 | loss 5.944 | nll_loss 3.723 | ppl 13.21 | wps 57739 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 12737 | lr 0.000560398 | gnorm 0.207 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 2964 | train_wall 2308
+| epoch 031 | valid on 'valid' subset | loss 7.145 | nll_loss 4.917 | ppl 30.22 | num_updates 12737 | best_loss 7.14472
+| epoch 032 | loss 5.931 | nll_loss 3.706 | ppl 13.05 | wps 57961 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 13148 | lr 0.000551569 | gnorm 0.206 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 3060 | train_wall 2382
+| epoch 032 | valid on 'valid' subset | loss 7.138 | nll_loss 4.893 | ppl 29.72 | num_updates 13148 | best_loss 7.13779
+| epoch 033 | loss 5.922 | nll_loss 3.694 | ppl 12.95 | wps 57048 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 13559 | lr 0.000543145 | gnorm 0.206 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 3157 | train_wall 2458
+| epoch 033 | valid on 'valid' subset | loss 7.114 | nll_loss 4.868 | ppl 29.2 | num_updates 13559 | best_loss 7.11397
+| epoch 034 | loss 5.911 | nll_loss 3.681 | ppl 12.82 | wps 57835 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 13970 | lr 0.000535096 | gnorm 0.205 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 3253 | train_wall 2532
+| epoch 034 | valid on 'valid' subset | loss 7.095 | nll_loss 4.843 | ppl 28.7 | num_updates 13970 | best_loss 7.0953
+| epoch 035 | loss 5.900 | nll_loss 3.667 | ppl 12.7 | wps 57643 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 14381 | lr 0.000527394 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 3349 | train_wall 2608
+| epoch 035 | valid on 'valid' subset | loss 7.116 | nll_loss 4.868 | ppl 29.2 | num_updates 14381 | best_loss 7.11631
+| epoch 036 | loss 5.892 | nll_loss 3.657 | ppl 12.61 | wps 57680 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 14792 | lr 0.000520016 | gnorm 0.206 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 3445 | train_wall 2683
+| epoch 036 | valid on 'valid' subset | loss 7.121 | nll_loss 4.868 | ppl 29.2 | num_updates 14792 | best_loss 7.12121
+| epoch 037 | loss 5.883 | nll_loss 3.644 | ppl 12.5 | wps 58046 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 15203 | lr 0.000512939 | gnorm 0.205 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 3540 | train_wall 2758
+| epoch 037 | valid on 'valid' subset | loss 7.081 | nll_loss 4.824 | ppl 28.32 | num_updates 15203 | best_loss 7.08073
+| epoch 038 | loss 5.874 | nll_loss 3.633 | ppl 12.4 | wps 57399 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 15614 | lr 0.000506143 | gnorm 0.205 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 3637 | train_wall 2833
+| epoch 038 | valid on 'valid' subset | loss 7.108 | nll_loss 4.844 | ppl 28.72 | num_updates 15614 | best_loss 7.10806
+| WARNING: overflow detected, setting loss scale to: 32.0
+| epoch 039 | loss 5.866 | nll_loss 3.623 | ppl 12.32 | wps 58557 | ups 4 | wpb 13367.798 | bsz 984.044 | num_updates 16024 | lr 0.000499625 | gnorm 0.205 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 3731 | train_wall 2906
+| epoch 039 | valid on 'valid' subset | loss 7.054 | nll_loss 4.773 | ppl 27.33 | num_updates 16024 | best_loss 7.05449
+| epoch 040 | loss 5.857 | nll_loss 3.611 | ppl 12.22 | wps 57807 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 16435 | lr 0.000493339 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 3827 | train_wall 2981
+| epoch 040 | valid on 'valid' subset | loss 7.080 | nll_loss 4.809 | ppl 28.03 | num_updates 16435 | best_loss 7.08036
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint40.pt (epoch 40 @ 16435 updates) (writing took 1.001234769821167 seconds)
+| epoch 041 | loss 5.848 | nll_loss 3.600 | ppl 12.13 | wps 57772 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 16846 | lr 0.000487283 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 3924 | train_wall 3056
+| epoch 041 | valid on 'valid' subset | loss 7.049 | nll_loss 4.777 | ppl 27.43 | num_updates 16846 | best_loss 7.04898
+| epoch 042 | loss 5.842 | nll_loss 3.592 | ppl 12.06 | wps 58501 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 17257 | lr 0.000481446 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 4018 | train_wall 3130
+| epoch 042 | valid on 'valid' subset | loss 7.045 | nll_loss 4.772 | ppl 27.32 | num_updates 17257 | best_loss 7.0454
+| epoch 043 | loss 5.835 | nll_loss 3.583 | ppl 11.98 | wps 57565 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 17668 | lr 0.000475813 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 4114 | train_wall 3205
+| epoch 043 | valid on 'valid' subset | loss 7.016 | nll_loss 4.732 | ppl 26.57 | num_updates 17668 | best_loss 7.01603
+| epoch 044 | loss 5.828 | nll_loss 3.574 | ppl 11.91 | wps 58275 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 18079 | lr 0.000470373 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 4209 | train_wall 3280
+| epoch 044 | valid on 'valid' subset | loss 7.033 | nll_loss 4.757 | ppl 27.04 | num_updates 18079 | best_loss 7.03347
+| WARNING: overflow detected, setting loss scale to: 16.0
+| epoch 045 | loss 5.820 | nll_loss 3.564 | ppl 11.83 | wps 57582 | ups 4 | wpb 13365.624 | bsz 983.966 | num_updates 18489 | lr 0.000465129 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4305 | train_wall 3355
+| epoch 045 | valid on 'valid' subset | loss 7.031 | nll_loss 4.740 | ppl 26.72 | num_updates 18489 | best_loss 7.03134
+| epoch 046 | loss 5.814 | nll_loss 3.556 | ppl 11.76 | wps 57135 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 18900 | lr 0.000460044 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4402 | train_wall 3431
+| epoch 046 | valid on 'valid' subset | loss 7.004 | nll_loss 4.707 | ppl 26.12 | num_updates 18900 | best_loss 7.0043
+| epoch 047 | loss 5.810 | nll_loss 3.550 | ppl 11.71 | wps 57866 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 19311 | lr 0.000455122 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4498 | train_wall 3506
+| epoch 047 | valid on 'valid' subset | loss 7.029 | nll_loss 4.741 | ppl 26.74 | num_updates 19311 | best_loss 7.02875
+| epoch 048 | loss 5.802 | nll_loss 3.541 | ppl 11.64 | wps 57584 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 19722 | lr 0.000450355 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4594 | train_wall 3581
+| epoch 048 | valid on 'valid' subset | loss 7.025 | nll_loss 4.747 | ppl 26.84 | num_updates 19722 | best_loss 7.02518
+| epoch 049 | loss 5.796 | nll_loss 3.533 | ppl 11.58 | wps 57465 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 20133 | lr 0.000445734 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4690 | train_wall 3657
+| epoch 049 | valid on 'valid' subset | loss 6.994 | nll_loss 4.706 | ppl 26.1 | num_updates 20133 | best_loss 6.99429
+| epoch 050 | loss 5.791 | nll_loss 3.526 | ppl 11.52 | wps 57572 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 20544 | lr 0.000441253 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4786 | train_wall 3732
+| epoch 050 | valid on 'valid' subset | loss 6.993 | nll_loss 4.712 | ppl 26.2 | num_updates 20544 | best_loss 6.9929
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint50.pt (epoch 50 @ 20544 updates) (writing took 0.9899389743804932 seconds)
+| epoch 051 | loss 5.785 | nll_loss 3.518 | ppl 11.46 | wps 57986 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 20955 | lr 0.000436904 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4883 | train_wall 3807
+| epoch 051 | valid on 'valid' subset | loss 6.979 | nll_loss 4.686 | ppl 25.74 | num_updates 20955 | best_loss 6.9792
+| epoch 052 | loss 5.780 | nll_loss 3.511 | ppl 11.4 | wps 57383 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 21366 | lr 0.000432682 | gnorm 0.200 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 4979 | train_wall 3883
+| epoch 052 | valid on 'valid' subset | loss 6.991 | nll_loss 4.690 | ppl 25.81 | num_updates 21366 | best_loss 6.99055
+| epoch 053 | loss 5.774 | nll_loss 3.504 | ppl 11.35 | wps 58533 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 21777 | lr 0.000428579 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 5074 | train_wall 3957
+| epoch 053 | valid on 'valid' subset | loss 6.984 | nll_loss 4.694 | ppl 25.88 | num_updates 21777 | best_loss 6.9842
+| epoch 054 | loss 5.769 | nll_loss 3.498 | ppl 11.3 | wps 59386 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 22188 | lr 0.000424591 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 5167 | train_wall 4030
+| epoch 054 | valid on 'valid' subset | loss 6.971 | nll_loss 4.675 | ppl 25.54 | num_updates 22188 | best_loss 6.97114
+| epoch 055 | loss 5.764 | nll_loss 3.491 | ppl 11.24 | wps 58781 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 22599 | lr 0.000420712 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5262 | train_wall 4104
+| epoch 055 | valid on 'valid' subset | loss 6.949 | nll_loss 4.648 | ppl 25.07 | num_updates 22599 | best_loss 6.94927
+| epoch 056 | loss 5.759 | nll_loss 3.485 | ppl 11.2 | wps 57176 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 23010 | lr 0.000416938 | gnorm 0.200 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5358 | train_wall 4179
+| epoch 056 | valid on 'valid' subset | loss 6.949 | nll_loss 4.643 | ppl 24.99 | num_updates 23010 | best_loss 6.94857
+| epoch 057 | loss 5.754 | nll_loss 3.478 | ppl 11.15 | wps 57772 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 23421 | lr 0.000413264 | gnorm 0.200 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5454 | train_wall 4255
+| epoch 057 | valid on 'valid' subset | loss 6.942 | nll_loss 4.637 | ppl 24.88 | num_updates 23421 | best_loss 6.94207
+| epoch 058 | loss 5.750 | nll_loss 3.473 | ppl 11.1 | wps 57776 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 23832 | lr 0.000409685 | gnorm 0.200 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5550 | train_wall 4331
+| epoch 058 | valid on 'valid' subset | loss 6.937 | nll_loss 4.623 | ppl 24.64 | num_updates 23832 | best_loss 6.93738
+| epoch 059 | loss 5.746 | nll_loss 3.468 | ppl 11.07 | wps 57695 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 24243 | lr 0.000406197 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5646 | train_wall 4406
+| epoch 059 | valid on 'valid' subset | loss 6.937 | nll_loss 4.628 | ppl 24.73 | num_updates 24243 | best_loss 6.93697
+| epoch 060 | loss 5.742 | nll_loss 3.463 | ppl 11.03 | wps 57928 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 24654 | lr 0.000402797 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5741 | train_wall 4480
+| epoch 060 | valid on 'valid' subset | loss 6.973 | nll_loss 4.675 | ppl 25.55 | num_updates 24654 | best_loss 6.97295
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint60.pt (epoch 60 @ 24654 updates) (writing took 0.9893977642059326 seconds)
+| epoch 061 | loss 5.737 | nll_loss 3.457 | ppl 10.98 | wps 58282 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 25065 | lr 0.000399481 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5837 | train_wall 4554
+| epoch 061 | valid on 'valid' subset | loss 6.921 | nll_loss 4.612 | ppl 24.46 | num_updates 25065 | best_loss 6.92071
+| epoch 062 | loss 5.734 | nll_loss 3.453 | ppl 10.95 | wps 58432 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 25476 | lr 0.000396246 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 5932 | train_wall 4627
+| epoch 062 | valid on 'valid' subset | loss 6.927 | nll_loss 4.618 | ppl 24.56 | num_updates 25476 | best_loss 6.92721
+| epoch 063 | loss 5.728 | nll_loss 3.445 | ppl 10.89 | wps 57723 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 25887 | lr 0.000393087 | gnorm 0.200 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6028 | train_wall 4703
+| epoch 063 | valid on 'valid' subset | loss 6.928 | nll_loss 4.617 | ppl 24.54 | num_updates 25887 | best_loss 6.92764
+| epoch 064 | loss 5.725 | nll_loss 3.441 | ppl 10.86 | wps 58036 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 26298 | lr 0.000390004 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6123 | train_wall 4777
+| epoch 064 | valid on 'valid' subset | loss 6.915 | nll_loss 4.604 | ppl 24.32 | num_updates 26298 | best_loss 6.91504
+| epoch 065 | loss 5.721 | nll_loss 3.436 | ppl 10.83 | wps 58554 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 26709 | lr 0.000386991 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 6218 | train_wall 4850
+| epoch 065 | valid on 'valid' subset | loss 6.911 | nll_loss 4.599 | ppl 24.24 | num_updates 26709 | best_loss 6.91062
+| epoch 066 | loss 5.719 | nll_loss 3.433 | ppl 10.8 | wps 57646 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 27120 | lr 0.000384048 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 64.000 | wall 6314 | train_wall 4925
+| epoch 066 | valid on 'valid' subset | loss 6.940 | nll_loss 4.633 | ppl 24.81 | num_updates 27120 | best_loss 6.94021
+| WARNING: overflow detected, setting loss scale to: 32.0
+| epoch 067 | loss 5.715 | nll_loss 3.427 | ppl 10.76 | wps 57723 | ups 4 | wpb 13368.190 | bsz 983.537 | num_updates 27530 | lr 0.000381177 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6410 | train_wall 5000
+| epoch 067 | valid on 'valid' subset | loss 6.925 | nll_loss 4.615 | ppl 24.5 | num_updates 27530 | best_loss 6.92452
+| epoch 068 | loss 5.711 | nll_loss 3.423 | ppl 10.72 | wps 58342 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 27941 | lr 0.000378363 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6505 | train_wall 5074
+| epoch 068 | valid on 'valid' subset | loss 6.916 | nll_loss 4.603 | ppl 24.3 | num_updates 27941 | best_loss 6.91612
+| epoch 069 | loss 5.708 | nll_loss 3.419 | ppl 10.69 | wps 58831 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 28352 | lr 0.000375611 | gnorm 0.205 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6599 | train_wall 5147
+| epoch 069 | valid on 'valid' subset | loss 6.910 | nll_loss 4.597 | ppl 24.21 | num_updates 28352 | best_loss 6.90982
+| epoch 070 | loss 5.704 | nll_loss 3.413 | ppl 10.65 | wps 57837 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 28763 | lr 0.000372918 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6695 | train_wall 5222
+| epoch 070 | valid on 'valid' subset | loss 6.898 | nll_loss 4.578 | ppl 23.88 | num_updates 28763 | best_loss 6.89797
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint70.pt (epoch 70 @ 28763 updates) (writing took 1.0142748355865479 seconds)
+| epoch 071 | loss 5.700 | nll_loss 3.409 | ppl 10.62 | wps 57826 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 29174 | lr 0.000370281 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6791 | train_wall 5298
+| epoch 071 | valid on 'valid' subset | loss 6.926 | nll_loss 4.623 | ppl 24.64 | num_updates 29174 | best_loss 6.89797
+| epoch 072 | loss 5.696 | nll_loss 3.404 | ppl 10.58 | wps 58388 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 29585 | lr 0.0003677 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6886 | train_wall 5371
+| epoch 072 | valid on 'valid' subset | loss 6.908 | nll_loss 4.594 | ppl 24.15 | num_updates 29585 | best_loss 6.89797
+| epoch 073 | loss 5.693 | nll_loss 3.399 | ppl 10.55 | wps 57818 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 29996 | lr 0.000365173 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 6982 | train_wall 5446
+| epoch 073 | valid on 'valid' subset | loss 6.923 | nll_loss 4.611 | ppl 24.43 | num_updates 29996 | best_loss 6.89797
+| epoch 074 | loss 5.690 | nll_loss 3.396 | ppl 10.53 | wps 58018 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 30407 | lr 0.000362696 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 7077 | train_wall 5520
+| epoch 074 | valid on 'valid' subset | loss 6.901 | nll_loss 4.589 | ppl 24.06 | num_updates 30407 | best_loss 6.89797
+| epoch 075 | loss 5.687 | nll_loss 3.392 | ppl 10.5 | wps 57421 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 30818 | lr 0.00036027 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 7174 | train_wall 5596
+| epoch 075 | valid on 'valid' subset | loss 6.885 | nll_loss 4.569 | ppl 23.73 | num_updates 30818 | best_loss 6.88528
+| WARNING: overflow detected, setting loss scale to: 16.0
+| epoch 076 | loss 5.685 | nll_loss 3.389 | ppl 10.47 | wps 57266 | ups 4 | wpb 13365.212 | bsz 984.298 | num_updates 31228 | lr 0.000357897 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7270 | train_wall 5671
+| epoch 076 | valid on 'valid' subset | loss 6.911 | nll_loss 4.602 | ppl 24.29 | num_updates 31228 | best_loss 6.89797
+| epoch 077 | loss 5.681 | nll_loss 3.385 | ppl 10.44 | wps 57690 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 31639 | lr 0.000355565 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7366 | train_wall 5746
+| epoch 077 | valid on 'valid' subset | loss 6.885 | nll_loss 4.566 | ppl 23.69 | num_updates 31639 | best_loss 6.88495
+| epoch 078 | loss 5.678 | nll_loss 3.380 | ppl 10.41 | wps 57684 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 32050 | lr 0.000353278 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7462 | train_wall 5822
+| epoch 078 | valid on 'valid' subset | loss 6.887 | nll_loss 4.571 | ppl 23.77 | num_updates 32050 | best_loss 6.88703
+| epoch 079 | loss 5.675 | nll_loss 3.376 | ppl 10.38 | wps 57510 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 32461 | lr 0.000351034 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7558 | train_wall 5898
+| epoch 079 | valid on 'valid' subset | loss 6.892 | nll_loss 4.575 | ppl 23.84 | num_updates 32461 | best_loss 6.89222
+| epoch 080 | loss 5.673 | nll_loss 3.374 | ppl 10.37 | wps 57985 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 32872 | lr 0.000348832 | gnorm 0.206 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7654 | train_wall 5973
+| epoch 080 | valid on 'valid' subset | loss 6.896 | nll_loss 4.575 | ppl 23.83 | num_updates 32872 | best_loss 6.89567
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint80.pt (epoch 80 @ 32872 updates) (writing took 0.9853262901306152 seconds)
+| epoch 081 | loss 5.669 | nll_loss 3.369 | ppl 10.33 | wps 57013 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 33283 | lr 0.000346672 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7752 | train_wall 6049
+| epoch 081 | valid on 'valid' subset | loss 6.864 | nll_loss 4.545 | ppl 23.35 | num_updates 33283 | best_loss 6.86427
+| epoch 082 | loss 5.667 | nll_loss 3.366 | ppl 10.31 | wps 57953 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 33694 | lr 0.000344551 | gnorm 0.201 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7847 | train_wall 6123
+| epoch 082 | valid on 'valid' subset | loss 6.886 | nll_loss 4.563 | ppl 23.64 | num_updates 33694 | best_loss 6.88608
+| epoch 083 | loss 5.663 | nll_loss 3.361 | ppl 10.28 | wps 57657 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 34105 | lr 0.000342469 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 7944 | train_wall 6198
+| epoch 083 | valid on 'valid' subset | loss 6.851 | nll_loss 4.517 | ppl 22.9 | num_updates 34105 | best_loss 6.8507
+| epoch 084 | loss 5.662 | nll_loss 3.359 | ppl 10.26 | wps 57382 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 34516 | lr 0.000340424 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 8040 | train_wall 6274
+| epoch 084 | valid on 'valid' subset | loss 6.866 | nll_loss 4.546 | ppl 23.36 | num_updates 34516 | best_loss 6.86583
+| epoch 085 | loss 5.659 | nll_loss 3.356 | ppl 10.24 | wps 57563 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 34927 | lr 0.000338415 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 16.000 | wall 8136 | train_wall 6349
+| epoch 085 | valid on 'valid' subset | loss 6.880 | nll_loss 4.553 | ppl 23.48 | num_updates 34927 | best_loss 6.87995
+| epoch 086 | loss 5.657 | nll_loss 3.352 | ppl 10.21 | wps 58210 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 35338 | lr 0.000336441 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8231 | train_wall 6423
+| epoch 086 | valid on 'valid' subset | loss 6.871 | nll_loss 4.550 | ppl 23.43 | num_updates 35338 | best_loss 6.87059
+| epoch 087 | loss 5.654 | nll_loss 3.349 | ppl 10.19 | wps 58119 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 35749 | lr 0.000334501 | gnorm 0.202 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8327 | train_wall 6498
+| epoch 087 | valid on 'valid' subset | loss 6.848 | nll_loss 4.518 | ppl 22.91 | num_updates 35749 | best_loss 6.84768
+| epoch 088 | loss 5.652 | nll_loss 3.346 | ppl 10.17 | wps 58001 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 36160 | lr 0.000332595 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8422 | train_wall 6573
+| epoch 088 | valid on 'valid' subset | loss 6.864 | nll_loss 4.540 | ppl 23.27 | num_updates 36160 | best_loss 6.86384
+| epoch 089 | loss 5.650 | nll_loss 3.344 | ppl 10.15 | wps 58175 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 36571 | lr 0.000330721 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8517 | train_wall 6647
+| epoch 089 | valid on 'valid' subset | loss 6.857 | nll_loss 4.532 | ppl 23.13 | num_updates 36571 | best_loss 6.85741
+| epoch 090 | loss 5.647 | nll_loss 3.339 | ppl 10.12 | wps 58513 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 36982 | lr 0.000328878 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8612 | train_wall 6721
+| epoch 090 | valid on 'valid' subset | loss 6.849 | nll_loss 4.525 | ppl 23.02 | num_updates 36982 | best_loss 6.84873
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint90.pt (epoch 90 @ 36982 updates) (writing took 1.01768159866333 seconds)
+| epoch 091 | loss 5.644 | nll_loss 3.336 | ppl 10.1 | wps 57552 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 37393 | lr 0.000327066 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8709 | train_wall 6796
+| epoch 091 | valid on 'valid' subset | loss 6.863 | nll_loss 4.540 | ppl 23.27 | num_updates 37393 | best_loss 6.84873
+| epoch 092 | loss 5.643 | nll_loss 3.335 | ppl 10.09 | wps 57825 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 37804 | lr 0.000325283 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8805 | train_wall 6871
+| epoch 092 | valid on 'valid' subset | loss 6.844 | nll_loss 4.519 | ppl 22.93 | num_updates 37804 | best_loss 6.84413
+| epoch 093 | loss 5.640 | nll_loss 3.331 | ppl 10.06 | wps 58256 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 38215 | lr 0.000323529 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8900 | train_wall 6945
+| epoch 093 | valid on 'valid' subset | loss 6.866 | nll_loss 4.545 | ppl 23.35 | num_updates 38215 | best_loss 6.84873
+| epoch 094 | loss 5.637 | nll_loss 3.328 | ppl 10.04 | wps 57921 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 38626 | lr 0.000321803 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 8996 | train_wall 7020
+| epoch 094 | valid on 'valid' subset | loss 6.865 | nll_loss 4.543 | ppl 23.31 | num_updates 38626 | best_loss 6.84873
+| epoch 095 | loss 5.635 | nll_loss 3.325 | ppl 10.02 | wps 58288 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 39037 | lr 0.000320104 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 9091 | train_wall 7094
+| epoch 095 | valid on 'valid' subset | loss 6.849 | nll_loss 4.524 | ppl 23.01 | num_updates 39037 | best_loss 6.84873
+| WARNING: overflow detected, setting loss scale to: 32.0
+| epoch 096 | loss 5.633 | nll_loss 3.322 | ppl 10 | wps 57590 | ups 4 | wpb 13372.234 | bsz 984.785 | num_updates 39447 | lr 0.000318437 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 9187 | train_wall 7169
+| epoch 096 | valid on 'valid' subset | loss 6.865 | nll_loss 4.546 | ppl 23.35 | num_updates 39447 | best_loss 6.84873
+| epoch 097 | loss 5.631 | nll_loss 3.319 | ppl 9.98 | wps 58061 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 39858 | lr 0.000316791 | gnorm 0.203 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 9282 | train_wall 7243
+| epoch 097 | valid on 'valid' subset | loss 6.837 | nll_loss 4.513 | ppl 22.83 | num_updates 39858 | best_loss 6.83719
+| epoch 098 | loss 5.629 | nll_loss 3.317 | ppl 9.97 | wps 57999 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 40269 | lr 0.00031517 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 9377 | train_wall 7318
+| epoch 098 | valid on 'valid' subset | loss 6.841 | nll_loss 4.512 | ppl 22.82 | num_updates 40269 | best_loss 6.84107
+| epoch 099 | loss 5.627 | nll_loss 3.314 | ppl 9.95 | wps 57522 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 40680 | lr 0.000313574 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 9474 | train_wall 7393
+| epoch 099 | valid on 'valid' subset | loss 6.821 | nll_loss 4.486 | ppl 22.41 | num_updates 40680 | best_loss 6.82058
+| epoch 100 | loss 5.626 | nll_loss 3.312 | ppl 9.93 | wps 57429 | ups 4 | wpb 13368.844 | bsz 984.414 | num_updates 41091 | lr 0.000312001 | gnorm 0.204 | clip 1.000 | oom 0.000 | loss_scale 32.000 | wall 9570 | train_wall 7468
+| epoch 100 | valid on 'valid' subset | loss 6.850 | nll_loss 4.526 | ppl 23.03 | num_updates 41091 | best_loss 6.84873
+| saved checkpoint ./checkpoints/2020-03-17T23-18-04-00/checkpoints_en_si/checkpoint100.pt (epoch 100 @ 41091 updates) (writing took 0.6537690162658691 seconds)
+| done training in 9567.9 seconds
+Done training.
+Time at end: Wed Mar 18 11:54:04 EDT 2020
