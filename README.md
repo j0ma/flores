@@ -44,8 +44,8 @@ FP16+LB+min_lr0.1          0     0     0     0
     - going for larger batch seems to hurt all languages (quite a bit)
     - lowering the learning rate to `5e-4` or `7e-4` from the original `1e-3` only marginally improves EN -> X translation but hurts X -> EN much more
     - going even larger with the batch size (20k) seems to improve EN -> X translation and hurt X -> EN translation a bit.
-    - `clip_norm=0.1` seems to improve everythin except EN-SI but even there the decrease is minimal.
-    - tweaking the MINIMUM learning rate seems to do nothing
+    - `clip_norm=0.1` seems to improve everythin except EN-SI but even there the decrease is minimal. so maybe it's a good thing to use?
+    - increasing the MINIMUM learning rate seems to do nothing
     - overall, messing with the actual learning rate seems dangerous
 
 ### FP16 + LB + default LR + min_lr=1e-8
