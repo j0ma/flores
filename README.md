@@ -8,12 +8,45 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### All settings so far
 
-| Lang. pair | Reported |  AWS/Azure  | Brandeis |  FP16  |  FP16 + LB | FP16 + LB + LR=5e-4 | FP16 + LB + LR=7e-4 | FP16 + LB + seed12345 | FP16 + BS20k | FP16+LB+CN0.1 | FP16+LB+CN=0.1+LR=3e-3 |
-|------------|----------|-------------|----------|--------|------------|---------------------|---------------------|-----------------------|--------------|---------------|------------------------|
-|   EN-NE    |   4.3    |    4.69     |  4.58    |  4.59  |    3.99    |       4.03          |       4.04          |        4.33           |     4.17     |     4.03      |   3.03                 |
-|   NE-EN    |   7.6    |    7.66     |  7.74    |  7.39  |    7.10    |       6.48          |       6.87          |        6.97           |     7.02     |     7.34      |   6.11                 |
-|   EN-SI    |   1.2    |    1.48     |  1.31    |  1.24  |    1.06    |       1.13          |       1.10          |        1.41           |     1.53     |     1.05      |   0.75                 |
-|   SI-EN    |   7.2    |    6.94     |  6.77    |  6.69  |    5.82    |       5.39          |       5.65          |        6.13           |     6.00     |     6.08      |   6.03                 |
+```
+Lang. pair             EN-NE NE-EN EN-SI SI-EN
+Reported                 4.3   7.6   1.2   7.2
+AWS/Azure               4.69  7.66  1.48  6.94
+Brandeis                4.58  7.74  1.31  6.77
+FP16                    4.59  7.39  1.24  6.69
+FP16 + LB               3.99   7.1  1.06  5.82
+FP16 + LB + LR=5e-4     4.03  6.48  1.13  5.39
+FP16 + LB + LR=7e-4     4.04  6.87   1.1  5.65
+FP16 + LB + seed12345   4.33  6.97  1.41  6.13
+FP16 + BS20k            4.17  7.02  1.53     6
+FP16+LB+CN0.1           4.03  7.34  1.05  6.08
+FP16+LB+CN=0.1+LR=3e-3  3.03  6.11  0.75  6.03
+FP16+LB+min_lr0.1       3.99   7.1  1.06  5.82
+```
+
+- Comparison to FP16+LB
+    - Let's take the overall results table and diff each row with the FP16+LB experimental condition (use pandas for this)
+
+```
+Lang. pair             EN-NE NE-EN EN-SI SI-EN
+FP16 + LB                  0     0     0     0
+FP16 + LB + LR=5e-4     0.04 -0.62  0.07 -0.43
+FP16 + LB + LR=7e-4     0.05 -0.23  0.04 -0.17
+FP16 + LB + seed12345   0.34 -0.13  0.35  0.31
+FP16 + BS20k            0.18 -0.08  0.47  0.18
+FP16+LB+CN0.1           0.04  0.24 -0.01  0.26
+FP16+LB+CN=0.1+LR=3e-3 -0.96 -0.99 -0.31  0.21
+FP16+LB+min_lr0.1          0     0     0     0
+```
+
+- Overall notes (after exp11)
+    - FP16 by itself does not hurt
+    - going for larger batch seems to hurt all languages (quite a bit)
+    - lowering the learning rate to `5e-4` or `7e-4` from the original `1e-3` only marginally improves EN -> X translation but hurts X -> EN much more
+    - going even larger with the batch size (20k) seems to improve EN -> X translation and hurt X -> EN translation a bit.
+    - `clip_norm=0.1` seems to improve everythin except EN-SI but even there the decrease is minimal. so maybe it's a good thing to use?
+    - increasing the MINIMUM learning rate seems to do nothing
+    - overall, messing with the actual learning rate seems dangerous
 
 ### FP16 + LB + default LR + min_lr=1e-8
 
