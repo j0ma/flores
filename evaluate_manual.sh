@@ -36,7 +36,7 @@ evaluate () {
     LOG_FOLDER=$3
 
     echo "Creating results folder..."
-    bash ./create_results_folder.sh
+    #bash ./create_results_folder.sh
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
     # create path for log file
