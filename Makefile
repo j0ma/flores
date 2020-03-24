@@ -8,6 +8,157 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+exp21: train_all_fp16_seed19 evaluate_all
+
+train_all_fp16_seed19:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 19
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 19
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 19
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 19
+
+exp20: train_all_fp16_seed18 evaluate_all
+
+train_all_fp16_seed18:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. train ne - en
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 18
+
+	# 2. train en - ne
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 18
+
+	# 3. train si - en
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 18
+
+	# 4. train en - si
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 18
+
+exp19: train_all_fp16_seed17 evaluate_all
+
+train_all_fp16_seed17:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 17
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 17
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 17
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 17
+
+exp18: train_all_fp16_seed16 evaluate_all
+
+train_all_fp16_seed16:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 16
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 16
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 16
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 16
+
+exp17: train_all_fp16_seed15 evaluate_all
+
+train_all_fp16_seed15:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 15
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 15
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 15
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 15
+
+exp16: train_all_fp16_seed14 evaluate_all
+
+train_all_fp16_seed14:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 14
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 14
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 14
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 14
+
+exp15: train_all_fp16_seed13 evaluate_all
+
+train_all_fp16_seed13:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 13
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 13
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 13
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 13
+
+exp14: train_all_fp16_seed12 evaluate_all
+
+train_all_fp16_seed12:
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh
+	bash ./create_checkpoint_folder.sh
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 12
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 12
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 12
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 12
 
 exp13: train_all_fp16_seed11 evaluate_all
 

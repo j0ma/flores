@@ -50,6 +50,25 @@ FP16+LB+min_lr0.1          0     0     0     0
 
 ### Random seed experiments
 
+#### Seed = 12
+
+==> baseline_en_ne.log <==
+| Translated 2835 sentences (87949 tokens) in 433.0s (6.55 sentences/s, 203.12 tokens/s)
+| Generate test with beam=5: BLEU4 = 4.54, 30.7/8.0/2.6/0.9 (BP=0.938, ratio=0.940, syslen=41170, reflen=43802)
+
+==> baseline_en_si.log <==
+| Translated 2766 sentences (107525 tokens) in 720.8s (3.84 sentences/s, 149.17 tokens/s)
+| Generate test with beam=5: BLEU4 = 1.41, 15.9/2.5/0.6/0.2 (BP=1.000, ratio=1.399, syslen=64821, reflen=46318)
+
+==> baseline_ne_en.log <==
+| Translated 2835 sentences (90295 tokens) in 455.4s (6.22 sentences/s, 198.26 tokens/s)
+| Generate test with beam=5: BLEU = 7.33 40.5/12.0/4.5/1.9 (BP = 0.908 ratio = 0.912 hyp_len = 46567 ref_len = 51076)
+
+==> baseline_si_en.log <==
+| Translated 2766 sentences (75323 tokens) in 311.4s (8.88 sentences/s, 241.90 tokens/s)
+| Generate test with beam=5: BLEU = 6.42 44.8/13.3/4.8/1.7 (BP = 0.767 ratio = 0.791 hyp_len = 40145 ref_len = 50772)
+
+#### Seed = 11
 ==> baseline_en_ne.log <==
 | Translated 2835 sentences (82807 tokens) in 377.4s (7.51 sentences/s, 219.39 tokens/s)
 | Generate test with beam=5: BLEU4 = 4.29, 31.4/8.2/2.6/0.9 (BP=0.879, ratio=0.886, syslen=38794, reflen=43802)
