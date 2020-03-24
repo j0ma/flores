@@ -1,4 +1,4 @@
-# harameters.sh
+# recover_parameters.sh
 #
 # description
 # -----------
@@ -20,7 +20,6 @@ EVAL_FILE=$EVAL_FOLDER"/baseline_"$SRC_LANG"_"$TGT_LANG".log"
 # | loading model(s) from ./checkpoints/2020-03-21T16-02-04-00/checkpoints_ne_en/checkpoint_best.pt
 CHECKPOINT_FILE=$(grep "loading model(s) from" $EVAL_FILE |
                  sed "s/^| loading model(s) from //g")
-echo $CHECKPOINT_FILE
 
 TIMESTAMP=$(echo $CHECKPOINT_FILE | grep -o "2020.*00")
 
@@ -32,9 +31,10 @@ LOG_FILE=$LOG_FOLDER"/baseline_"$SRC_LANG"_"$TGT_LANG".log"
 
 # get the typical parameters of interest, i.e.
 # batch size, fp16, learning rate, min_lr, clip_norm, seed
+echo "===== EVAL & LOG FILES ====="
 echo "Eval file: "$EVAL_FILE
 echo "Log file: "$LOG_FILE
-echo "Hyperparameters: "
+echo "===== HYPERPARAMETERS ====="
 head $LOG_FILE | \
     tail -2 | \
     head -1 | \
