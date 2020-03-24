@@ -17,12 +17,12 @@ TGT_LANG='en' # experiment is run with same params for all languages
 EVAL_FILE=$EVAL_FOLDER"/baseline_"$SRC_LANG"_"$TGT_LANG".log"
 
 # given eval file, find checkpoint folder & timestamp
-CHECKPOINT_DIR=$(head $EVAL_FILE | \
-                 head -4 | \
-                 tail -1 | \
-                 grep -o './checkpoints.*$' | \
-                 sed s/\'//g)
-TIMESTAMP=$(echo $CHECKPOINT_DIR | grep -o "2020.*00")
+# | loading model(s) from ./checkpoints/2020-03-21T16-02-04-00/checkpoints_ne_en/checkpoint_best.pt
+CHECKPOINT_FILE=$(grep "loading model(s) from" $EVAL_FILE |
+                 sed "s/^| loading model(s) from //g")
+echo $CHECKPOINT_FILE
+
+TIMESTAMP=$(echo $CHECKPOINT_FILE | grep -o "2020.*00")
 
 # given time stamp, find log folder
 LOG_FOLDER="./log/"$TIMESTAMP""
