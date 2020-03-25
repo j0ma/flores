@@ -57,6 +57,9 @@ FP16+LB+min_lr0.1          0     0     0     0
 - [x] 14
 - [x] 15
 - [x] 16
+- [] 17
+- [] 18
+- [] 19
 
 ```
 ==== RECOVERING RESULTS FOR ./evaluate/2020-03-18T11-54-04-00 ====
