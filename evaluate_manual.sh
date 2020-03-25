@@ -1,6 +1,6 @@
 # this script is only for MANUAL evaluation, 
 # of a given experiment, ie. the log folder must 
-# be provided as $3
+# be provided as $1
 
 evaluate_fairseq () {
     SRC_LANG=$1
@@ -35,8 +35,6 @@ evaluate () {
     TGT_LANG=$2
     LOG_FOLDER=$3
 
-    echo "Creating results folder..."
-    #bash ./create_results_folder.sh
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
     # create path for log file
@@ -57,7 +55,7 @@ evaluate () {
     CHECKPOINT_PATH=$CHECKPOINT_DIR"/checkpoint_best.pt"
     echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
-    exit 1 # remove this to actually run
+    #exit 1 # remove this to actually run
 
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
@@ -73,4 +71,10 @@ evaluate () {
 
 }
 
-evaluate $1 $2 $3
+echo "Creating results folder..."
+bash ./create_results_folder.sh
+
+evaluate "ne" "en" $1
+evaluate "en" "ne" $1
+evaluate "si" "en" $1
+evaluate "en" "si" $1

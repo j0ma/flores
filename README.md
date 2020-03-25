@@ -50,41 +50,145 @@ FP16+LB+min_lr0.1          0     0     0     0
 
 ### Random seed experiments
 
-#### Seed = 12
+- [x] 10
+- [x] 11
+- [x] 12
+- [x] 13
+- [x] 14
+- [x] 15
+- [x] 16
 
-==> baseline_en_ne.log <==
-| Translated 2835 sentences (87949 tokens) in 433.0s (6.55 sentences/s, 203.12 tokens/s)
-| Generate test with beam=5: BLEU4 = 4.54, 30.7/8.0/2.6/0.9 (BP=0.938, ratio=0.940, syslen=41170, reflen=43802)
+```
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-18T11-54-04-00 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-18T11-54-04-00/baseline_ne_en.log
+Log file: ./log/2020-03-17T23-18-04-00/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=10
+===== RESULTS =====
+en-ne | 4.29
+en-si | 1.00
+ne-en | 7.83
+si-en | 6.90
 
-==> baseline_en_si.log <==
-| Translated 2766 sentences (107525 tokens) in 720.8s (3.84 sentences/s, 149.17 tokens/s)
-| Generate test with beam=5: BLEU4 = 1.41, 15.9/2.5/0.6/0.2 (BP=1.000, ratio=1.399, syslen=64821, reflen=46318)
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-19T04-34-04-00 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-19T04-34-04-00/baseline_ne_en.log
+Log file: ./log/2020-03-18T15-46-04-00/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=11
+===== RESULTS =====
+en-ne | 4.54
+en-si | 1.41
+ne-en | 7.33
+si-en | 6.42
 
-==> baseline_ne_en.log <==
-| Translated 2835 sentences (90295 tokens) in 455.4s (6.22 sentences/s, 198.26 tokens/s)
-| Generate test with beam=5: BLEU = 7.33 40.5/12.0/4.5/1.9 (BP = 0.908 ratio = 0.912 hyp_len = 46567 ref_len = 51076)
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-19T22-59-04-00 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-19T22-59-04-00/baseline_ne_en.log
+Log file: ./log/2020-03-19T10-22-04-00/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=12
+===== RESULTS =====
+en-ne | 4.61
+en-si | 1.12
+ne-en | 7.91
+si-en | 6.56
 
-==> baseline_si_en.log <==
-| Translated 2766 sentences (75323 tokens) in 311.4s (8.88 sentences/s, 241.90 tokens/s)
-| Generate test with beam=5: BLEU = 6.42 44.8/13.3/4.8/1.7 (BP = 0.767 ratio = 0.791 hyp_len = 40145 ref_len = 50772)
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-24T18-27-04-00 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-24T18-27-04-00/baseline_ne_en.log
+Log file: ./log/2020-03-19T23-32-04-00/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=13
+===== RESULTS =====
+en-ne | 4.52
+en-si | 0.95
+ne-en | 7.76
+si-en | 6.70
 
-#### Seed = 11
-==> baseline_en_ne.log <==
-| Translated 2835 sentences (82807 tokens) in 377.4s (7.51 sentences/s, 219.39 tokens/s)
-| Generate test with beam=5: BLEU4 = 4.29, 31.4/8.2/2.6/0.9 (BP=0.879, ratio=0.886, syslen=38794, reflen=43802)
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-21T02-20-04-00 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-21T02-20-04-00/baseline_ne_en.log
+Log file: ./log/2020-03-20T13-45-04-00/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=14
+===== RESULTS =====
+en-ne | 4.53
+en-si | 1.37
+ne-en | 7.89
+si-en | 6.61
 
-==> baseline_en_si.log <==
-| Translated 2766 sentences (131288 tokens) in 963.6s (2.87 sentences/s, 136.24 tokens/s)
-| Generate test with beam=5: BLEU4 = 1.00, 11.7/1.8/0.4/0.1 (BP=1.000, ratio=1.888, syslen=87449, reflen=46318)
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=15
+===== RESULTS =====
+en-ne | 4.57
+en-si | 1.42
+ne-en | 7.81
+si-en | 6.47
 
-==> baseline_ne_en.log <==
-| Translated 2835 sentences (94153 tokens) in 397.5s (7.13 sentences/s, 236.88 tokens/s)
-| Generate test with beam=5: BLEU = 7.83 40.1/12.0/4.6/2.0 (BP = 0.961 ratio = 0.962 hyp_len = 49143 ref_len = 51076)
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-22T04-37-04-00 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-22T04-37-04-00/baseline_ne_en.log
+Log file: ./log/2020-03-21T16-02-04-00/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=16
 
-==> baseline_si_en.log <==
-| Translated 2766 sentences (79387 tokens) in 318.4s (8.69 sentences/s, 249.35 tokens/s)
-| Generate test with beam=5: BLEU = 6.90 43.5/13.1/4.9/1.8 (BP = 0.821 ratio = 0.835 hyp_len = 42406 ref_len = 50772)
-
+===== RESULTS =====
+en-ne | 4.55
+en-si | 1.49
+ne-en | 7.61
+si-en | 6.45
+```
 
 ### FP16 + LB + default LR + min_lr=1e-8
 

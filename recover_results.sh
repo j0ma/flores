@@ -1,5 +1,8 @@
 # recover_results.sh
 
+echo
+echo "==== RECOVERING RESULTS FOR $1 ===="
+
 bash recover_parameters.sh $1
 
 echo "===== RESULTS ====="
