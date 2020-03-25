@@ -1,7 +1,6 @@
 # FLoRes Low Resource MT Benchmark (fork)
 
 This repository is my own fork of FAIR's FLoRes repository.
-
 My main reason for forking was to create training and evaluation scripts that are well-automated.
 
 ## Reproduced results
@@ -49,6 +48,10 @@ FP16+LB+min_lr0.1          0     0     0     0
     - overall, messing with the actual learning rate seems dangerous
 
 ### Random seed experiments
+
+- Notes
+    - some experiments weirdly did not get evaluated using `make evaluate_all` after training
+        - cause: unclear
 
 - [x] 10
 - [x] 11

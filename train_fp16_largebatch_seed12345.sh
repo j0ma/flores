@@ -34,7 +34,7 @@ train_fairseq () {
         --save-interval 10 \
         --save-dir $CHECKPOINT_DIR \
         --fp16 \
-	--seed 12345
+        --seed 12345
 }
 
 train () {
