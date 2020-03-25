@@ -5,7 +5,47 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
-### All settings so far
+### Random seed experiments
+
+- Notes
+    - tried to run these in `Makefile` but some experiments weirdly did not get evaluated using `make evaluate_all` after training
+        - cause: unclear
+    - used `git grep` to find the log files with seeds that didn't get evalauted, and ran `evaluate_manual.sh` to produce BLEU scores for them
+    - using `recover_results.sh`, created `evaluate/seed_results` which contains all the results for all the seed settings
+    - wrote a parsing / analysis script `analyze_seed_results.py` that produces the tables below
+        - interestingly it seems like there is more variability between seeds for the `en-si` / `si-en` pairs than `ne-en` / `en-ne`.
+
+```
+### Raw results
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     4.29   1.00   7.83   6.90
+11     4.54   1.41   7.33   6.42
+12     4.61   1.12   7.91   6.56
+13     4.52   0.95   7.76   6.70
+14     4.53   1.37   7.89   6.61
+15     4.57   1.42   7.81   6.47
+16     4.55   1.49   7.61   6.45
+17     4.42   1.07   7.82   6.36
+18     4.58   1.51   7.84   6.95
+19     4.52   0.81   7.80   6.44
+
+### Summary statistics
+        mean    std    25%    50%    75%
+en-ne  4.513  0.093  4.520  4.535  4.565
+en-si  1.215  0.253  1.018  1.245  1.418
+ne-en  7.760  0.172  7.770  7.815  7.838
+si-en  6.586  0.205  6.442  6.515  6.678
+
+### Confidence interval
+        mean    std     lb     ub
+en-ne  4.513  0.093  4.327  4.699
+en-si  1.215  0.253  0.709  1.721
+ne-en  7.760  0.172  7.416  8.104
+si-en  6.586  0.205  6.176  6.996
+```
+
+### Recap before random seed experiments
 
 ```
 Lang. pair             EN-NE NE-EN EN-SI SI-EN
@@ -47,154 +87,6 @@ FP16+LB+min_lr0.1          0     0     0     0
     - increasing the MINIMUM learning rate seems to do nothing
     - overall, messing with the actual learning rate seems dangerous
 
-### Random seed experiments
-
-- Notes
-    - some experiments weirdly did not get evaluated using `make evaluate_all` after training
-        - cause: unclear
-
-- [x] 10
-- [x] 11
-- [x] 12
-- [x] 13
-- [x] 14
-- [x] 15
-- [x] 16
-- [] 17
-- [] 18
-- [] 19
-
-```
-==== RECOVERING RESULTS FOR ./evaluate/2020-03-18T11-54-04-00 ====
-===== EVAL & LOG FILES =====
-Eval file: ./evaluate/2020-03-18T11-54-04-00/baseline_ne_en.log
-Log file: ./log/2020-03-17T23-18-04-00/baseline_ne_en.log
-===== HYPERPARAMETERS =====
-clip_norm=0.1
-fixed_validation_seed=None
-fp16=True
-lr=[0.001]
-max_tokens=4000
-memory_efficient_fp16=False
-min_lr=1e-09
-seed=10
-===== RESULTS =====
-en-ne | 4.29
-en-si | 1.00
-ne-en | 7.83
-si-en | 6.90
-
-==== RECOVERING RESULTS FOR ./evaluate/2020-03-19T04-34-04-00 ====
-===== EVAL & LOG FILES =====
-Eval file: ./evaluate/2020-03-19T04-34-04-00/baseline_ne_en.log
-Log file: ./log/2020-03-18T15-46-04-00/baseline_ne_en.log
-===== HYPERPARAMETERS =====
-clip_norm=0.1
-fixed_validation_seed=None
-fp16=True
-lr=[0.001]
-max_tokens=4000
-memory_efficient_fp16=False
-min_lr=1e-09
-seed=11
-===== RESULTS =====
-en-ne | 4.54
-en-si | 1.41
-ne-en | 7.33
-si-en | 6.42
-
-==== RECOVERING RESULTS FOR ./evaluate/2020-03-19T22-59-04-00 ====
-===== EVAL & LOG FILES =====
-Eval file: ./evaluate/2020-03-19T22-59-04-00/baseline_ne_en.log
-Log file: ./log/2020-03-19T10-22-04-00/baseline_ne_en.log
-===== HYPERPARAMETERS =====
-clip_norm=0.1
-fixed_validation_seed=None
-fp16=True
-lr=[0.001]
-max_tokens=4000
-memory_efficient_fp16=False
-min_lr=1e-09
-seed=12
-===== RESULTS =====
-en-ne | 4.61
-en-si | 1.12
-ne-en | 7.91
-si-en | 6.56
-
-==== RECOVERING RESULTS FOR ./evaluate/2020-03-24T18-27-04-00 ====
-===== EVAL & LOG FILES =====
-Eval file: ./evaluate/2020-03-24T18-27-04-00/baseline_ne_en.log
-Log file: ./log/2020-03-19T23-32-04-00/baseline_ne_en.log
-===== HYPERPARAMETERS =====
-clip_norm=0.1
-fixed_validation_seed=None
-fp16=True
-lr=[0.001]
-max_tokens=4000
-memory_efficient_fp16=False
-min_lr=1e-09
-seed=13
-===== RESULTS =====
-en-ne | 4.52
-en-si | 0.95
-ne-en | 7.76
-si-en | 6.70
-
-==== RECOVERING RESULTS FOR ./evaluate/2020-03-21T02-20-04-00 ====
-===== EVAL & LOG FILES =====
-Eval file: ./evaluate/2020-03-21T02-20-04-00/baseline_ne_en.log
-Log file: ./log/2020-03-20T13-45-04-00/baseline_ne_en.log
-===== HYPERPARAMETERS =====
-clip_norm=0.1
-fixed_validation_seed=None
-fp16=True
-lr=[0.001]
-max_tokens=4000
-memory_efficient_fp16=False
-min_lr=1e-09
-seed=14
-===== RESULTS =====
-en-ne | 4.53
-en-si | 1.37
-ne-en | 7.89
-si-en | 6.61
-
-===== HYPERPARAMETERS =====
-clip_norm=0.1
-fixed_validation_seed=None
-fp16=True
-lr=[0.001]
-max_tokens=4000
-memory_efficient_fp16=False
-min_lr=1e-09
-seed=15
-===== RESULTS =====
-en-ne | 4.57
-en-si | 1.42
-ne-en | 7.81
-si-en | 6.47
-
-==== RECOVERING RESULTS FOR ./evaluate/2020-03-22T04-37-04-00 ====
-===== EVAL & LOG FILES =====
-Eval file: ./evaluate/2020-03-22T04-37-04-00/baseline_ne_en.log
-Log file: ./log/2020-03-21T16-02-04-00/baseline_ne_en.log
-===== HYPERPARAMETERS =====
-clip_norm=0.1
-fixed_validation_seed=None
-fp16=True
-lr=[0.001]
-max_tokens=4000
-memory_efficient_fp16=False
-min_lr=1e-09
-seed=16
-
-===== RESULTS =====
-en-ne | 4.55
-en-si | 1.49
-ne-en | 7.61
-si-en | 6.45
-```
 
 ### FP16 + LB + default LR + min_lr=1e-8
 
