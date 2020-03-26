@@ -26,6 +26,16 @@ def load_seed_results(p):
     return raw, agg, agg2
 
 if __name__ == '__main__':
+
+    reported = pd.Series(
+        {
+            'en-ne': 4.3,
+            'ne-en': 7.6,
+            'en-si': 1.2,
+            'si-en': 7.2
+        }
+    )
+
     raw, agg, agg2 = load_seed_results(INPUT_PATH)
 
     print('### Raw results')
@@ -36,4 +46,13 @@ if __name__ == '__main__':
 
     print('\n### Confidence interval')
     print(agg2)
+
+    print('\n### Reported results')
+    print(reported)
+
+    print('\n### Difference from reported')
+    print(raw - reported)
+
+    print('\n### Fraction of overestimates')
+    print(((raw - reported) > 0).mean(axis=0))
 
