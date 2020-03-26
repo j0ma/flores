@@ -9,7 +9,7 @@
 SRC=si
 TGT=en
 
-BPESIZE=5000
+BPESIZE=2500
 TRAIN_MINLEN=6  # remove sentences with <6 BPE tokens
 TRAIN_MAXLEN=250  # remove sentences with >250 BPE tokens
 

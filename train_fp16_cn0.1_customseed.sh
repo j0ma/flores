@@ -38,7 +38,7 @@ train () {
     LOG_DIR="./log/"$(ls -t ./log | head -1)
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
-
+    BPE_SIZE=2500
 
     # create path for log file
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
@@ -59,9 +59,9 @@ train () {
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
     then
-        DATA_DIR="data-bin/wiki_si_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_si_en_bpe"$BPE_SIZE"/"
     else
-        DATA_DIR="data-bin/wiki_ne_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_ne_en_bpe"$BPE_SIZE"/"
     fi
     
     echo "Data folder is: "$DATA_DIR >> $LOG_OUTPUT_PATH
