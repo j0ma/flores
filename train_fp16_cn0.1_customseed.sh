@@ -38,7 +38,7 @@ train () {
     LOG_DIR="./log/"$(ls -t ./log | head -1)
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
-    BPE_SIZE=2500
+    BPE_SIZE=7500
 
     # create path for log file
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"

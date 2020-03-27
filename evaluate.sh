@@ -28,6 +28,7 @@ evaluate_fairseq () {
 evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
+    BPE_SIZE=7500
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
     # create path for log file
@@ -44,9 +45,9 @@ evaluate () {
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
     then
-        DATA_DIR="data-bin/wiki_si_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_si_en_bpe"$BPE_SIZE"/"
     else
-        DATA_DIR="data-bin/wiki_ne_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_ne_en_bpe"$BPE_SIZE"/"
     fi
     echo "Data folder is: "$DATA_DIR
 

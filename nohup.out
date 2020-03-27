@@ -719,3 +719,50 @@ Logging output to: ./log/2020-03-23T06-33-04-00/baseline_si_en.log
 # 4. Train EN - SI
 bash ./train_fp16_cn0.1_customseed.sh "en" "si" 19
 Logging output to: ./log/2020-03-23T06-33-04-00/baseline_en_si.log
+# Random seed = 19 due to COVID-19 crisis :/
+# 0. create log & checkpoint folder
+bash ./create_log_folder.sh "exp22-bpe2500"
+./log/2020-03-26T12-39-04-00-exp22-bpe2500
+bash ./create_checkpoint_folder.sh "exp22-bpe2500"
+./checkpoints/2020-03-26T12-39-04-00-exp22-bpe2500
+# 1. Train NE - EN
+bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 19
+Logging output to: ./log/2020-03-26T12-39-04-00-exp22-bpe2500/baseline_ne_en.log
+# 2. Train EN - NE
+bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 19
+Logging output to: ./log/2020-03-26T12-39-04-00-exp22-bpe2500/baseline_en_ne.log
+# 3. Train SI - EN
+bash ./train_fp16_cn0.1_customseed.sh "si" "en" 19
+Logging output to: ./log/2020-03-26T12-39-04-00-exp22-bpe2500/baseline_si_en.log
+# 4. Train EN - SI
+bash ./train_fp16_cn0.1_customseed.sh "en" "si" 19
+Logging output to: ./log/2020-03-26T12-39-04-00-exp22-bpe2500/baseline_en_si.log
+# 5. create results folder
+bash ./create_results_folder.sh "exp22-bpe2500"
+./evaluate/2020-03-27T03-32-04-00-exp22-bpe2500
+# 6. Evaluate NE - EN
+bash ./evaluate.sh "ne" "en"
+Saving output to: ./evaluate/2020-03-27T03-32-04-00-exp22-bpe2500/baseline_ne_en.log
+CHECKPOINT_PATH is: ./checkpoints/2020-03-26T12-39-04-00-exp22-bpe2500/checkpoints_ne_en/checkpoint_best.pt
+Data folder is: data-bin/wiki_ne_en_bpe5000/
+About to evaluate...
+Traceback (most recent call last):
+  File "/home/jonne/miniconda3/envs/flores/bin/fairseq-generate", line 8, in <module>
+    sys.exit(cli_main())
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq_cli/generate.py", line 199, in cli_main
+    main(args)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq_cli/generate.py", line 47, in main
+    task=task,
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq/checkpoint_utils.py", line 179, in load_model_ensemble
+    ensemble, args, _task = load_model_ensemble_and_task(filenames, arg_overrides, task)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq/checkpoint_utils.py", line 198, in load_model_ensemble_and_task
+    model.load_state_dict(state["model"], strict=True, args=args)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/fairseq/models/fairseq_model.py", line 71, in load_state_dict
+    return super().load_state_dict(new_state_dict, strict)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.6/site-packages/torch/nn/modules/module.py", line 830, in load_state_dict
+    self.__class__.__name__, "\n\t".join(error_msgs)))
+RuntimeError: Error(s) in loading state_dict for TransformerModel:
+	size mismatch for encoder.embed_tokens.weight: copying a param with shape torch.Size([2504, 512]) from checkpoint, the shape in current model is torch.Size([5000, 512]).
+	size mismatch for decoder.embed_tokens.weight: copying a param with shape torch.Size([2504, 512]) from checkpoint, the shape in current model is torch.Size([5000, 512]).
+Makefile:13: recipe for target 'exp22' failed
+make: *** [exp22] Error 1

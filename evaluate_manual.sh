@@ -1,6 +1,7 @@
 # this script is only for MANUAL evaluation, 
 # of a given experiment, ie. the log folder must 
-# be provided as $1
+# be provided as $1 along with an optional slug representing
+# the experiment name given as $2
 
 evaluate_fairseq () {
     SRC_LANG=$1
@@ -35,6 +36,7 @@ evaluate () {
     TGT_LANG=$2
     LOG_FOLDER=$3
 
+    BPE_SIZE=7500
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
     # create path for log file
@@ -55,14 +57,12 @@ evaluate () {
     CHECKPOINT_PATH=$CHECKPOINT_DIR"/checkpoint_best.pt"
     echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
-    #exit 1 # remove this to actually run
-
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
     then
-        DATA_DIR="data-bin/wiki_si_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_si_en_bpe"$BPE_SIZE"/"
     else
-        DATA_DIR="data-bin/wiki_ne_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_ne_en_bpe"$BPE_SIZE"/"
     fi
     echo "Data folder is: "$DATA_DIR
 
@@ -71,10 +71,13 @@ evaluate () {
 
 }
 
-echo "Creating results folder..."
-bash ./create_results_folder.sh
+LOG_PATH=$1
+SLUG=$2
 
-evaluate "ne" "en" $1
-evaluate "en" "ne" $1
-evaluate "si" "en" $1
-evaluate "en" "si" $1
+echo "Creating results folder..."
+bash ./create_results_folder.sh $SLUG
+
+evaluate "ne" "en" $LOG_PATH
+evaluate "en" "ne" $LOG_PATH
+evaluate "si" "en" $LOG_PATH
+evaluate "en" "si" $LOG_PATH
