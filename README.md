@@ -5,6 +5,27 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
+```
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-27T11-38-04-00-exp22-bpe2500 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-27T11-38-04-00-exp22-bpe2500/baseline_ne_en.log
+Log file: ./log/2020-03-26T12-39-04-00-exp22-bpe2500/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=19
+===== RESULTS =====
+en-ne | 4.39
+en-si | 1.72
+ne-en | 7.60
+si-en | 6.48
+```
+
 ### Random seed experiments
 
 - Notes

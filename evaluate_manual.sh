@@ -34,6 +34,7 @@ evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
     LOG_FOLDER=$3
+    BPE_SIZE=2500
 
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
@@ -55,17 +56,14 @@ evaluate () {
     CHECKPOINT_PATH=$CHECKPOINT_DIR"/checkpoint_best.pt"
     echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
-    #exit 1 # remove this to actually run
-
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
     then
-        DATA_DIR="data-bin/wiki_si_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_si_en_bpe"$BPE_SIZE"/"
     else
-        DATA_DIR="data-bin/wiki_ne_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_ne_en_bpe"$BPE_SIZE"/"
     fi
     echo "Data folder is: "$DATA_DIR
-
     echo "About to evaluate..."
     evaluate_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_PATH $DATA_DIR > $RESULTS_OUTPUT_PATH
 

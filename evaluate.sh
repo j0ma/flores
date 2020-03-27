@@ -29,6 +29,7 @@ evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
+    BPE_SIZE=2500
 
     # create path for log file
     RESULTS_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
@@ -44,9 +45,9 @@ evaluate () {
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
     then
-        DATA_DIR="data-bin/wiki_si_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_si_en_bpe"$BPE_SIZE"/"
     else
-        DATA_DIR="data-bin/wiki_ne_en_bpe5000/"
+        DATA_DIR="data-bin/wiki_ne_en_bpe"$BPE_SIZE"/"
     fi
     echo "Data folder is: "$DATA_DIR
 
