@@ -46,7 +46,7 @@ exp23:
 
 exp22:
 
-	# NOTE: run this target in branch bpe7500
+	# NOTE: run this target in branch bpe2500
 	# Random seed = 19 due to COVID-19 crisis :/
 
 	# 0. create log & checkpoint folder
