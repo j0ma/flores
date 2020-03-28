@@ -7,6 +7,29 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### Exploring different settings for BPE
 
+#### BPE=2500
+
+#### BPE=7500
+
+```
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-28T00-47-04-00-exp23-bpe7500//baseline_ne_en.log
+Log file: ./log/2020-03-27T12-58-04-00-exp23-bpe7500/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=19
+===== RESULTS =====
+en-ne | 4.44
+en-si | 1.32
+ne-en | 7.44
+si-en | 6.98
+```
 
 ### Random seed experiments
 
