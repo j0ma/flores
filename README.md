@@ -7,6 +7,13 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### Exploring different settings for BPE
 
+| Lang. pair | Reported |  BPE=2500   |  BPE=5000   |  BPE=7500  |
+|------------|----------|-------------|-------------|------------|
+|   EN-NE    |   4.3    |    4.39     |     4.52    |    4.44    |
+|   NE-EN    |   7.6    |    7.60     |     7.80    |    7.44    |
+|   EN-SI    |   1.2    |    1.72     |     0.81    |    1.32    |
+|   SI-EN    |   7.2    |    6.48     |     6.44    |    6.98    |
+
 #### BPE=2500
 
 ```
@@ -28,6 +35,29 @@ en-ne | 4.39
 en-si | 1.72
 ne-en | 7.60
 si-en | 6.48
+```
+
+#### BPE=5000
+
+```
+==== RECOVERING RESULTS FOR ./evaluate/2020-03-25T13-08-04-00 ====
+===== EVAL & LOG FILES =====
+Eval file: ./evaluate/2020-03-25T13-08-04-00/baseline_ne_en.log
+Log file: ./log/2020-03-23T06-33-04-00/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+clip_norm=0.1
+fixed_validation_seed=None
+fp16=True
+lr=[0.001]
+max_tokens=4000
+memory_efficient_fp16=False
+min_lr=1e-09
+seed=19
+===== RESULTS =====
+en-ne | 4.52
+en-si | 0.81
+ne-en | 7.80
+si-en | 6.44
 ```
 
 #### BPE=7500
