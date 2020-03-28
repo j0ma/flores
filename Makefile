@@ -8,23 +8,62 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+exp23:
+
+	# NOTE: run this target in branch bpe7500
+	# Random seed = 19 due to COVID-19 crisis :/
+
+	# 0. create log & checkpoint folder
+	bash ./create_log_folder.sh "exp23-bpe7500"
+	bash ./create_checkpoint_folder.sh "exp23-bpe7500"
+
+	# 1. Train NE - EN
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 19 7500
+
+	# 2. Train EN - NE
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 19 7500
+
+	# 3. Train SI - EN
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 19 7500
+
+	# 4. Train EN - SI
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 19 7500
+
+	# 5. create results folder
+	bash ./create_results_folder.sh "exp23-bpe7500"
+
+	# 6. Evaluate NE - EN
+	bash ./evaluate.sh "ne" "en"
+
+	# 7. Evaluate EN - NE
+	bash ./evaluate.sh "en" "ne"
+
+	# 8. Evaluate SI - EN
+	bash ./evaluate.sh "si" "en"
+
+	# 9. Evaluate EN - SI
+	bash ./evaluate.sh "en" "si"
+
 exp22:
+
+	# NOTE: run this target in branch bpe2500
+	# Random seed = 19 due to COVID-19 crisis :/
 
 	# 0. create log & checkpoint folder
 	bash ./create_log_folder.sh "exp22-bpe2500"
 	bash ./create_checkpoint_folder.sh "exp22-bpe2500"
 
 	# 1. Train NE - EN
-	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 19
+	bash ./train_fp16_cn0.1_customseed.sh "ne" "en" 19 2500
 
 	# 2. Train EN - NE
-	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 19
+	bash ./train_fp16_cn0.1_customseed.sh "en" "ne" 19 2500
 
 	# 3. Train SI - EN
-	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 19
+	bash ./train_fp16_cn0.1_customseed.sh "si" "en" 19 2500
 
 	# 4. Train EN - SI
-	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 19
+	bash ./train_fp16_cn0.1_customseed.sh "en" "si" 19 2500
 
 	# 5. create results folder
 	bash ./create_results_folder.sh "exp22-bpe2500"

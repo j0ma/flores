@@ -1,6 +1,7 @@
 # this script is only for MANUAL evaluation, 
 # of a given experiment, ie. the log folder must 
-# be provided as $1
+# be provided as $1 along with an optional slug representing
+# the experiment name given as $2
 
 evaluate_fairseq () {
     SRC_LANG=$1
@@ -34,8 +35,7 @@ evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
     LOG_FOLDER=$3
-    BPE_SIZE=2500
-
+    BPE_SIZE=$4
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
     # create path for log file
@@ -69,10 +69,14 @@ evaluate () {
 
 }
 
-echo "Creating results folder..."
-bash ./create_results_folder.sh
+LOG_PATH=$1
+SLUG=$2
+BPE_SIZE=$3
 
-evaluate "ne" "en" $1
-evaluate "en" "ne" $1
-evaluate "si" "en" $1
-evaluate "en" "si" $1
+echo "Creating results folder..."
+bash ./create_results_folder.sh $SLUG
+
+evaluate "ne" "en" $LOG_PATH $BPE_SIZE
+evaluate "en" "ne" $LOG_PATH $BPE_SIZE
+evaluate "si" "en" $LOG_PATH $BPE_SIZE
+evaluate "en" "si" $LOG_PATH $BPE_SIZE

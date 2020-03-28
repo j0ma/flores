@@ -28,8 +28,8 @@ evaluate_fairseq () {
 evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
+    BPE_SIZE=$3
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
-    BPE_SIZE=2500
 
     # create path for log file
     RESULTS_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
@@ -56,4 +56,4 @@ evaluate () {
 
 }
 
-evaluate $1 $2
+evaluate $1 $2 $3
