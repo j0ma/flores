@@ -8,6 +8,16 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+exp25:
+
+	# Abstract all of this into a separate script
+	bash ./train_fp16_cn0.1_seeds10to19.sh "exp25-bpe2500" 7500
+
+exp24:
+
+	# Abstract all of this into a separate script
+	bash ./train_fp16_cn0.1_seeds10to19.sh "exp24-bpe2500" 2500
+
 exp23:
 
 	# NOTE: run this target in branch bpe7500
