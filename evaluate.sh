@@ -29,6 +29,14 @@ evaluate () {
     SRC_LANG=$1
     TGT_LANG=$2
     BPE_SIZE=$3
+
+    if [ -z $BPE_SIZE ]
+    then
+        BPE_SIZE=5000
+    fi
+
+    echo "BPE size is: "$BPE_SIZE
+
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
     # create path for log file

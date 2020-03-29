@@ -38,6 +38,8 @@ evaluate () {
     BPE_SIZE=$4
     RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
 
+    echo "BPE size is: "$BPE_SIZE
+
     # create path for log file
     RESULTS_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
     RESULTS_OUTPUT_PATH="$RESULTS_DIR/$RESULTS_FILE"
@@ -72,6 +74,11 @@ evaluate () {
 LOG_PATH=$1
 SLUG=$2
 BPE_SIZE=$3
+
+if [ -z $BPE_SIZE ]
+then
+    BPE_SIZE=5000
+fi
 
 echo "Creating results folder..."
 bash ./create_results_folder.sh $SLUG

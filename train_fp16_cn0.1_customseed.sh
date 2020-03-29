@@ -40,11 +40,16 @@ train () {
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
     BPE_SIZE=$4
 
+    if [ -z $BPE_SIZE ]
+    then
+        BPE_SIZE=5000
+    fi
+
     # create path for log file
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
     LOG_OUTPUT_PATH="$LOG_DIR/$LOG_FILE"
 
-    echo "================ FLORES BASELINE WITH CLIP_NORM=0.1 AND SEED=$RAND_SEED  ================" >> $LOG_OUTPUT_PATH
+    echo "================ FLORES BASELINE WITH CLIP_NORM=0.1, BPE=$BPE_SIZE AND SEED=$RAND_SEED  ================" >> $LOG_OUTPUT_PATH
     echo "About to train the supervised for the following language pair: "$SRC_LANG_CAP"-"$TGT_LANG_CAP >> $LOG_OUTPUT_PATH
     echo "Logging output to: $LOG_OUTPUT_PATH"
 
