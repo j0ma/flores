@@ -11,7 +11,7 @@ download:
 exp25:
 
 	# Abstract all of this into a separate script
-	bash ./train_fp16_cn0.1_seeds10to19.sh "exp25-bpe2500" 7500
+	bash ./train_fp16_cn0.1_seeds10to19.sh "exp25-bpe7500" 7500
 
 exp24:
 
