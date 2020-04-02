@@ -9,7 +9,14 @@
 SRC=si
 TGT=en
 
-BPESIZE=5000
+BPESIZE=$1
+if [ -z $BPESIZE ]
+then
+    BPESIZE=5000
+fi
+
+echo "BPE size = "$BPESIZE
+
 TRAIN_MINLEN=6  # remove sentences with <6 BPE tokens
 TRAIN_MAXLEN=250  # remove sentences with >250 BPE tokens
 
