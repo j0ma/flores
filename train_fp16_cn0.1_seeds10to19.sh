@@ -30,15 +30,15 @@ do
     bash ./create_results_folder.sh $SLUG
 
     # 6. Evaluate NE - EN
-    bash ./evaluate.sh "ne" "en"
+    bash ./evaluate.sh "ne" "en" $BPE_SIZE
 
     # 7. Evaluate EN - NE
-    bash ./evaluate.sh "en" "ne"
+    bash ./evaluate.sh "en" "ne" $BPE_SIZE
 
     # 8. Evaluate SI - EN
-    bash ./evaluate.sh "si" "en"
+    bash ./evaluate.sh "si" "en" $BPE_SIZE
 
     # 9. Evaluate EN - SI
-    bash ./evaluate.sh "en" "si"
+    bash ./evaluate.sh "en" "si" $BPE_SIZE
 
 done
