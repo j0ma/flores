@@ -5,7 +5,19 @@
 BASE_SLUG=$1
 BPE_SIZE=$2
 
-for SEED in $(seq 10 19);
+FROM_SEED=$3
+if [ -z $FROM_SEED ]
+then
+    FROM_SEED=10
+fi
+
+TO_SEED=$4
+if [ -z $TO_SEED ]
+then
+    TO_SEED=19
+fi
+
+for SEED in $(seq $FROM_SEED $TO_SEED);
 do
 
     SLUG=$BASE_SLUG"-seed"$SEED
