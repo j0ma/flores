@@ -1,8 +1,8 @@
 from collections import defaultdict
 import pandas as pd
+import click
 import re
 
-INPUT_PATH = 'evaluate/seed_results'
 
 def load_seed_results(p):
     results = defaultdict(list)
@@ -25,8 +25,11 @@ def load_seed_results(p):
 
     return raw, agg, agg2
 
-if __name__ == '__main__':
-
+@click.command()
+@click.option('--input_file', 
+              help='File to load experimental results from.', 
+              default='evaluate/seed_results')
+def main(input_file):    
     reported = pd.Series(
         {
             'en-ne': 4.3,
@@ -36,7 +39,7 @@ if __name__ == '__main__':
         }
     )
 
-    raw, agg, agg2 = load_seed_results(INPUT_PATH)
+    raw, agg, agg2 = load_seed_results(input_file)
 
     print('### Raw results')
     print(raw)
@@ -56,3 +59,5 @@ if __name__ == '__main__':
     print('\n### Fraction of overestimates')
     print(((raw - reported) > 0).mean(axis=0))
 
+if __name__ == '__main__':
+    main()

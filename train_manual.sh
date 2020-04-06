@@ -1,4 +1,4 @@
-# For loop from train_fp16_cn0.1_seeds10to19.sh
+# For loop from train_fp16_cn0.1_custom_seed_range.sh
 
 BASE_SLUG=$1
 BPE_SIZE=$2
