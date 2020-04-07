@@ -5,7 +5,75 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
+### Random seeds & different BPE settings
+
+#### BPE=2500
+
+```
+### Raw results
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     4.42   1.64   7.59   6.69
+11     4.33   1.04   7.56   6.43
+12     4.51   1.28   7.51   6.42
+13     4.44   0.93   7.46   6.35
+14     4.40   1.65   7.50   6.54
+15     4.60   1.86   7.15   6.33
+16     4.34   1.49   7.63   6.37
+17     4.64   1.53   7.75   6.39
+18     4.52   1.41   7.52   7.10
+19     4.39   1.72   7.60   6.48
+
+### Summary statistics
+        mean    std    25%    50%    75%
+en-ne  4.459  0.105  4.392  4.430  4.518
+en-si  1.455  0.297  1.312  1.510  1.647
+ne-en  7.527  0.156  7.502  7.540  7.597
+si-en  6.510  0.233  6.375  6.425  6.525
+
+### Confidence interval
+        mean    std     lb     ub
+en-ne  4.459  0.105  4.249  4.669
+en-si  1.455  0.297  0.861  2.049
+ne-en  7.527  0.156  7.215  7.839
+si-en  6.510  0.233  6.044  6.976
+```
+
+#### BPE=5000
+
+```
+### Raw results
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     4.29   1.00   7.83   6.90
+11     4.54   1.41   7.33   6.42
+12     4.61   1.12   7.91   6.56
+13     4.52   0.95   7.76   6.70
+14     4.53   1.37   7.89   6.61
+15     4.57   1.42   7.81   6.47
+16     4.55   1.49   7.61   6.45
+17     4.42   1.07   7.82   6.36
+18     4.58   1.51   7.84   6.95
+19     4.52   0.81   7.80   6.44
+
+### Summary statistics
+        mean    std    25%    50%    75%
+en-ne  4.513  0.093  4.520  4.535  4.565
+en-si  1.215  0.253  1.018  1.245  1.418
+ne-en  7.760  0.172  7.770  7.815  7.838
+si-en  6.586  0.205  6.442  6.515  6.678
+
+### Confidence interval
+        mean    std     lb     ub
+en-ne  4.513  0.093  4.327  4.699
+en-si  1.215  0.253  0.709  1.721
+ne-en  7.760  0.172  7.416  8.104
+si-en  6.586  0.205  6.176  6.996
+```
+
 ### Exploring different settings for BPE
+
+- Note: all settings with `seed=10`
 
 | Lang. pair | Reported |  BPE=2500   |  BPE=5000   |  BPE=7500  |
 |------------|----------|-------------|-------------|------------|
