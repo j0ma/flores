@@ -26,9 +26,8 @@ def load_seed_results(p):
     return raw, agg, agg2
 
 @click.command()
-@click.option('--input_file', 
-              help='File to load experimental results from.', 
-              default='seed-results-bpe5000')
+@click.option('--input_file', required=True,
+              help='File to load experimental results from.')
 def main(input_file):    
     reported = pd.Series(
         {
