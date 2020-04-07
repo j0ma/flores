@@ -104,6 +104,7 @@ python $SPM_TRAIN \
   --character_coverage=1.0 \
   --model_type=bpe
 
+
 # encode source side train/valid/test 
 python $SPM_ENCODE \
     --model $DATABIN/sentencepiece.$SRC.bpe.model \
@@ -115,8 +116,23 @@ for SPLIT in "valid" "test"; do \
     python $SPM_ENCODE \
         --model $DATABIN/sentencepiece.$SRC.bpe.model \
         --output_format=piece \
-        --inputs $TMP/$SPLIT.$SRC 
+        --inputs $TMP/$SPLIT.$SRC \
         --outputs $TMP/$SPLIT.bpe.$SRC 
+done
+
+# encode target side train/valid/test 
+python $SPM_ENCODE \
+    --model $DATABIN/sentencepiece.$TGT.bpe.model \
+    --output_format=piece \
+    --inputs $TMP/train.$TGT \
+    --outputs $TMP/train.bpe.$TGT \
+    --min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+for SPLIT in "valid" "test"; do \
+    python $SPM_ENCODE \
+        --model $DATABIN/sentencepiece.$TGT.bpe.model \
+        --output_format=piece \
+        --inputs $TMP/$SPLIT.$TGT \
+        --outputs $TMP/$SPLIT.bpe.$TGT 
 done
 
 # binarize data

@@ -118,7 +118,7 @@ for SPLIT in "valid" "test"; do \
     python $SPM_ENCODE \
         --model $DATABIN/sentencepiece.$SRC.bpe.model \
         --output_format=piece \
-        --inputs $TMP/$SPLIT.$SRC 
+        --inputs $TMP/$SPLIT.$SRC \
         --outputs $TMP/$SPLIT.bpe.$SRC 
 done
 
@@ -133,7 +133,7 @@ for SPLIT in "valid" "test"; do \
     python $SPM_ENCODE \
         --model $DATABIN/sentencepiece.$TGT.bpe.model \
         --output_format=piece \
-        --inputs $TMP/$SPLIT.$TGT 
+        --inputs $TMP/$SPLIT.$TGT \
         --outputs $TMP/$SPLIT.bpe.$TGT 
 done
 
