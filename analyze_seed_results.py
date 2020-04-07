@@ -28,7 +28,7 @@ def load_seed_results(p):
 @click.command()
 @click.option('--input_file', 
               help='File to load experimental results from.', 
-              default='evaluate/seed_results')
+              default='seed-results-bpe5000')
 def main(input_file):    
     reported = pd.Series(
         {
