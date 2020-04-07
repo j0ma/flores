@@ -140,7 +140,19 @@ done
 # binarize data
 fairseq-preprocess \
   --source-lang $SRC --target-lang $TGT \
-  --trainpref $TMP/train.bpe --validpref $TMP/valid.bpe --testpref $TMP/test.bpe \
+  --trainpref $TMP/train.bpe.$SRC \
+  --validpref $TMP/valid.bpe.$SRC \
+  --testpref $TMP/test.bpe.$SRC \
+  --destdir $DATABIN \
+  --joined-dictionary \
+  --workers 4
+
+# binarize data
+fairseq-preprocess \
+  --source-lang $SRC --target-lang $TGT \
+  --trainpref $TMP/train.bpe.$TGT \
+  --validpref $TMP/valid.bpe.$TGT \
+  --testpref $TMP/test.bpe.$TGT \
   --destdir $DATABIN \
   --joined-dictionary \
   --workers 4
