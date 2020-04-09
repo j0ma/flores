@@ -17,29 +17,31 @@ then
     TO_SEED=19
 fi
 
-TRAIN_SCRIPT="./train_fp16_cn0.1_customseed.sh "
-EVAL_SCRIPT="./evaluate.sh"
+CUDA_DEVICE=$5
+
+TRAIN_SCRIPT="./train_fp16_cn0.1_customseed_nonjoint.sh "
+EVAL_SCRIPT="./evaluate_nonjoint.sh"
 
 for SEED in $(seq $FROM_SEED $TO_SEED);
 do
 
-    SLUG=$BASE_SLUG"-seed"$SEED
+    SLUG=$BASE_SLUG"-seed"$SEED"-nonjoint"
 
     # 0. create log & checkpoint folder
     bash ./create_log_folder.sh $SLUG
     bash ./create_checkpoint_folder.sh $SLUG
 
     # 1. Train NE - EN
-    bash $TRAIN_SCRIPT "ne" "en" $SEED $BPE_SIZE
+    bash $TRAIN_SCRIPT "ne" "en" $SEED $BPE_SIZE $CUDA_DEVICE
 
     # 2. Train EN - NE
-    bash $TRAIN_SCRIPT "en" "ne" $SEED $BPE_SIZE
+    bash $TRAIN_SCRIPT "en" "ne" $SEED $BPE_SIZE $CUDA_DEVICE
 
     # 3. Train SI - EN
-    bash $TRAIN_SCRIPT "si" "en" $SEED $BPE_SIZE
+    bash $TRAIN_SCRIPT "si" "en" $SEED $BPE_SIZE $CUDA_DEVICE
 
     # 4. Train EN - SI
-    bash $TRAIN_SCRIPT "en" "si" $SEED $BPE_SIZE
+    bash $TRAIN_SCRIPT "en" "si" $SEED $BPE_SIZE $CUDA_DEVICE
 
     # 5. create results folder
     bash ./create_results_folder.sh $SLUG

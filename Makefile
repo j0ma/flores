@@ -8,6 +8,11 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+exp26:
+
+	# Testing non-joint BPE with BPE=5000
+	bash ./train_fp16_cn0.1_custom_seed_range_nonjoint.sh "exp26-bpe5000" 5000
+
 exp25:
 
 	# Abstract all of this into a separate script
