@@ -9,6 +9,55 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
+### Odd error messages for non-joint bpe
+
+```
+./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint
+./checkpoints/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint
+
+CUDA device is: 1
+Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_ne_en.log
+CUDA device is: 1
+Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_en_ne.log
+Traceback (most recent call last):
+  File "/home/jonne/miniconda3/envs/flores/bin/fairseq-train", line 8, in <module>
+    sys.exit(cli_main())
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 333, in cli_main
+    main(args)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 70, in main
+    extra_state, epoch_itr = checkpoint_utils.load_checkpoint(args, trainer)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/checkpoint_utils.py", line 140, in load_checkpoint
+    epoch=0, load_dataset=True, **passthrough_args
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/trainer.py", line 283, in get_train_iterator
+    epoch=epoch,
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/tasks/fairseq_task.py", line 145, in get_batch_iterator
+    indices = dataset.ordered_indices()
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/data/language_pair_dataset.py", line 273, in ordered_indices
+    indices = indices[np.argsort(self.tgt_sizes[indices], kind='mergesort')]
+IndexError: index 563856 is out of bounds for axis 0 with size 563853
+
+CUDA device is: 1
+Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_si_en.log
+CUDA device is: 1
+Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_en_si.log
+Traceback (most recent call last):
+  File "/home/jonne/miniconda3/envs/flores/bin/fairseq-train", line 8, in <module>
+    sys.exit(cli_main())
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 333, in cli_main
+    main(args)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 70, in main
+    extra_state, epoch_itr = checkpoint_utils.load_checkpoint(args, trainer)
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/checkpoint_utils.py", line 140, in load_checkpoint
+    epoch=0, load_dataset=True, **passthrough_args
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/trainer.py", line 283, in get_train_iterator
+    epoch=epoch,
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/tasks/fairseq_task.py", line 145, in get_batch_iterator
+    indices = dataset.ordered_indices()
+  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/data/language_pair_dataset.py", line 273, in ordered_indices
+    indices = indices[np.argsort(self.tgt_sizes[indices], kind='mergesort')]
+IndexError: index 427496 is out of bounds for axis 0 with size 421307
+```
+
 ### Random seeds & different BPE settings
 
 #### BPE=2500
