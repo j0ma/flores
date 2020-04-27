@@ -11,6 +11,9 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### Odd error messages for non-joint bpe
 
+In the case of running non-joint prep script, seems like somehow the source/target datasets end up being of different length,
+and the source dict is smaller
+
 ```
 ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint
 ./checkpoints/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint
