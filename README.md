@@ -13,7 +13,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 **EDIT: 5/12/2020**
 
-After running:
+After running this inside the `$TMP` folder of `prepare-neen-nonjoint.sh`:
 
 ```
 for kind in train valid test
@@ -43,7 +43,7 @@ size of test.bpe.en: 2835 test.bpe.en
 size of test.en: 2835 test.en
 ```
 
-which seems to imple that `valid` and `test` files have the correct size, but when segmenting with BPE, lines are lost:
+which seems to imple that `valid` and `test` files have the correct size, but when segmenting `train` with BPE, lines are lost:
 - `train.ne => train.bpe.ne`: 563947 - 563853 = 94 lines lost
 - `train.en => train.bpe.en`: 563947 - 563860 = 87 lines lost
 
