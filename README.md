@@ -11,6 +11,76 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### Odd error messages for non-joint bpe
 
+**EDIT: 5/12/2020**
+
+After running:
+
+```
+for kind in train valid test
+do
+  for lang in ne en
+  do
+    echo "size of ${kind}.bpe.${lang}: "$(wc -l $kind.bpe.$lang) 
+    echo "size of ${kind}.${lang}: "$(wc -l $kind.$lang)
+  done
+done
+```
+
+I get:
+
+```
+size of train.bpe.ne: 563853 train.bpe.ne
+size of train.ne: 563947 train.ne
+size of train.bpe.en: 563860 train.bpe.en
+size of train.en: 563947 train.en
+size of valid.bpe.ne: 2559 valid.bpe.ne
+size of valid.ne: 2559 valid.ne
+size of valid.bpe.en: 2559 valid.bpe.en
+size of valid.en: 2559 valid.en
+size of test.bpe.ne: 2835 test.bpe.ne
+size of test.ne: 2835 test.ne
+size of test.bpe.en: 2835 test.bpe.en
+size of test.en: 2835 test.en
+```
+
+which seems to imple that `valid` and `test` files have the correct size, but when segmenting with BPE, lines are lost:
+- `train.ne => train.bpe.ne`: 563947 - 563853 = 94 lines lost
+- `train.en => train.bpe.en`: 563947 - 563860 = 87 lines lost
+
+In the "Encode with BPE" output for source:
+
+```
+processed 10000 lines
+processed 20000 lines
+[...]
+processed 550000 lines
+processed 560000 lines
+skipped 0 empty lines
+filtered 94 lines
+skipped 0 empty lines
+filtered 0 lines
+skipped 0 empty lines
+filtered 0 lines
+```
+
+and for target:
+
+```
+processed 540000 lines
+processed 550000 lines
+processed 560000 lines
+skipped 0 empty lines
+filtered 87 lines
+skipped 0 empty lines
+filtered 0 lines
+skipped 0 empty lines
+filtered 0 lines
+```
+
+**Question:** where is this filtering behavior coming from?
+
+---
+
 In the case of running non-joint prep script, seems like somehow the source/target datasets end up being of different length,
 and the source dict is smaller
 
