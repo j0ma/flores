@@ -17,7 +17,7 @@ fi
 
 echo "BPE size = "$BPESIZE
 
-TRAIN_MINLEN=6  # remove sentences with <6 BPE tokens
+TRAIN_MINLEN=1  # remove sentences with <1 BPE token
 TRAIN_MAXLEN=250  # remove sentences with >250 BPE tokens
 
 ROOT=$(dirname "$0")
@@ -30,7 +30,7 @@ mkdir -p $TMP $DATABIN
 SRC_TOKENIZER="bash $SCRIPTS/indic_norm_tok.sh $SRC"
 TGT_TOKENIZER="cat"  # learn target-side BPE over untokenized (raw) text
 SPM_TRAIN=$SCRIPTS/spm_train.py
-SPM_ENCODE=$SCRIPTS/spm_encode.py
+SPM_ENCODE=$SCRIPTS/spm_encode_nonjoint.py
 
 URLS=(
     "https://github.com/facebookresearch/flores/raw/master/data/wikipedia_en_ne_si_test_sets.tgz"
@@ -104,35 +104,23 @@ python $SPM_TRAIN \
   --character_coverage=1.0 \
   --model_type=bpe
 
-
-# encode source side train/valid/test 
+    #--model $DATABIN/sentencepiece.$SRC.bpe.model \
+# encode source & target side train/valid/test 
 python $SPM_ENCODE \
-    --model $DATABIN/sentencepiece.$SRC.bpe.model \
+    --inputs $TMP/train.$SRC $TMP/train.$TGT \
+    --outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
     --output_format=piece \
-    --inputs $TMP/train.$SRC \
-    --outputs $TMP/train.bpe.$SRC \
+    --model_src $DATABIN/sentencepiece.$SRC.bpe.model \
+    --model_tgt $DATABIN/sentencepiece.$TGT.bpe.model \
     --min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
 for SPLIT in "valid" "test"; do \
     python $SPM_ENCODE \
-        --model $DATABIN/sentencepiece.$SRC.bpe.model \
+        --model_src $DATABIN/sentencepiece.$SRC.bpe.model \
+        --model_tgt $DATABIN/sentencepiece.$TGT.bpe.model \
         --output_format=piece \
-        --inputs $TMP/$SPLIT.$SRC \
-        --outputs $TMP/$SPLIT.bpe.$SRC 
-done
+        --inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+        --outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
 
-# encode target side train/valid/test 
-python $SPM_ENCODE \
-    --model $DATABIN/sentencepiece.$TGT.bpe.model \
-    --output_format=piece \
-    --inputs $TMP/train.$TGT \
-    --outputs $TMP/train.bpe.$TGT \
-    --min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
-for SPLIT in "valid" "test"; do \
-    python $SPM_ENCODE \
-        --model $DATABIN/sentencepiece.$TGT.bpe.model \
-        --output_format=piece \
-        --inputs $TMP/$SPLIT.$TGT \
-        --outputs $TMP/$SPLIT.bpe.$TGT 
 done
 
 # binarize data
