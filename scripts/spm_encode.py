@@ -46,11 +46,26 @@ def main():
         raise NotImplementedError
 
     if args.min_len is not None or args.max_len is not None:
+        print('Detected active length constraints')
+        print('Min length: {}'.format(args.min_len))
+        print('Max length: {}'.format(args.max_len))
         def valid(line):
-            return (
-                (args.min_len is None or len(line) >= args.min_len)
-                and (args.max_len is None or len(line) <= args.max_len)
-            )
+            cond1 = (args.min_len is None or len(line) >= args.min_len)
+            if not cond1:
+                print('Line is too short!')
+                print('Actual length: {}'.format(len(line)))
+                print('Min allowed: {}'.format(args.min_len))
+
+            cond2 = (args.max_len is None or len(line) <= args.max_len)
+            if not cond2:
+                print('Line is too long!')
+                print('Actual length: {}'.format(len(line)))
+                print('Max allowed: {}'.format(args.max_len))
+
+            #if cond1 and cond2:
+            #    print('Length: {}'.format(len(line)))
+
+            return cond1 and cond2
     else:
         def valid(lines):
             return True
@@ -79,6 +94,7 @@ def main():
                 if valid(line):
                     return line
                 else:
+                    #print('filtering invalid line: "{}"'.format(" ".join(line)))
                     stats["num_filtered"] += 1
             else:
                 stats["num_empty"] += 1

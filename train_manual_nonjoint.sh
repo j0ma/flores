@@ -13,17 +13,17 @@ EVAL_SCRIPT="./evaluate_nonjoint.sh"
 bash ./create_log_folder.sh $SLUG
 bash ./create_checkpoint_folder.sh $SLUG
 
-# 1. Train NE - EN
-bash $TRAIN_SCRIPT "ne" "en" $SEED $BPE_SIZE $CUDA_DEVICE
-
-# 2. Train EN - NE
-bash $TRAIN_SCRIPT "en" "ne" $SEED $BPE_SIZE $CUDA_DEVICE
+# 4. Train EN - SI
+bash $TRAIN_SCRIPT "en" "si" $SEED $BPE_SIZE $CUDA_DEVICE
 
 # 3. Train SI - EN
 bash $TRAIN_SCRIPT "si" "en" $SEED $BPE_SIZE $CUDA_DEVICE
 
-# 4. Train EN - SI
-bash $TRAIN_SCRIPT "en" "si" $SEED $BPE_SIZE $CUDA_DEVICE
+# 2. Train EN - NE
+bash $TRAIN_SCRIPT "en" "ne" $SEED $BPE_SIZE $CUDA_DEVICE
+
+# 1. Train NE - EN
+bash $TRAIN_SCRIPT "ne" "en" $SEED $BPE_SIZE $CUDA_DEVICE
 
 # 5. create results folder
 bash ./create_results_folder.sh $SLUG

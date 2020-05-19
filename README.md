@@ -9,6 +9,35 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ## Reproduced results
 
+### Nonjoint BPE experiments
+
+#### BPE=5000
+- seed = 10
+- other settings as with joint bpe
+
+```
+==== RECOVERING RESULTS FOR evaluate/2020-05-19T15-16-04-00-exp26-bpe5000-monday-051820-seed10-nonjoint ====
+===== EVAL & LOG FILES =====
+Eval file: evaluate/2020-05-19T15-16-04-00-exp26-bpe5000-monday-051820-seed10-nonjoint/baseline_ne_en.log
+Log file: ./log/2020-05-18T19-54-04-00-exp26-bpe5000/baseline_ne_en.log
+===== HYPERPARAMETERS =====
+head: cannot open './log/2020-05-18T19-54-04-00-exp26-bpe5000/baseline_ne_en.log' for reading: No such file or directory
+===== RESULTS =====
+en-ne | 4.06
+en-si | 1.15
+ne-en | 7.17
+si-en | 6.49
+```
+
+Recall joint bpe:
+```
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     4.42   1.64   7.59   6.69
+```
+
+Training time: 19.366 hours
+
 ### Odd error messages for non-joint bpe
 
 **EDIT: 5/12/2020**
