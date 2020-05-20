@@ -6,6 +6,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 #### Notes
 - target-side bpe learned from untokenized text.
     - what about trying to tokenize?
+- Makefile doesn't work / is not in use as of 5/19/20
 
 ## Reproduced results
 

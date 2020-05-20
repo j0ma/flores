@@ -39,12 +39,6 @@ do
     # 2. Train EN - NE
     bash $TRAIN_SCRIPT "en" "ne" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
 
-    # 3. Train SI - EN
-    bash $TRAIN_SCRIPT "si" "en" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
-
-    # 4. Train EN - SI
-    bash $TRAIN_SCRIPT "en" "si" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
-
     # 5. create results folder
     RESULTS_FOLDER=$(bash ./create_results_folder.sh $SLUG)
     echo $RESULTS_FOLDER
@@ -54,11 +48,5 @@ do
 
     # 7. Evaluate EN - NE
     bash $EVAL_SCRIPT "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
-
-    # 8. Evaluate SI - EN
-    bash $EVAL_SCRIPT "si" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
-
-    # 9. Evaluate EN - SI
-    bash $EVAL_SCRIPT "en" "si" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
 
 done

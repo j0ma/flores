@@ -3,35 +3,39 @@
 BASE_SLUG=$1
 BPE_SIZE=$2
 SEED=$3
+CUDA_DEVICE=$4
 SLUG=$BASE_SLUG"-seed"$SEED
 
 # 0. create log & checkpoint folder
-bash ./create_log_folder.sh $SLUG
-bash ./create_checkpoint_folder.sh $SLUG
+LOG_FOLDER=$(bash ./create_log_folder.sh $SLUG)
+CHECKPOINT_FOLDER=$(bash ./create_checkpoint_folder.sh $SLUG)
+echo $LOG_FOLDER
+echo $CHECKPOINT_FOLDER
 
 # 1. Train NE - EN
-bash ./train_fp16_cn0.1_customseed.sh "ne" "en" $SEED $BPE_SIZE
+bash ./train_fp16_cn0.1_customseed.sh "ne" "en" $SEED $BPE_SIZE $CUDA_DEVICE  $LOG_FOLDER $CHECKPOINT_FOLDER
 
 # 2. Train EN - NE
-bash ./train_fp16_cn0.1_customseed.sh "en" "ne" $SEED $BPE_SIZE
+bash ./train_fp16_cn0.1_customseed.sh "en" "ne" $SEED $BPE_SIZE $CUDA_DEVICE  $LOG_FOLDER $CHECKPOINT_FOLDER
 
 # 3. Train SI - EN
-bash ./train_fp16_cn0.1_customseed.sh "si" "en" $SEED $BPE_SIZE
+bash ./train_fp16_cn0.1_customseed.sh "si" "en" $SEED $BPE_SIZE $CUDA_DEVICE  $LOG_FOLDER $CHECKPOINT_FOLDER
 
 # 4. Train EN - SI
-bash ./train_fp16_cn0.1_customseed.sh "en" "si" $SEED $BPE_SIZE
+bash ./train_fp16_cn0.1_customseed.sh "en" "si" $SEED $BPE_SIZE $CUDA_DEVICE  $LOG_FOLDER $CHECKPOINT_FOLDER
 
 # 5. create results folder
-bash ./create_results_folder.sh $SLUG
+RESULTS_FOLDER=$(bash ./create_results_folder.sh $SLUG)
+echo $RESULTS_FOLDER
 
 # 6. Evaluate NE - EN
-bash ./evaluate.sh "ne" "en" $BPE_SIZE
+bash ./evaluate.sh "ne" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
 
 # 7. Evaluate EN - NE
-bash ./evaluate.sh "en" "ne" $BPE_SIZE
+bash ./evaluate.sh "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
 
 # 8. Evaluate SI - EN
-bash ./evaluate.sh "si" "en" $BPE_SIZE
+bash ./evaluate.sh "si" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
 
 # 9. Evaluate EN - SI
-bash ./evaluate.sh "en" "si" $BPE_SIZE
+bash ./evaluate.sh "en" "si" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER

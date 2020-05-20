@@ -35,10 +35,13 @@ train () {
     SRC_LANG=$1
     TGT_LANG=$2
     RAND_SEED=$3
-    LOG_DIR="./log/"$(ls -t ./log | head -1)
+    #LOG_DIR="./log/"$(ls -t ./log | head -1)
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
     BPE_SIZE=$4
+    CUDA_DEVICE=$5
+    LOG_DIR=$6
+    CHECKPOINT_DIR=$7
 
     if [ -z $BPE_SIZE ]
     then
@@ -54,9 +57,9 @@ train () {
     echo "Logging output to: $LOG_OUTPUT_PATH"
 
     # create path to checkpoint directory
-    TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
-    CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
-    echo "Checkpoint directory unset! Setting to default value..." >> $LOG_OUTPUT_PATH 
+    #TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
+    #CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
+    #echo "Checkpoint directory unset! Setting to default value..." >> $LOG_OUTPUT_PATH 
     echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'" >> $LOG_OUTPUT_PATH
     echo "Creating checkpoint directory if it doesn't exist..." >> $LOG_OUTPUT_PATH
     mkdir -p $CHECKPOINT_DIR
@@ -79,5 +82,5 @@ train () {
     echo "Time at end: "$(date) >> $LOG_OUTPUT_PATH
 }
 
-train $1 $2 $3 $4
+train $1 $2 $3 $4 $5 $6 $7
 
