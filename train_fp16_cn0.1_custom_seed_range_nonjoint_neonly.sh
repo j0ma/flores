@@ -28,6 +28,7 @@ do
     SLUG=$BASE_SLUG"-seed"$SEED"-nonjoint"
 
     # 0. create log & checkpoint folder
+    echo "First we must create log and checkpoint folders"
     LOG_FOLDER=$(bash ./create_log_folder.sh $SLUG)
     CHECKPOINT_FOLDER=$(bash ./create_checkpoint_folder.sh $SLUG)
     echo $LOG_FOLDER

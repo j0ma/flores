@@ -91,5 +91,5 @@ train () {
     echo "Time at end: "$(date) >> $LOG_OUTPUT_PATH
 }
 
-train $1 $2 $3 $4 $5
+train $1 $2 $3 $4 $5 $6 $7
 
