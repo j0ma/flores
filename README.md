@@ -39,129 +39,7 @@ seed
 
 Training time: 19.366 hours
 
-### Odd error messages for non-joint bpe
-
-**EDIT: 5/12/2020**
-
-After running this inside the `$TMP` folder of `prepare-neen-nonjoint.sh`:
-
-```
-for kind in train valid test
-do
-  for lang in ne en
-  do
-    echo "size of ${kind}.bpe.${lang}: "$(wc -l $kind.bpe.$lang) 
-    echo "size of ${kind}.${lang}: "$(wc -l $kind.$lang)
-  done
-done
-```
-
-I get:
-
-```
-size of train.bpe.ne: 563853 train.bpe.ne
-size of train.ne: 563947 train.ne
-size of train.bpe.en: 563860 train.bpe.en
-size of train.en: 563947 train.en
-size of valid.bpe.ne: 2559 valid.bpe.ne
-size of valid.ne: 2559 valid.ne
-size of valid.bpe.en: 2559 valid.bpe.en
-size of valid.en: 2559 valid.en
-size of test.bpe.ne: 2835 test.bpe.ne
-size of test.ne: 2835 test.ne
-size of test.bpe.en: 2835 test.bpe.en
-size of test.en: 2835 test.en
-```
-
-which seems to imple that `valid` and `test` files have the correct size, but when segmenting `train` with BPE, lines are lost:
-- `train.ne => train.bpe.ne`: 563947 - 563853 = 94 lines lost
-- `train.en => train.bpe.en`: 563947 - 563860 = 87 lines lost
-
-In the "Encode with BPE" output for source:
-
-```
-processed 10000 lines
-processed 20000 lines
-[...]
-processed 550000 lines
-processed 560000 lines
-skipped 0 empty lines
-filtered 94 lines
-skipped 0 empty lines
-filtered 0 lines
-skipped 0 empty lines
-filtered 0 lines
-```
-
-and for target:
-
-```
-processed 540000 lines
-processed 550000 lines
-processed 560000 lines
-skipped 0 empty lines
-filtered 87 lines
-skipped 0 empty lines
-filtered 0 lines
-skipped 0 empty lines
-filtered 0 lines
-```
-
-**Question:** where is this filtering behavior coming from?
-
----
-
-In the case of running non-joint prep script, seems like somehow the source/target datasets end up being of different length,
-and the source dict is smaller
-
-```
-./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint
-./checkpoints/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint
-
-CUDA device is: 1
-Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_ne_en.log
-CUDA device is: 1
-Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_en_ne.log
-Traceback (most recent call last):
-  File "/home/jonne/miniconda3/envs/flores/bin/fairseq-train", line 8, in <module>
-    sys.exit(cli_main())
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 333, in cli_main
-    main(args)
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 70, in main
-    extra_state, epoch_itr = checkpoint_utils.load_checkpoint(args, trainer)
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/checkpoint_utils.py", line 140, in load_checkpoint
-    epoch=0, load_dataset=True, **passthrough_args
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/trainer.py", line 283, in get_train_iterator
-    epoch=epoch,
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/tasks/fairseq_task.py", line 145, in get_batch_iterator
-    indices = dataset.ordered_indices()
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/data/language_pair_dataset.py", line 273, in ordered_indices
-    indices = indices[np.argsort(self.tgt_sizes[indices], kind='mergesort')]
-IndexError: index 563856 is out of bounds for axis 0 with size 563853
-
-CUDA device is: 1
-Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_si_en.log
-CUDA device is: 1
-Logging output to: ./log/2020-04-08T13-15-04-00-exp26-bpe5000-seed10-nonjoint/baseline_en_si.log
-Traceback (most recent call last):
-  File "/home/jonne/miniconda3/envs/flores/bin/fairseq-train", line 8, in <module>
-    sys.exit(cli_main())
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 333, in cli_main
-    main(args)
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq_cli/train.py", line 70, in main
-    extra_state, epoch_itr = checkpoint_utils.load_checkpoint(args, trainer)
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/checkpoint_utils.py", line 140, in load_checkpoint
-    epoch=0, load_dataset=True, **passthrough_args
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/trainer.py", line 283, in get_train_iterator
-    epoch=epoch,
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/tasks/fairseq_task.py", line 145, in get_batch_iterator
-    indices = dataset.ordered_indices()
-  File "/home/jonne/miniconda3/envs/flores/lib/python3.7/site-packages/fairseq/data/language_pair_dataset.py", line 273, in ordered_indices
-    indices = indices[np.argsort(self.tgt_sizes[indices], kind='mergesort')]
-IndexError: index 427496 is out of bounds for axis 0 with size 421307
-```
-
-### Random seeds & different BPE settings
+### Random seeds with joint BPE
 
 #### BPE=2500
 
@@ -181,23 +59,51 @@ seed
 19     4.39   1.72   7.60   6.48
 
 ### Summary statistics
-        mean    std    25%    50%    75%
-en-ne  4.459  0.105  4.392  4.430  4.518
-en-si  1.455  0.297  1.312  1.510  1.647
-ne-en  7.527  0.156  7.502  7.540  7.597
-si-en  6.510  0.233  6.375  6.425  6.525
+       count   mean    std    25%    50%    75%
+en-ne   10.0  4.459  0.105  4.392  4.430  4.518
+en-si   10.0  1.455  0.297  1.312  1.510  1.647
+ne-en   10.0  7.527  0.156  7.502  7.540  7.597
+si-en   10.0  6.510  0.233  6.375  6.425  6.525
 
 ### Confidence interval
-        mean    std     lb     ub
-en-ne  4.459  0.105  4.249  4.669
-en-si  1.455  0.297  0.861  2.049
-ne-en  7.527  0.156  7.215  7.839
-si-en  6.510  0.233  6.044  6.976
+        mean    std  std_err     lb     ub
+en-ne  4.459  0.105    0.033  4.393  4.525
+en-si  1.455  0.297    0.094  1.267  1.643
+ne-en  7.527  0.156    0.049  7.428  7.626
+si-en  6.510  0.233    0.074  6.363  6.657
+
+### Reported results
+en-ne    4.3
+ne-en    7.6
+en-si    1.2
+si-en    7.2
+dtype: float64
+
+### Difference from reported
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     0.12   0.44  -0.01  -0.51
+11     0.03  -0.16  -0.04  -0.77
+12     0.21   0.08  -0.09  -0.78
+13     0.14  -0.27  -0.14  -0.85
+14     0.10   0.45  -0.10  -0.66
+15     0.30   0.66  -0.45  -0.87
+16     0.04   0.29   0.03  -0.83
+17     0.34   0.33   0.15  -0.81
+18     0.22   0.21  -0.08  -0.10
+19     0.09   0.52   0.00  -0.72
+
+### Fraction of overestimates
+en-ne    1.0
+en-si    0.8
+ne-en    0.2
+si-en    0.0
 ```
 
 #### BPE=5000
 
 ```
+
 ### Raw results
       en-ne  en-si  ne-en  si-en
 seed                            
@@ -213,23 +119,111 @@ seed
 19     4.52   0.81   7.80   6.44
 
 ### Summary statistics
-        mean    std    25%    50%    75%
-en-ne  4.513  0.093  4.520  4.535  4.565
-en-si  1.215  0.253  1.018  1.245  1.418
-ne-en  7.760  0.172  7.770  7.815  7.838
-si-en  6.586  0.205  6.442  6.515  6.678
+       count   mean    std    25%    50%    75%
+en-ne   10.0  4.513  0.093  4.520  4.535  4.565
+en-si   10.0  1.215  0.253  1.018  1.245  1.418
+ne-en   10.0  7.760  0.172  7.770  7.815  7.838
+si-en   10.0  6.586  0.205  6.442  6.515  6.678
 
 ### Confidence interval
-        mean    std     lb     ub
-en-ne  4.513  0.093  4.327  4.699
-en-si  1.215  0.253  0.709  1.721
-ne-en  7.760  0.172  7.416  8.104
-si-en  6.586  0.205  6.176  6.996
+        mean    std  std_err     lb     ub
+en-ne  4.513  0.093    0.029  4.454  4.572
+en-si  1.215  0.253    0.080  1.055  1.375
+ne-en  7.760  0.172    0.054  7.651  7.869
+si-en  6.586  0.205    0.065  6.456  6.716
+
+### Reported results
+en-ne    4.3
+ne-en    7.6
+en-si    1.2
+si-en    7.2
+dtype: float64
+
+### Difference from reported
+      en-ne  en-si  ne-en  si-en
+seed                            
+10    -0.01  -0.20   0.23  -0.30
+11     0.24   0.21  -0.27  -0.78
+12     0.31  -0.08   0.31  -0.64
+13     0.22  -0.25   0.16  -0.50
+14     0.23   0.17   0.29  -0.59
+15     0.27   0.22   0.21  -0.73
+16     0.25   0.29   0.01  -0.75
+17     0.12  -0.13   0.22  -0.84
+18     0.28   0.31   0.24  -0.25
+19     0.22  -0.39   0.20  -0.76
+
+### Fraction of overestimates
+en-ne    0.9
+en-si    0.5
+ne-en    0.9
+si-en    0.0
+dtype: float64
+```
+
+#### BPE = 7500
+
+```
+### Raw results
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     4.57   1.07   7.52   7.40
+11     4.51   1.00   7.38   6.69
+12     4.55   0.88   7.26   6.66
+13     4.58   0.84   7.74   6.88
+14     4.54   1.26   7.31   6.79
+15     4.51   0.74   7.26   6.96
+16     4.58   1.18   7.76   6.76
+17     4.24   1.32   7.43   6.85
+18     4.45   1.12   7.47   6.65
+19     4.44   1.32   7.44   6.98
+
+### Summary statistics
+       count   mean    std    25%    50%    75%
+en-ne   10.0  4.497  0.103  4.465  4.525  4.565
+en-si   10.0  1.073  0.205  0.910  1.095  1.240
+ne-en   10.0  7.457  0.177  7.328  7.435  7.507
+si-en   10.0  6.862  0.222  6.708  6.820  6.940
+
+### Confidence interval
+        mean    std  std_err     lb     ub
+en-ne  4.497  0.103    0.033  4.432  4.562
+en-si  1.073  0.205    0.065  0.943  1.203
+ne-en  7.457  0.177    0.056  7.345  7.569
+si-en  6.862  0.222    0.070  6.722  7.002
+
+### Reported results
+en-ne    4.3
+ne-en    7.6
+en-si    1.2
+si-en    7.2
+dtype: float64
+
+### Difference from reported
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     0.27  -0.13  -0.08   0.20
+11     0.21  -0.20  -0.22  -0.51
+12     0.25  -0.32  -0.34  -0.54
+13     0.28  -0.36   0.14  -0.32
+14     0.24   0.06  -0.29  -0.41
+15     0.21  -0.46  -0.34  -0.24
+16     0.28  -0.02   0.16  -0.44
+17    -0.06   0.12  -0.17  -0.35
+18     0.15  -0.08  -0.13  -0.55
+19     0.14   0.12  -0.16  -0.22
+
+### Fraction of overestimates
+en-ne    0.9
+en-si    0.3
+ne-en    0.2
+si-en    0.1
+dtype: float64
 ```
 
 ### Exploring different settings for BPE
 
-- Note: all settings with `seed=10`
+- Note: all settings with `seed=19`
 
 | Lang. pair | Reported |  BPE=2500   |  BPE=5000   |  BPE=7500  |
 |------------|----------|-------------|-------------|------------|
@@ -316,36 +310,6 @@ si-en | 6.98
     - using `recover_results.sh`, created `evaluate/seed_results` which contains all the results for all the seed settings
     - wrote a parsing / analysis script `analyze_seed_results.py` that produces the tables below
         - interestingly it seems like there is more variability between seeds for the `en-si` / `si-en` pairs than `ne-en` / `en-ne`.
-
-```
-### Raw results
-      en-ne  en-si  ne-en  si-en
-seed                            
-10     4.29   1.00   7.83   6.90
-11     4.54   1.41   7.33   6.42
-12     4.61   1.12   7.91   6.56
-13     4.52   0.95   7.76   6.70
-14     4.53   1.37   7.89   6.61
-15     4.57   1.42   7.81   6.47
-16     4.55   1.49   7.61   6.45
-17     4.42   1.07   7.82   6.36
-18     4.58   1.51   7.84   6.95
-19     4.52   0.81   7.80   6.44
-
-### Summary statistics
-        mean    std    25%    50%    75%
-en-ne  4.513  0.093  4.520  4.535  4.565
-en-si  1.215  0.253  1.018  1.245  1.418
-ne-en  7.760  0.172  7.770  7.815  7.838
-si-en  6.586  0.205  6.442  6.515  6.678
-
-### Confidence interval
-        mean    std     lb     ub
-en-ne  4.513  0.093  4.327  4.699
-en-si  1.215  0.253  0.709  1.721
-ne-en  7.760  0.172  7.416  8.104
-si-en  6.586  0.205  6.176  6.996
-```
 
 ### Recap before random seed experiments
 
