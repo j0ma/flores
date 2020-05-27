@@ -44,6 +44,7 @@ train () {
     CUDA_DEVICE=$5
     LOG_DIR=$6
     CHECKPOINT_DIR=$7
+    CHECKPOINT_DIR="${CHECKPOINT_DIR}/checkpoints_${SRC_LANG}_${TGT_LANG}"
 
     if [ -z $CUDA_DEVICE ]
     then

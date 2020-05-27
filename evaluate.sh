@@ -32,6 +32,7 @@ evaluate () {
     BPE_SIZE=$3
     CUDA_DEVICE=$4
     RESULTS_DIR=$5
+    CHECKPOINT_DIR=$6
 
     if [ -z $CUDA_DEVICE ]
     then
@@ -57,8 +58,8 @@ evaluate () {
     echo "Saving output to: $RESULTS_OUTPUT_PATH"
 
     # infer checkpoint directory
-    TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
-    CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
+    #TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
+    #CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
     CHECKPOINT_PATH=$CHECKPOINT_DIR"/checkpoint_best.pt"
     echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
@@ -76,4 +77,4 @@ evaluate () {
 
 }
 
-evaluate $1 $2 $3 $4 $5
+evaluate $1 $2 $3 $4 $5 $6
