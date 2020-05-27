@@ -1,5 +1,6 @@
 from collections import defaultdict
 import pandas as pd
+import numpy as np
 import click
 import re
 
@@ -18,10 +19,13 @@ def load_seed_results(p):
             results[lang_pair].append(float(result))
 
     raw = pd.DataFrame(results).set_index('seed')
-    agg = raw.describe().loc[['mean', 'std', '25%', '50%', '75%']].T.round(3)
+    agg = raw.describe().loc[['count','mean', 'std', '25%', '50%', '75%']].T.round(3)
     agg2 = agg[['mean', 'std']].copy()
-    agg2['lb'] = agg2['mean'] - 2*agg2['std']
-    agg2['ub'] = agg2['mean'] + 2*agg2['std']
+    agg2['std_err'] = agg2['std']/np.sqrt(agg['count'].copy())
+    agg2['lb'] = agg2['mean'] - 2*agg2['std_err']
+    agg2['ub'] = agg2['mean'] + 2*agg2['std_err']
+    agg = agg.round(3)
+    agg2 = agg2.round(3)
 
     return raw, agg, agg2
 
