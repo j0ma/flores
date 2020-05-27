@@ -7,6 +7,7 @@ My main reason for forking was to create training and evaluation scripts that ar
 - target-side bpe learned from untokenized text.
     - what about trying to tokenize?
 - Makefile doesn't work / is not in use as of 5/19/20
+- exp26 and exp27 refer pretty much to the same thing, i simply jumbled up the naming
 
 ## Reproduced results
 
