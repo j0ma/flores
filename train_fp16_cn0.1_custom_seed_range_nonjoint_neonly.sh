@@ -28,6 +28,7 @@ do
     SLUG=$BASE_SLUG"-seed"$SEED"-nonjoint"
 
     # 0. create log & checkpoint folder
+    echo "First we must create log and checkpoint folders"
     LOG_FOLDER=$(bash ./create_log_folder.sh $SLUG)
     CHECKPOINT_FOLDER=$(bash ./create_checkpoint_folder.sh $SLUG)
     echo $LOG_FOLDER
@@ -44,9 +45,9 @@ do
     echo $RESULTS_FOLDER
 
     # 6. Evaluate NE - EN
-    bash $EVAL_SCRIPT "ne" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
+    bash $EVAL_SCRIPT "ne" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
     # 7. Evaluate EN - NE
-    bash $EVAL_SCRIPT "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
+    bash $EVAL_SCRIPT "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
 done

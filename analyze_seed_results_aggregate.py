@@ -14,7 +14,7 @@ def process(r, bpe):
     return r
 
 @click.command()
-@click.option('--input_pattern', default='evaluate/seed-experiment-results/raw/seed-results-bpe*')
+@click.option('--input_pattern', default='evaluate/seed-experiment-results/joint/raw/seed-results-bpe*')
 @click.option('--output_file')
 @click.option('--save', is_flag=True, default=False)
 def main(input_pattern, output_file, save):

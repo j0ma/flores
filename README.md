@@ -7,27 +7,72 @@ My main reason for forking was to create training and evaluation scripts that ar
 - target-side bpe learned from untokenized text.
     - what about trying to tokenize?
 - Makefile doesn't work / is not in use as of 5/19/20
+- exp26 and exp27 refer pretty much to the same thing, i simply jumbled up the naming
 
 ## Reproduced results
 
 ### Nonjoint BPE experiments
 
 #### BPE=5000
-- seed = 10
 - other settings as with joint bpe
 
 ```
-==== RECOVERING RESULTS FOR evaluate/2020-05-19T15-16-04-00-exp26-bpe5000-monday-051820-seed10-nonjoint ====
-===== EVAL & LOG FILES =====
-Eval file: evaluate/2020-05-19T15-16-04-00-exp26-bpe5000-monday-051820-seed10-nonjoint/baseline_ne_en.log
-Log file: ./log/2020-05-18T19-54-04-00-exp26-bpe5000/baseline_ne_en.log
-===== HYPERPARAMETERS =====
-head: cannot open './log/2020-05-18T19-54-04-00-exp26-bpe5000/baseline_ne_en.log' for reading: No such file or directory
-===== RESULTS =====
-en-ne | 4.06
-en-si | 1.15
-ne-en | 7.17
-si-en | 6.49
+### Raw results
+      en-ne  en-si  ne-en  si-en
+seed                            
+10     4.06   1.15   7.17   6.49
+11     4.14   0.70   7.08   6.10
+12     4.30   0.81   6.43   6.28
+13     4.29   1.29   7.03   6.22
+14     4.42   0.95   6.73   6.14
+15     4.06   1.00   7.16   6.14
+16     4.37   0.93   7.26   6.28
+17     4.26   1.12   6.97   6.14
+18     4.61   1.01   7.30   6.35
+19     4.34   1.20   7.07   6.13
+
+### Summary statistics
+       count   mean    std    25%    50%    75%
+en-ne   10.0  4.285  0.169  4.170  4.295  4.362
+en-si   10.0  1.016  0.180  0.935  1.005  1.142
+ne-en   10.0  7.020  0.262  6.985  7.075  7.167
+si-en   10.0  6.227  0.124  6.140  6.180  6.280
+
+### Confidence interval
+        mean    std  std_err     lb     ub
+en-ne  4.285  0.169    0.053  4.178  4.392
+en-si  1.016  0.180    0.057  0.902  1.130
+ne-en  7.020  0.262    0.083  6.854  7.186
+si-en  6.227  0.124    0.039  6.149  6.305
+
+### Reported results
+en-ne    4.3
+ne-en    7.6
+en-si    1.2
+si-en    7.2
+dtype: float64
+
+### Difference from reported
+      en-ne  en-si  ne-en  si-en
+seed                            
+10    -0.24  -0.05  -0.43  -0.71
+11    -0.16  -0.50  -0.52  -1.10
+12     0.00  -0.39  -1.17  -0.92
+13    -0.01   0.09  -0.57  -0.98
+14     0.12  -0.25  -0.87  -1.06
+15    -0.24  -0.20  -0.44  -1.06
+16     0.07  -0.27  -0.34  -0.92
+17    -0.04  -0.08  -0.63  -1.06
+18     0.31  -0.19  -0.30  -0.85
+19     0.04   0.00  -0.53  -1.07
+
+### Fraction of overestimates
+en-ne    0.4
+en-si    0.1
+ne-en    0.0
+si-en    0.0
+dtype: float64
+
 ```
 
 Recall joint bpe:
@@ -36,8 +81,6 @@ Recall joint bpe:
 seed                            
 10     4.42   1.64   7.59   6.69
 ```
-
-Training time: 19.366 hours
 
 ### Random seeds with joint BPE
 

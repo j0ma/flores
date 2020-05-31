@@ -51,15 +51,15 @@ do
     echo $RESULTS_FOLDER
 
     # 6. Evaluate NE - EN
-    bash ./evaluate.sh "ne" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
+    bash ./evaluate.sh "ne" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
     # 7. Evaluate EN - NE
-    bash ./evaluate.sh "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
+    bash ./evaluate.sh "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
     # 8. Evaluate SI - EN
-    bash ./evaluate.sh "si" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
+    bash ./evaluate.sh "si" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
     # 9. Evaluate EN - SI
-    bash ./evaluate.sh "en" "si" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER
+    bash ./evaluate.sh "en" "si" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
 done

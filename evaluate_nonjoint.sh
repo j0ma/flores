@@ -15,7 +15,7 @@ evaluate_fairseq () {
             --gen-subset test \
             --remove-bpe=sentencepiece # note: no sacrebleu here
     else
-        fairseq-generate \
+        CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-generate \
             $DATA_DIR \
             --source-lang $SRC_LANG --target-lang $TGT_LANG \
             --path $CHECKPOINT_PATH \
@@ -32,6 +32,7 @@ evaluate () {
     BPE_SIZE=$3
     CUDA_DEVICE=$4
     RESULTS_DIR=$5
+    CHECKPOINT_DIR=$6
 
     if [ -z $CUDA_DEVICE ]
     then
@@ -47,8 +48,9 @@ evaluate () {
 
     if [ -z $RESULTS_DIR ]
     then
-	RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
+        RESULTS_DIR="./evaluate/"$(ls -t ./evaluate | head -1)
     fi
+    mkdir -p $RESULTS_DIR
 
     # create path for log file
     RESULTS_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
@@ -75,4 +77,13 @@ evaluate () {
 
 }
 
-evaluate $1 $2 $3 $4 $5
+"""
+    SRC_LANG=$1
+    TGT_LANG=$2
+    BPE_SIZE=$3
+    CUDA_DEVICE=$4
+    RESULTS_DIR=$5
+    CHECKPOINT_DIR=$6
+"""
+
+evaluate $1 $2 $3 $4 $5 $6
