@@ -13,6 +13,66 @@ My main reason for forking was to create training and evaluation scripts that ar
 
 ### Nonjoint BPE experiments
 
+#### BPE=2500
+
+```
+### Raw results
+      en-ne  ne-en  en-si  si-en
+seed                            
+10     4.17   6.66   0.86   5.87
+11     4.29   6.57   1.01   6.08
+12     4.33   6.99   1.06   5.88
+13     4.18   6.98   1.18   5.78
+14     4.25   6.72   1.48   5.89
+15     4.26   6.79   1.36   5.79
+16     4.22   7.06   0.98   6.18
+17     4.49   7.11   1.29   5.56
+18     4.20   6.53   1.47   6.21
+19     4.21   6.54   1.43   5.83
+
+### Summary statistics
+       count   mean    std    25%    50%    75%
+en-ne   10.0  4.260  0.095  4.203  4.235  4.283
+ne-en   10.0  6.795  0.224  6.592  6.755  6.988
+en-si   10.0  1.212  0.225  1.022  1.235  1.412
+si-en   10.0  5.907  0.199  5.800  5.875  6.033
+
+### Confidence interval
+        mean    std  std_err     lb     ub
+en-ne  4.260  0.095    0.030  4.200  4.320
+ne-en  6.795  0.224    0.071  6.653  6.937
+en-si  1.212  0.225    0.071  1.070  1.354
+si-en  5.907  0.199    0.063  5.781  6.033
+
+### Reported results
+en-ne    4.3
+ne-en    7.6
+en-si    1.2
+si-en    7.2
+dtype: float64
+
+### Difference from reported
+      en-ne  ne-en  en-si  si-en
+seed                            
+10    -0.13  -0.94  -0.34  -1.33
+11    -0.01  -1.03  -0.19  -1.12
+12     0.03  -0.61  -0.14  -1.32
+13    -0.12  -0.62  -0.02  -1.42
+14    -0.05  -0.88   0.28  -1.31
+15    -0.04  -0.81   0.16  -1.41
+16    -0.08  -0.54  -0.22  -1.02
+17     0.19  -0.49   0.09  -1.64
+18    -0.10  -1.07   0.27  -0.99
+19    -0.09  -1.06   0.23  -1.37
+
+### Fraction of overestimates
+en-ne    0.2
+ne-en    0.0
+en-si    0.5
+si-en    0.0
+dtype: float64
+```
+
 #### BPE=5000
 - other settings as with joint bpe
 
