@@ -1,7 +1,7 @@
 import os
 import re
 
-dont_delete_these = {'checkpoint_best.pt', 'checkpoint_last.pt'}
+dont_delete_these = {'checkpoint_best.pt', 'checkpoint_last.pt', 'checkpoint90.pt', 'checkpoint100.pt'}
 checkpoint_files = ['./checkpoints/' + folder for folder in os.listdir('checkpoints')]
 for folder in checkpoint_files:
     subfolders = os.listdir(folder)

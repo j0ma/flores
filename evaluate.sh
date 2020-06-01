@@ -60,7 +60,7 @@ evaluate () {
     # infer checkpoint directory
     #TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
     #CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
-    CHECKPOINT_PATH=$CHECKPOINT_DIR"/checkpoint_best.pt"
+    CHECKPOINT_PATH="${CHECKPOINT_DIR}/checkpoints_${SRC_LANG}_${TGT_LANG}/checkpoint_best.pt"
     echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
     # infer data directory

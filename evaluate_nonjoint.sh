@@ -60,7 +60,7 @@ evaluate () {
     # infer checkpoint directory
     #TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
     #CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
-    CHECKPOINT_PATH=$CHECKPOINT_DIR"/checkpoint_best.pt"
+    CHECKPOINT_PATH="${CHECKPOINT_DIR}/checkpoints_${SRC_LANG}_${TGT_LANG}/checkpoint_best.pt"
     echo "CHECKPOINT_PATH is: $CHECKPOINT_PATH";
 
     # infer data directory
@@ -76,14 +76,5 @@ evaluate () {
     evaluate_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_PATH $DATA_DIR $CUDA_DEVICE > $RESULTS_OUTPUT_PATH
 
 }
-
-"""
-    SRC_LANG=$1
-    TGT_LANG=$2
-    BPE_SIZE=$3
-    CUDA_DEVICE=$4
-    RESULTS_DIR=$5
-    CHECKPOINT_DIR=$6
-"""
 
 evaluate $1 $2 $3 $4 $5 $6
