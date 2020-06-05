@@ -1,7 +1,7 @@
 # ad hoc script to evaluate nonjoint seed exp
 
 EVAL_SCRIPT="./evaluate_nonjoint.sh"
-BPE_SIZE=2500
+BPE_SIZE=7500
 CUDA_DEVICE=0
 
 detect_lang () {
