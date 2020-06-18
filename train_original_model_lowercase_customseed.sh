@@ -25,7 +25,7 @@ train_fairseq () {
         --max-tokens 4000 \
 	    --update-freq 4 \
         --max-epoch 100 \
-        --save-interval 10 \
+        --save-interval 30 \
         --save-dir $CHECKPOINT_DIR \
 	    --seed $RAND_SEED
 }
