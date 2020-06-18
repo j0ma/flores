@@ -23,7 +23,7 @@ fi
 CUDA_DEVICE=$5
 
 TRAIN_SCRIPT="./train_original_model_lowercase_customseed.sh "
-EVAL_SCRIPT="./evaluate.sh"
+EVAL_SCRIPT="./evaluate_lowercase.sh"
 
 for SEED in $(seq $FROM_SEED $TO_SEED);
 do
