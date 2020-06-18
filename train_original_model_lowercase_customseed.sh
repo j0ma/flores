@@ -27,7 +27,7 @@ train_fairseq () {
         --max-epoch 100 \
         --save-interval 10 \
         --save-dir $CHECKPOINT_DIR \
-	    --seed $RAND_SEED \
+	    --seed $RAND_SEED
 }
 
 train () {
