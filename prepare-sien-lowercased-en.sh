@@ -6,7 +6,7 @@
 #
 #!/bin/bash
 
-SRC=ne
+SRC=si
 TGT=en
 
 BPESIZE=$1
@@ -17,7 +17,7 @@ fi
 
 echo "BPE size = "$BPESIZE
 
-TRAIN_MINLEN=1  # remove sentences with <1 BPE token
+TRAIN_MINLEN=6  # remove sentences with <6 BPE tokens
 TRAIN_MAXLEN=250  # remove sentences with >250 BPE tokens
 
 ROOT=$(dirname "$0")
@@ -39,16 +39,13 @@ ARCHIVES=(
     "wikipedia_en_ne_si_test_sets.tgz"
 )
 TRAIN_SETS=(
-    "all-clean-ne/bible_dup.en-ne"
-    "all-clean-ne/bible.en-ne"
-    "all-clean-ne/globalvoices.2018q4.ne-en"
-    "all-clean-ne/GNOMEKDEUbuntu.en-ne"
-    "all-clean-ne/nepali-penn-treebank"
+    "all-clean-si/GNOMEKDEUbuntu.en-si"
+    "all-clean-si/OpenSubtitles2018.en-si"
 )
-VALID_SET="wikipedia_en_ne_si_test_sets/wikipedia.dev.ne-en"
-TEST_SET="wikipedia_en_ne_si_test_sets/wikipedia.devtest.ne-en"
+VALID_SET="wikipedia_en_ne_si_test_sets/wikipedia.dev.si-en"
+TEST_SET="wikipedia_en_ne_si_test_sets/wikipedia.devtest.si-en"
 
-if [ ! -d $DATA/all-clean-ne ]; then
+if [ ! -d $DATA/all-clean-si ]; then
     echo "Data directory not found. Please run 'bash download-data.sh' first..."
     exit -1
 fi

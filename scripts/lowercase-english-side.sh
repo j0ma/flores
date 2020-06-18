@@ -14,9 +14,10 @@ cd "${TRAIN_FOLDER}" || exit
 
 for input_file in ./*.en
 do
-    output_file=$(echo "${input_file}" | sed "s/\.en$/\.lower.en/g")
-    echo "${input_file} -> ${output_file}"
+    output_file=$input_file"_new"
     awk '{ print tolower($0) }' \
         < "${input_file}" \
         > "${output_file}"
+    rm "${input_file}"
+    mv "${output_file}" "${input_file}"
 done
