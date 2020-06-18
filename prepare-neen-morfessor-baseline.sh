@@ -120,28 +120,34 @@ $TGT_TOKENIZER $DATA/${TEST_SET}.$TGT > $TMP/test.$TGT
     #--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
 #done
 
-# perform morfessor training and segmentation
+# TODO: add morfessor training here if desired
 
-## download pre-trained binaries for morfessor
+## use pre-trained morfessor models
 TMP_BIN=./morfessor-models/
 mkdir -p $TMP_BIN
 
-for LANG in ne en;
+for KIND in "train" "valid" "test"
 do
-    MF_SEGM_INPUT_FILE=$TMP/train.$LANG
-    MF_SEGM_OUTPUT_FILE=$TMP/train.morfessor-baseline.$LANG
-    MF_SEGM_MODEL_FILE=$TMP_BIN/all-flores-words-$LANG-morfessor-baseline-batch-recursive-$LANG.bin
-    python $SCRIPTS/segment-sentences-morfessor.py \
-        --input-file $MF_SEGM_INPUT_FILE \
-        --output-file $MF_SEGM_OUTPUT_FILE \
-        --model-file $MF_SEGM_MODEL_FILE \
-        --lang $LANG
+    for LANG in ne en;
+    do
+        MF_SEGM_INPUT_FILE=$TMP/$KIND.$LANG
+        MF_SEGM_OUTPUT_FILE=$TMP/$KIND.morfessor-baseline.$LANG
+        MF_SEGM_MODEL_FILE=$TMP_BIN/all-flores-words-$LANG-morfessor-baseline-batch-recursive-$LANG.bin
+        python $SCRIPTS/segment-sentences-morfessor.py \
+            --input-file $MF_SEGM_INPUT_FILE \
+            --output-file $MF_SEGM_OUTPUT_FILE \
+            --model-file $MF_SEGM_MODEL_FILE \
+            --lang $LANG \
+            --lowercase
+    done
 done
 
 # binarize data
 fairseq-preprocess \
   --source-lang $SRC --target-lang $TGT \
-  --trainpref $TMP/train.bpe --validpref $TMP/valid.bpe --testpref $TMP/test.bpe \
+  --trainpref $TMP/"train".morfessor-baseline \
+  --validpref $TMP/"valid".morfessor-baseline \
+  --testpref $TMP/"test".morfessor-baseline \
   --destdir $DATABIN \
   --joined-dictionary \
   --workers 4
