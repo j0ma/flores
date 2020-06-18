@@ -20,6 +20,8 @@ NE_ROOT=$DATA/all-clean-ne
 SI_ROOT=$DATA/all-clean-si
 HI_ROOT=$DATA/all-clean-hi
 
+bash ./download-morfessor-models.sh
+
 mkdir -p $DATA $NE_ROOT $SI_ROOT $HI_ROOT
 
 SI_OPUS_DATASETS=(
