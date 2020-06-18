@@ -20,7 +20,13 @@ NE_ROOT=$DATA/all-clean-ne
 SI_ROOT=$DATA/all-clean-si
 HI_ROOT=$DATA/all-clean-hi
 
-bash ./download-morfessor-models.sh
+if [ -f "./morfessor-models" ]
+then
+    echo "Morfessor models exist already, skipping download..."
+else
+    echo "Downloading Morfessor models..."
+    bash ./download-morfessor-models.sh
+fi
 
 mkdir -p $DATA $NE_ROOT $SI_ROOT $HI_ROOT
 
