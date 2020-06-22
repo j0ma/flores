@@ -1,15 +1,10 @@
 #!/usr/bin/sh
 
-TMP_BIN=./morfessor-models/
-mkdir -p $TMP_BIN
+ZIP_FILE=$1
+if [ -z "${ZIP_FILE}" ]; then
+    ZIP_FILE="morfessor-models.zip"
+fi
+URL_STUB="https://j0ma.keybase.pub/models/"
 
-EN_MODEL="all-flores-words-en-morfessor-baseline-batch-recursive-en.bin"
-NE_MODEL="all-flores-words-ne-morfessor-baseline-batch-recursive-ne.bin"
-SI_MODEL="all-flores-words-si-morfessor-baseline-batch-recursive-si.bin"
+wget "${URL_STUB}/${ZIP_FILE}"
 
-cd $TMP_BIN
-for model in $EN_MODEL $NE_MODEL $SI_MODEL;
-do
-    wget https://j0ma.keybase.pub/models/$model
-done
-cd ..
