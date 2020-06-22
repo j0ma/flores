@@ -89,7 +89,7 @@ $SRC_TOKENIZER $DATA/${TEST_SET}.$SRC > $TMP/test.$SRC
 $TGT_TOKENIZER $DATA/${TEST_SET}.$TGT > $TMP/test.$TGT
 
 # lowercase english side
-$SCRIPTS/lowercase-english-side.sh $TMP
+$SCRIPTS/lowercase.sh $TMP
 
 # learn BPE with sentencepiece
 python $SPM_TRAIN \

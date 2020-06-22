@@ -28,7 +28,7 @@ def load_model(model_file):
     "--include-original", is_flag=True, required=False, default=False
 )
 @click.option("--lowercase", is_flag=True, default=False)
-@click.option("--tokenize", is_flag=True, default=False)
+@click.option("--tokenize", is_flag=True, default=False, help="Tokenize with Sacremoses")
 @click.option("--lang", "-l", help="Language")
 def main(
     input_file, output_file, model_file, include_original, lowercase, tokenize, lang

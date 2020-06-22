@@ -7,4 +7,5 @@ fi
 URL_STUB="https://j0ma.keybase.pub/models/"
 
 wget "${URL_STUB}/${ZIP_FILE}"
-
+unzip "${ZIP_FILE}"
+rm "${ZIP_FILE}"
