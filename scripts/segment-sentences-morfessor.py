@@ -28,15 +28,20 @@ def load_model(model_file):
     "--include-original", is_flag=True, required=False, default=False
 )
 @click.option("--lowercase", is_flag=True, default=False)
+@click.option("--tokenize", is_flag=True, default=False)
 @click.option("--lang", "-l", help="Language")
 def main(
-    input_file, output_file, model_file, include_original, lowercase, lang
+    input_file, output_file, model_file, include_original, lowercase, tokenize, lang
 ):
     sentences = h.read_lines(input_file)
     model = load_model(model_file)
 
-    if lang == "en":
+    # we only tokenize if the language is english and the user explicitly requested it
+
+    if lang == "en" and tokenize:
         tokenizer = sm.MosesTokenizer("en")
+    elif tokenize:
+        raise NotImplementedError("Only EN tokenization supported with Moses!")
     else:
         tokenizer = None
 
