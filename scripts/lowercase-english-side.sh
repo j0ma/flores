@@ -1,6 +1,9 @@
 #!/bin/sh
 
 # lowercase-english-side.sh
+# NOTE: as of 6/22/20 this is not used
+
+# only included here for archival purposes as we ran one experiment with it
 
 TRAIN_FOLDER=$1
 
