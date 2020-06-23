@@ -1,16 +1,25 @@
+#!/bin/bash
+# prepare-sien-all-segmentations.sh
 # Copyright (c) Facebook, Inc. and its affiliates.
 # All rights reserved.
 #
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 #
-#!/bin/bash
+# Description: does ALL preprocessing necessary
+#   - sentencepiece joint / non-joint
+#   - sentencepiece lowercase + joint (vanilla model)
+#   - subword-nmt
+#   - morfessor baseline
+#   - morfessor flatcat
+#   - ataman lmvr
 
+# constants
 SRC=si
 TGT=en
 
 BPESIZE=$1
-if [ -z $BPESIZE ]; then
+if [ -z "$BPESIZE" ]; then
     BPESIZE=5000
 fi
 
@@ -136,6 +145,8 @@ for ((i = 0; i < ${#URLS[@]}; ++i)); do
     fi
 done
 
+bash $SCRIPTS/download_indic.sh
+
 ######################################
 ##   JOINT & NONJOINT SENTENCEPIECE  #
 ##   - these operate on raw text     #
@@ -152,7 +163,6 @@ TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_joint
 DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_joint
 mkdir -p "$TMP" "$DATABIN"
 
-bash $SCRIPTS/download_indic.sh
 echo "Running joint sentencepiece..."
 
 original_preprocessing_loop
@@ -183,7 +193,9 @@ done
 # binarize data
 fairseq-preprocess \
     --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.bpe --validpref $TMP/valid.bpe --testpref $TMP/test.bpe \
+    --trainpref $TMP/train.bpe \
+    --validpref $TMP/valid.bpe \
+    --testpref $TMP/test.bpe \
     --destdir $DATABIN \
     --joined-dictionary \
     --workers 4
@@ -372,6 +384,75 @@ fairseq-preprocess \
     --joined-dictionary \
     --workers 4
 
+###############################################
+#   MOSES TOKENIZATION + MORFESSOR BASELINE   #
+###############################################
+
+echo "###############################################"
+echo "#   MOSES TOKENIZATION + MORFESSOR BASELINE   #"
+echo "###############################################"
+
+# morfessor baseline + moses + lowercase
+TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morfessorbaseline
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morfessorbaseline
+mkdir -p "$TMP" "$DATABIN"
+
+original_preprocessing_loop
+
+## use pre-trained morfessor models
+TMP_BIN=$ROOT/morfessor-models/
+mkdir -p $TMP_BIN
+
+for KIND in "train" "valid" "test"; do
+    for LANGUAGE in si en; do
+
+        moses_pipeline \
+            "$TMP/$KIND.$LANGUAGE" \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$LANGUAGE"
+
+        convert_lowercase \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$TMP/$KIND.$LANGUAGE.tok.lower"
+
+        MF_SEGM_INPUT_FILE=$TMP/$KIND.$LANGUAGE.tok.lower
+        MF_SEGM_OUTPUT_FILE=$TMP/$KIND.morfessor-baseline.$LANGUAGE
+        MF_SEGM_MODEL_FILE=$TMP_BIN/flores.vocab.$LANGUAGE.lowercase-morfessor-baseline-batch-recursive-$LANGUAGE.bin
+        bash "$SCRIPTS/segment.sh" \
+            --input "$MF_SEGM_INPUT_FILE" \
+            --output "$MF_SEGM_OUTPUT_FILE" \
+            --model baseline \
+            --model-binary "$MF_SEGM_MODEL_FILE"
+
+    done
+done
+
+for LANGUAGE in si en; do
+    perl "$MOSES_CLEAN" \
+        -ratio 1.5 \
+        "$TMP/train.morfessor-baseline" \
+        "$SRC" "$TGT" \
+        "$TMP/train.morfessor-baseline.clean" \
+        "$TRAIN_MINLEN" \
+        "$TRAIN_MAXLEN"
+done
+
+for LANGUAGE in si en; do
+    # we don't filter valid or test
+    cp $TMP/valid.morfessor-baseline.$LANGUAGE $TMP/valid.morfessor-baseline.clean.$LANGUAGE
+    cp $TMP/test.morfessor-baseline.$LANGUAGE $TMP/test.morfessor-baseline.clean.$LANGUAGE
+done
+
+# binarize data
+fairseq-preprocess \
+    --source-lang $SRC --target-lang $TGT \
+    --trainpref $TMP/train.morfessor-baseline.clean \
+    --validpref $TMP/valid.morfessor-baseline.clean \
+    --testpref $TMP/test.morfessor-baseline.clean \
+    --destdir $DATABIN \
+    --joined-dictionary \
+    --workers 4
+
 ############################################
 #   MOSES TOKENIZATION + SUBWORD-NMT BPE   #
 ############################################
@@ -442,80 +523,9 @@ fairseq-preprocess \
     --joined-dictionary \
     --workers 4
 
-###############################################
-#   MOSES TOKENIZATION + MORFESSOR BASELINE   #
-###############################################
-
-echo "###############################################"
-echo "#   MOSES TOKENIZATION + MORFESSOR BASELINE   #"
-echo "###############################################"
-
-# morfessor baseline + moses + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morfessorbaseline
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morfessorbaseline
-mkdir -p "$TMP" "$DATABIN"
-
-original_preprocessing_loop
-
-## use pre-trained morfessor models
-TMP_BIN=$ROOT/morfessor-models/
-mkdir -p $TMP_BIN
-
-for KIND in "train" "valid" "test"; do
-    for LANGUAGE in si en; do
-
-        moses_pipeline \
-            "$TMP/$KIND.$LANGUAGE" \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$LANGUAGE"
-
-        convert_lowercase \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$TMP/$KIND.$LANGUAGE.tok.lower"
-
-        MF_SEGM_INPUT_FILE=$TMP/$KIND.$LANGUAGE.tok.lower
-        MF_SEGM_OUTPUT_FILE=$TMP/$KIND.morfessor-baseline.$LANGUAGE
-        MF_SEGM_MODEL_FILE=$TMP_BIN/flores.vocab.$LANGUAGE.lowercase-morfessor-baseline-batch-recursive-$LANGUAGE.bin
-        bash "$SCRIPTS/segment.sh" \
-            --input "$MF_SEGM_INPUT_FILE" \
-            --output "$MF_SEGM_OUTPUT_FILE" \
-            --model baseline \
-            --model-binary "$MF_SEGM_MODEL_FILE"
-
-    done
-done
-
-for LANGUAGE in si en; do
-    perl "$MOSES_CLEAN" \
-        -ratio 1.5 \
-        "$TMP/train.morfessor-baseline" \
-        "$SRC" "$TGT" \
-        "$TMP/train.morfessor-baseline.clean" \
-        "$TRAIN_MINLEN" \
-        "$TRAIN_MAXLEN"
-done
-
-for LANGUAGE in si en; do
-    # we don't filter valid or test
-    cp $TMP/valid.morfessor-baseline.$LANGUAGE $TMP/valid.morfessor-baseline.clean.$LANGUAGE
-    cp $TMP/test.morfessor-baseline.$LANGUAGE $TMP/test.morfessor-baseline.clean.$LANGUAGE
-done
-
-# binarize data
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.morfessor-baseline.clean \
-    --validpref $TMP/valid.morfessor-baseline.clean \
-    --testpref $TMP/test.morfessor-baseline.clean \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
-
 #################################################
 #   MOSES TOKENIZATION + LMVR (Ataman, 2017)    #
 #################################################
 
 echo "LMVR from Ataman (2017) ..."
 echo "Not implemented!"
-
-# lmvr + moses + lowercase

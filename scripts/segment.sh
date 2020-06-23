@@ -124,20 +124,35 @@ for var in "$_arg_input" "$_arg_output" "$_arg_model" "$_arg_model_binary"; do
     validate "$var"
 done
 
+ROOT=$(dirname "$0")
+MF_SEGMENT_COMMAND="python $ROOT/segment-sentences-morfessor.py"
+
 # Set up the segmentation functions
 segment_morfessor_baseline() {
     echo "Segmenting with Morfessor Baseline..."
-    morfessor-segment \
-        -e 'utf-8' -l "$2" \
-        -o "$3" "$1"
+    INPUT_FILE=$1
+    MODEL_BINARY=$2
+    OUTPUT_FILE=$3
+
+    $MF_SEGMENT_COMMAND \
+        -i "$INPUT_FILE" \
+        -o "$OUTPUT_FILE" \
+        -m "$MODEL_BINARY" \
+        --lang foo
 }
 
 segment_flatcat() {
+
+    INPUT_FILE=$1
+    MODEL_BINARY=$2
+    OUTPUT_FILE=$3
+
     echo "Segmenting with Flatcat..."
-    flatcat-segment \
-        -e "utf-8" \
-        -o "$3" \
-        "$2" "$1"
+    $MF_SEGMENT_COMMAND \
+        -i "$INPUT_FILE" \
+        -o "$OUTPUT_FILE" \
+        -m "$MODEL_BINARY" \
+        --lang foo
 }
 
 segment_subword_nmt() {
@@ -146,6 +161,7 @@ segment_subword_nmt() {
     OUTPUT_FILE=$3
     CODES_FILE=$3.codes
     BPE_SIZE=$2
+    LANGUAGE=$4
 
     IS_TRAIN=$(echo $INPUT_FILE | grep "train\.")
     if [ ! -z "$IS_TRAIN" ]; then

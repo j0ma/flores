@@ -30,8 +30,9 @@ def load_model(model_file):
 @click.option("--lowercase", is_flag=True, default=False)
 @click.option("--tokenize", is_flag=True, default=False, help="Tokenize with Sacremoses")
 @click.option("--lang", "-l", help="Language")
+@click.option("--print-every", default=1000)
 def main(
-    input_file, output_file, model_file, include_original, lowercase, tokenize, lang
+    input_file, output_file, model_file, include_original, lowercase, tokenize, lang, print_every=100
 ):
     sentences = h.read_lines(input_file)
     model = load_model(model_file)
@@ -47,7 +48,11 @@ def main(
 
     segmented = []
 
-    for s in sentences:
+    n_sent = len(sentences)
+    for ix, s in enumerate(sentences):
+        if ix % print_every == 0:
+            print(f'Processing sentence {ix+1}/{n_sent}')
+
         if lowercase:
             s = s.lower()
         seg = h.segment_sentence(model, s, tokenizer)
