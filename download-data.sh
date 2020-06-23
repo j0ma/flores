@@ -219,7 +219,7 @@ REMOVE_FILE_PATHS+=($NE_DICT dictionaries)
 
 # Download test sets
 download_data $DATA/wikipedia_en_ne_si_test_sets.tgz "https://github.com/facebookresearch/flores/raw/master/data/wikipedia_en_ne_si_test_sets.tgz"
-REMOVE_FILE_PATHS+=($MOSES $NE_TAGGED original.zip $DATA/nepali-penn-treebank.$SRC.patch $DATA/nepali-penn-treebank.$NE_TGT.patch)
+REMOVE_FILE_PATHS+=($NE_TAGGED original.zip $DATA/nepali-penn-treebank.$SRC.patch $DATA/nepali-penn-treebank.$NE_TGT.patch)
 
 pushd $DATA/
 tar -vxf wikipedia_en_ne_si_test_sets.tgz

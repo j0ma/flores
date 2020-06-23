@@ -141,14 +141,47 @@ segment_flatcat() {
 }
 
 segment_subword_nmt() {
-    subword-nmt learn-bpe \
-        -t -s "$2" \
-        <"$1" \
-        >"$3.codes"
 
+    INPUT_FILE=$1
+    OUTPUT_FILE=$3
+    CODES_FILE=$3.codes
+    BPE_SIZE=$2
+
+    IS_TRAIN=$(echo $INPUT_FILE | grep "train\.")
+    if [ ! -z "$IS_TRAIN" ]; then
+        echo "Training set detected!"
+        echo "BPE Size: $BPE_SIZE"
+        echo "Input: $INPUT_FILE"
+        echo "Codes: $CODES_FILE"
+        echo "Output: $OUTPUT_FILE"
+        echo "Learning BPE with subword-nmt..."
+
+        subword-nmt learn-bpe \
+            -t -s "$BPE_SIZE" \
+            <"$INPUT_FILE" \
+            >"$CODES_FILE"
+    else
+        echo "Not a training set!"
+        echo "Not learning BPE..."
+
+        # we need to grab the correct codes file
+        CODES_FILE=$(
+            echo "$CODES_FILE" |
+                sed "s/valid/train/g" |
+                sed "s/test/train/g"
+        )
+
+        echo "BPE Size: $BPE_SIZE"
+        echo "Input: $INPUT_FILE"
+        echo "Codes: $CODES_FILE"
+        echo "Output: $OUTPUT_FILE"
+    fi
+
+    echo "Applying BPE with subword-nmt..."
     subword-nmt apply-bpe \
-        -c "$3.codes" \
-        <"$1" >"$3"
+        -c "$CODES_FILE" \
+        <"$INPUT_FILE" \
+        >"$OUTPUT_FILE"
 }
 
 segment_lmvr() {
