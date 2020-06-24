@@ -327,7 +327,7 @@ echo "###############################################"
 echo "#   MOSES TOKENIZATION + MORFESSOR FLATCAT    #"
 echo "###############################################"
 
-morfessor flatcat + moses + lowercase
+# morfessor flatcat + moses + lowercase
 TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_flatcat
 DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_flatcat
 mkdir -p "$TMP" "$DATABIN"
