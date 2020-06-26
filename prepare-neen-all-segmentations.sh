@@ -38,6 +38,7 @@ MOSES_LOWERCASE_SCRIPT="$MOSES_SCRIPTS/tokenizer/lowercase.perl"
 MOSES_CLEAN="$MOSES_SCRIPTS/training/clean-corpus-n.perl"
 MOSES_NORM_PUNC="$MOSES_SCRIPTS/tokenizer/normalize-punctuation.perl"
 MOSES_REM_NON_PRINT_CHAR="$MOSES_SCRIPTS/tokenizer/remove-non-printing-char.perl"
+UNESCAPE_HTML_SCRIPT="${SCRIPTS}/unescape_html.py"
 
 original_preprocessing_loop() {
 
@@ -76,7 +77,8 @@ moses_pipeline() {
         cat "$INPUT_FILE" |
             perl "$MOSES_NORM_PUNC" "$LANGUAGE" |
             perl "$MOSES_REM_NON_PRINT_CHAR" |
-            perl "$MOSES_TOKENIZER_SCRIPT" \
+            perl "$MOSES_TOKENIZER_SCRIPT" |
+            python "$UNESCAPE_HTML_SCRIPT" \
                 >"$OUTPUT_FILE"
     else
         cp "$INPUT_FILE" "$OUTPUT_FILE"
