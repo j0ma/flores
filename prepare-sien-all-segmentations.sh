@@ -31,6 +31,10 @@ if [ -z "${MOSES_SCRIPTS}" ]; then
     exit 1
 fi
 
+ROOT=$(dirname "$0")
+SCRIPTS=$ROOT/scripts
+DATA=$ROOT/data
+
 MOSES_TOKENIZER_SCRIPT="$MOSES_SCRIPTS/tokenizer/tokenizer.perl"
 MOSES_DETOKENIZER_SCRIPT="$MOSES_SCRIPTS/tokenizer/detokenizer.perl"
 MOSES_LOWERCASE_SCRIPT="$MOSES_SCRIPTS/tokenizer/lowercase.perl"
@@ -74,6 +78,7 @@ moses_pipeline() {
 
     if [ "$LANGUAGE" == "en" ]; then
         cat "$INPUT_FILE" |
+            sed "s/--/ -- /g" |
             perl "$MOSES_NORM_PUNC" "$LANGUAGE" |
             perl "$MOSES_REM_NON_PRINT_CHAR" |
             perl "$MOSES_TOKENIZER_SCRIPT" |
@@ -98,10 +103,6 @@ convert_lowercase() {
 
 TRAIN_MINLEN=6   # remove sentences with <6 BPE tokens
 TRAIN_MAXLEN=250 # remove sentences with >250 BPE tokens
-
-ROOT=$(dirname "$0")
-SCRIPTS=$ROOT/scripts
-DATA=$ROOT/data
 
 SRC_TOKENIZER="bash $SCRIPTS/indic_norm_tok.sh $SRC" TGT_TOKENIZER="cat" # learn target-side BPE over untokenized (raw) text
 SPM_TRAIN=$SCRIPTS/spm_train.py
