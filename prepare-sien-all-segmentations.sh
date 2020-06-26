@@ -85,7 +85,9 @@ moses_pipeline() {
             python "$UNESCAPE_HTML_SCRIPT" \
                 >"$OUTPUT_FILE"
     else
-        cp "$INPUT_FILE" "$OUTPUT_FILE"
+        cat "$INPUT_FILE" |
+            sed "s/--/ -- /g" \
+                >"$OUTPUT_FILE"
     fi
 }
 
