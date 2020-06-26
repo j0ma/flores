@@ -14,6 +14,7 @@
 #   - morfessor baseline
 #   - morfessor flatcat
 #   - ataman lmvr
+#   - morsel
 
 # constants
 SRC=ne
@@ -537,3 +538,16 @@ fairseq-preprocess \
 
 echo "LMVR from Ataman (2017) ..."
 echo "Not implemented!"
+TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lmvr
+mkdir -p "$TMP" "$DATABIN"
+
+#################################################
+#   MOSES TOKENIZATION + MORSEL (Lignos, 2010)  #
+#################################################
+
+echo "MORSEL from Lignos (2010) ..."
+echo "Not implemented!"
+TMP=$DATA/wiki_${SRC}_${TGT}_morsel
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morsel
+mkdir -p "$TMP" "$DATABIN"

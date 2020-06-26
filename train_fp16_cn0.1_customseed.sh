@@ -5,8 +5,9 @@ train_fairseq() {
     CHECKPOINT_DIR=$3
     DATA_DIR=$4
     RAND_SEED=$5
+    CUDA_DEVICE=$6
 
-    CUDA_VISIBLE_DEVICES=0 fairseq-train \
+    CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-train \
         $DATA_DIR \
         --source-lang $SRC_LANG --target-lang $TGT_LANG \
         --arch transformer --share-all-embeddings \
@@ -72,7 +73,7 @@ train() {
     # actually run the training script and pass in necessary env variable
     echo "Beginning training..." >>$LOG_OUTPUT_PATH
     echo "Time at beginning: "$(date) >>$LOG_OUTPUT_PATH
-    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR $RAND_SEED >>$LOG_OUTPUT_PATH
+    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR $RAND_SEED $CUDA_DEVICE >>$LOG_OUTPUT_PATH
     echo "Done training." >>$LOG_OUTPUT_PATH
     echo "Time at end: "$(date) >>$LOG_OUTPUT_PATH
 }

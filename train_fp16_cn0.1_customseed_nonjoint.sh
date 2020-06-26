@@ -1,4 +1,4 @@
-train_fairseq () {
+train_fairseq() {
 
     SRC_LANG=$1
     TGT_LANG=$2
@@ -23,15 +23,15 @@ train_fairseq () {
         --lr-scheduler inverse_sqrt --warmup-updates 4000 --warmup-init-lr 1e-7 \
         --lr 1e-3 --min-lr 1e-9 \
         --max-tokens 4000 \
-	    --update-freq 4 \
+        --update-freq 4 \
         --max-epoch 100 \
         --save-interval 10 \
         --save-dir $CHECKPOINT_DIR \
-	    --seed $RAND_SEED \
+        --seed $RAND_SEED \
         --fp16
 }
 
-train () {
+train() {
 
     SRC_LANG=$1
     TGT_LANG=$2
@@ -45,15 +45,13 @@ train () {
     CHECKPOINT_DIR=$7
     CHECKPOINT_DIR="${CHECKPOINT_DIR}/checkpoints_${SRC_LANG}_${TGT_LANG}"
 
-    if [ -z $CUDA_DEVICE ]
-    then
+    if [ -z $CUDA_DEVICE ]; then
         CUDA_DEVICE=0
     fi
 
     echo "CUDA device is: "$CUDA_DEVICE
 
-    if [ -z $BPE_SIZE ]
-    then
+    if [ -z $BPE_SIZE ]; then
         BPE_SIZE=5000
     fi
 
@@ -61,35 +59,33 @@ train () {
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
     LOG_OUTPUT_PATH="$LOG_DIR/$LOG_FILE"
 
-    echo "================ FLORES BASELINE WITH CLIP_NORM=0.1, BPE=$BPE_SIZE AND SEED=$RAND_SEED  ================" >> $LOG_OUTPUT_PATH
-    echo "About to train the supervised for the following language pair: "$SRC_LANG_CAP"-"$TGT_LANG_CAP >> $LOG_OUTPUT_PATH
+    echo "================ FLORES BASELINE WITH CLIP_NORM=0.1, BPE=$BPE_SIZE AND SEED=$RAND_SEED  ================" >>$LOG_OUTPUT_PATH
+    echo "About to train the supervised for the following language pair: "$SRC_LANG_CAP"-"$TGT_LANG_CAP >>$LOG_OUTPUT_PATH
     echo "Logging output to: $LOG_OUTPUT_PATH"
 
     # create path to checkpoint directory
     #TIMESTAMP=$(ls -t ./checkpoints/ | head -n 1)
     #CHECKPOINT_DIR="./checkpoints/"$TIMESTAMP"/checkpoints_"$SRC_LANG"_"$TGT_LANG
-    #echo "Checkpoint directory unset! Setting to default value..." >> $LOG_OUTPUT_PATH 
-    echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'" >> $LOG_OUTPUT_PATH
-    echo "Creating checkpoint directory if it doesn't exist..." >> $LOG_OUTPUT_PATH
+    #echo "Checkpoint directory unset! Setting to default value..." >> $LOG_OUTPUT_PATH
+    echo "CHECKPOINT_DIR is set to '$CHECKPOINT_DIR'" >>$LOG_OUTPUT_PATH
+    echo "Creating checkpoint directory if it doesn't exist..." >>$LOG_OUTPUT_PATH
     mkdir -p $CHECKPOINT_DIR
 
     # infer data directory
-    if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ];
-    then
+    if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ]; then
         DATA_DIR="data-bin/wiki_si_en_bpe"$BPE_SIZE"_nonjoint/"
     else
         DATA_DIR="data-bin/wiki_ne_en_bpe"$BPE_SIZE"_nonjoint/"
     fi
-    
-    echo "Data folder is: "$DATA_DIR >> $LOG_OUTPUT_PATH
+
+    echo "Data folder is: "$DATA_DIR >>$LOG_OUTPUT_PATH
 
     # actually run the training script and pass in necessary env variable
-    echo "Beginning training..." >> $LOG_OUTPUT_PATH
-    echo "Time at beginning: "$(date) >> $LOG_OUTPUT_PATH
-    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR $RAND_SEED $CUDA_DEVICE >> $LOG_OUTPUT_PATH
-    echo "Done training." >> $LOG_OUTPUT_PATH
-    echo "Time at end: "$(date) >> $LOG_OUTPUT_PATH
+    echo "Beginning training..." >>$LOG_OUTPUT_PATH
+    echo "Time at beginning: "$(date) >>$LOG_OUTPUT_PATH
+    train_fairseq $SRC_LANG $TGT_LANG $CHECKPOINT_DIR $DATA_DIR $RAND_SEED $CUDA_DEVICE >>$LOG_OUTPUT_PATH
+    echo "Done training." >>$LOG_OUTPUT_PATH
+    echo "Time at end: "$(date) >>$LOG_OUTPUT_PATH
 }
 
 train $1 $2 $3 $4 $5 $6 $7
-
