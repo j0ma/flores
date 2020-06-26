@@ -323,8 +323,8 @@ echo "#   MOSES TOKENIZATION + MORFESSOR FLATCAT    #"
 echo "###############################################"
 
 # morfessor flatcat + moses + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_flatcat
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_flatcat
+TMP=$DATA/wiki_${SRC}_${TGT}_flatcat
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_flatcat
 mkdir -p "$TMP" "$DATABIN"
 
 original_preprocessing_loop
@@ -357,15 +357,16 @@ for KIND in "train" "valid" "test"; do
     done
 done
 
-for LANGUAGE in si en; do
-    perl "$MOSES_CLEAN" \
-        -ratio 1.5 \
-        "$TMP/train.morfessor-flatcat" \
-        "$SRC" "$TGT" \
-        "$TMP/train.morfessor-flatcat.clean" \
-        "$TRAIN_MINLEN" \
-        "$TRAIN_MAXLEN"
-done
+# comment out due to excessive pruning
+#for LANGUAGE in si en; do
+#perl "$MOSES_CLEAN" \
+#-ratio 1.5 \
+#"$TMP/train.morfessor-flatcat" \
+#"$SRC" "$TGT" \
+#"$TMP/train.morfessor-flatcat.clean" \
+#"$TRAIN_MINLEN" \
+#"$TRAIN_MAXLEN"
+#done
 
 # we don't filter valid or test
 
@@ -393,8 +394,8 @@ echo "#   MOSES TOKENIZATION + MORFESSOR BASELINE   #"
 echo "###############################################"
 
 # morfessor baseline + moses + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morfessorbaseline
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morfessorbaseline
+TMP=$DATA/wiki_${SRC}_${TGT}_morfessorbaseline
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_morfessorbaseline
 mkdir -p "$TMP" "$DATABIN"
 
 original_preprocessing_loop
@@ -427,15 +428,16 @@ for KIND in "train" "valid" "test"; do
     done
 done
 
-for LANGUAGE in si en; do
-    perl "$MOSES_CLEAN" \
-        -ratio 1.5 \
-        "$TMP/train.morfessor-baseline" \
-        "$SRC" "$TGT" \
-        "$TMP/train.morfessor-baseline.clean" \
-        "$TRAIN_MINLEN" \
-        "$TRAIN_MAXLEN"
-done
+# comment out due to excessive pruning
+#for LANGUAGE in si en; do
+#perl "$MOSES_CLEAN" \
+#-ratio 1.5 \
+#"$TMP/train.morfessor-baseline" \
+#"$SRC" "$TGT" \
+#"$TMP/train.morfessor-baseline.clean" \
+#"$TRAIN_MINLEN" \
+#"$TRAIN_MAXLEN"
+#done
 
 for LANGUAGE in si en; do
     # we don't filter valid or test
@@ -497,15 +499,16 @@ for KIND in "train" "valid" "test"; do
     done
 done
 
-for LANGUAGE in si en; do
-    perl "$MOSES_CLEAN" \
-        -ratio 1.5 \
-        "$TMP/train.subword-nmt" \
-        "$SRC" "$TGT" \
-        "$TMP/train.subword-nmt.clean" \
-        "$TRAIN_MINLEN" \
-        "$TRAIN_MAXLEN"
-done
+# comment out due to excessive pruning
+#for LANGUAGE in si en; do
+#perl "$MOSES_CLEAN" \
+#-ratio 1.5 \
+#"$TMP/train.subword-nmt" \
+#"$SRC" "$TGT" \
+#"$TMP/train.subword-nmt.clean" \
+#"$TRAIN_MINLEN" \
+#"$TRAIN_MAXLEN"
+#done
 
 for LANGUAGE in si en; do
     # we don't filter valid or test
