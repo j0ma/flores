@@ -2,6 +2,7 @@ init: install download
 
 install:
 	pip install fairseq sacrebleu sentencepiece
+	bash ./scripts/download-lmvr.sh
 
 download:
 	bash download-data.sh
