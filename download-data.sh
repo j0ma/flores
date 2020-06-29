@@ -20,11 +20,11 @@ NE_ROOT=$DATA/all-clean-ne
 SI_ROOT=$DATA/all-clean-si
 HI_ROOT=$DATA/all-clean-hi
 
-if [ -f "./morfessor-models" ]; then
-    echo "Morfessor models exist already, skipping download..."
+if [ -f "./segmentation-models" ]; then
+    echo "Segmentation models exist already, skipping download..."
 else
-    echo "Downloading Morfessor models..."
-    bash ./download-morfessor-models.sh
+    echo "Downloading segmentation models..."
+    bash ./download-segmentation-models.sh
 fi
 
 mkdir -p $DATA $NE_ROOT $SI_ROOT $HI_ROOT
