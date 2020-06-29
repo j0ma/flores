@@ -82,7 +82,7 @@ moses_pipeline() {
             perl "$MOSES_NORM_PUNC" "$LANGUAGE" |
             perl "$MOSES_REM_NON_PRINT_CHAR" |
             perl "$MOSES_TOKENIZER_SCRIPT" |
-            python "$UNESCAPE_HTML_SCRIPT" \
+            perl -C -MHTML::Entities -pe 'decode_entities($_);' \
                 >"$OUTPUT_FILE"
     else
         cat "$INPUT_FILE" |
@@ -336,7 +336,7 @@ mkdir -p "$TMP" "$DATABIN"
 original_preprocessing_loop
 
 ## use pre-trained morfessor models
-TMP_BIN=$ROOT/morfessor-models/
+TMP_BIN=$ROOT/segmentation-models/
 mkdir -p $TMP_BIN
 
 for KIND in "train" "valid" "test"; do
@@ -407,7 +407,7 @@ mkdir -p "$TMP" "$DATABIN"
 original_preprocessing_loop
 
 ## use pre-trained morfessor models
-TMP_BIN=$ROOT/morfessor-models/
+TMP_BIN=$ROOT/segmentation-models/
 mkdir -p $TMP_BIN
 
 for KIND in "train" "valid" "test"; do
@@ -476,7 +476,7 @@ mkdir -p "$TMP" "$DATABIN"
 
 original_preprocessing_loop
 
-TMP_BIN=$ROOT/morfessor-models/
+TMP_BIN=$ROOT/segmentation-models/
 mkdir -p "$TMP_BIN"
 for KIND in "train" "valid" "test"; do
     for LANGUAGE in si en; do

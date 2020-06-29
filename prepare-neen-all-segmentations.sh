@@ -62,6 +62,8 @@ original_preprocessing_loop() {
     $TGT_TOKENIZER $DATA/${VALID_SET}.$TGT >$TMP/valid.$TGT
     $SRC_TOKENIZER $DATA/${TEST_SET}.$SRC >$TMP/test.$SRC
     $TGT_TOKENIZER $DATA/${TEST_SET}.$TGT >$TMP/test.$TGT
+
+    echo 'done!'
 }
 
 moses_pipeline() {
@@ -83,7 +85,7 @@ moses_pipeline() {
             perl "$MOSES_NORM_PUNC" "$LANGUAGE" |
             perl "$MOSES_REM_NON_PRINT_CHAR" |
             perl "$MOSES_TOKENIZER_SCRIPT" |
-            python "$UNESCAPE_HTML_SCRIPT" \
+            perl -C -MHTML::Entities -pe 'decode_entities($_);' \
                 >"$OUTPUT_FILE"
     else
         cat "$INPUT_FILE" |
@@ -341,7 +343,7 @@ mkdir -p "$TMP" "$DATABIN"
 original_preprocessing_loop
 
 # use pre-trained morfessor models
-TMP_BIN=$ROOT/morfessor-models/
+TMP_BIN=$ROOT/segmentation-models/
 mkdir -p $TMP_BIN
 
 for KIND in "train" "valid" "test"; do
@@ -412,7 +414,7 @@ mkdir -p "$TMP" "$DATABIN"
 original_preprocessing_loop
 
 ## use pre-trained morfessor models
-TMP_BIN=$ROOT/morfessor-models/
+TMP_BIN=$ROOT/segmentation-models/
 mkdir -p $TMP_BIN
 
 for KIND in "train" "valid" "test"; do
@@ -481,32 +483,32 @@ mkdir -p "$TMP" "$DATABIN"
 
 original_preprocessing_loop
 
-TMP_BIN=$ROOT/morfessor-models/
-mkdir -p "$TMP_BIN"
-for KIND in "train" "valid" "test"; do
-    for LANGUAGE in ne en; do
+tmp_bin=$root/segmentation-models/
+mkdir -p "$tmp_bin"
+for kind in "train" "valid" "test"; do
+    for language in ne en; do
 
-        # note: in case LANGUAGE != "en",
+        # note: in case language != "en",
         # only copying is performed
 
         moses_pipeline \
-            "$TMP/$KIND.$LANGUAGE" \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$LANGUAGE"
+            "$tmp/$kind.$language" \
+            "$tmp/$kind.$language.tok" \
+            "$language"
 
         convert_lowercase \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$TMP/$KIND.$LANGUAGE.tok.lower"
+            "$tmp/$kind.$language.tok" \
+            "$tmp/$kind.$language.tok.lower"
 
-        SEGM_INPUT_FILE=$TMP/$KIND.$LANGUAGE.tok.lower
-        SEGM_OUTPUT_FILE=$TMP/$KIND.subword-nmt.$LANGUAGE
+        segm_input_file=$tmp/$kind.$language.tok.lower
+        segm_output_file=$tmp/$kind.subword-nmt.$language
 
-        bash "$SCRIPTS/segment.sh" \
-            --input "$SEGM_INPUT_FILE" \
-            --output "$SEGM_OUTPUT_FILE" \
+        bash "$scripts/segment.sh" \
+            --input "$segm_input_file" \
+            --output "$segm_output_file" \
             --model subword-nmt \
             --model-binary none \
-            --bpe-size "$BPESIZE"
+            --bpe-size "$bpesize"
     done
 done
 
@@ -542,10 +544,50 @@ fairseq-preprocess \
 #################################################
 
 echo "LMVR from Ataman (2017) ..."
-echo "Not implemented!"
 TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lmvr
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr
 mkdir -p "$TMP" "$DATABIN"
+
+original_preprocessing_loop
+
+TMP_BIN=$ROOT/segmentation-models/
+mkdir -p "$TMP_BIN"
+
+# activate virtual environment
+echo "activating LMVR virtual environment..."
+if [ -z "$LMVR_ENV_PATH" ]; then
+    source "$(pwd)/scripts/lmvr-environment-variables.sh"
+fi
+source "$LMVR_ENV_PATH/bin/activate"
+
+for KIND in "train" "valid" "test"; do
+    for LANGUAGE in ne en; do
+
+        # note: in case LANGUAGE != "en",
+        # only copying is performed
+
+        moses_pipeline \
+            "$TMP/$KIND.$LANGUAGE" \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$LANGUAGE"
+
+        convert_lowercase \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$TMP/$KIND.$LANGUAGE.tok.lower"
+
+        LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
+        LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
+        LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.lmvr.model.${LANGUAGE}.tar.gz"
+        bash "$SCRIPTS/segment.sh" \
+            --input "${LMVR_INPUT_FILE}" \
+            --output "${LMVR_OUTPUT_FILE}" \
+            --model lmvr \
+            --model-binary "${LMVR_MODEL_FILE}"
+    done
+done
+
+# deactivate the environment
+deactivate
 
 #################################################
 #   MOSES TOKENIZATION + MORSEL (Lignos, 2010)  #
