@@ -159,12 +159,15 @@ parse_commandline "$@"
 
 train_fairseq() {
 
+    # fairseq training with custom clip_norm
+
     SRC_LANG=$1
     TGT_LANG=$2
     CHECKPOINT_DIR=$3
     DATA_DIR=$4
     RAND_SEED=$5
     CUDA_DEVICE=$6
+    CLIP_NORM=$7
 
     CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-train \
         "$DATA_DIR" \
@@ -178,7 +181,8 @@ train_fairseq() {
         --dropout 0.4 --attention-dropout 0.2 --relu-dropout 0.2 \
         --weight-decay 0.0001 \
         --label-smoothing 0.2 --criterion label_smoothed_cross_entropy \
-        --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0.1 \
+        --optimizer adam --adam-betas '(0.9, 0.98)' \
+        --clip-norm "${CLIP_NORM}" \
         --lr-scheduler inverse_sqrt --warmup-updates 4000 --warmup-init-lr 1e-7 \
         --lr 1e-3 --min-lr 1e-9 \
         --max-tokens 4000 \
@@ -264,14 +268,15 @@ train() {
     echo "Beginning training.:.." >>"$LOG_OUTPUT_PATH"
     echo "Time at beginning: $(date)" >>"$LOG_OUTPUT_PATH"
     train_fairseq \
-        "$SRC_LANG" \
-        "$TGT_LANG" \
-        "$CHECKPOINT_DIR" \
-        "$DATA_DIR" \
-        "$RAND_SEED" \
-        "$CUDA_DEVICE" >>"$LOG_OUTPUT_PATH"
-    echo "Done training." >>$"$LOG_OUTPUT_PATH"
-    echo "Time at end: $(date)" >>"$LOG_OUTPUT_PATH"
+        "${SRC_LANG}" \
+        "${TGT_LANG}" \
+        "${CHECKPOINT_DIR}" \
+        "${DATA_DIR}" \
+        "${RAND_SEED}" \
+        "${CUDA_DEVICE}" \
+        "${CLIP_NORM}" >>"${LOG_OUTPUT_PATH}"
+    echo "Done training." >>$"${LOG_OUTPUT_PATH}"
+    echo "Time at end: $(date)" >>"${LOG_OUTPUT_PATH}"
 }
 
 # End of custom functions
@@ -285,7 +290,7 @@ printf 'Value of --%s: %s\n' 'cuda-device' "$_arg_cuda_device"
 printf 'Value of --%s: %s\n' 'clip-norm' "$_arg_clip_norm"
 printf 'Value of --%s: %s\n' 'from-seed' "$_arg_from_seed"
 printf 'Value of --%s: %s\n' 'to-seed' "$_arg_to_seed"
-printf "'%s' is %s\\n" 'fp16' "$_arg_fp16" # TODO: implement non-fp16 training when convenient
+printf "'%s' is %s\\n" 'fp16' "$_arg_fp16"
 
 for SEED in $(seq "$_arg_from_seed" "$_arg_to_seed"); do
 

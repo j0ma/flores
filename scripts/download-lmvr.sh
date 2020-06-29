@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -eo pipefail
-
 ROOT=$(dirname "$0")
 
 # by default, the LMVR will be downloaded to ~/lmvr/lmvr-repo,
@@ -25,3 +24,11 @@ if [ -z "$PYTHON2_EXECUTABLE" ]; then
 fi
 
 virtualenv "$LMVR_ENV_PATH" --python="$PYTHON2_EXECUTABLE"
+
+# install
+cd "$LMVR_PATH"
+source "$LMVR_ENV_PATH/bin/activate"
+python setup.py install
+pip install backports.functools_lru_cache
+pip install click
+deactivate

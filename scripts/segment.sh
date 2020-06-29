@@ -201,9 +201,18 @@ segment_subword_nmt() {
 }
 
 segment_lmvr() {
-    echo "This is segment_lmvr"
-    echo "Implement me!"
-    exit 1
+
+    echo "performing lmvr segmentation..."
+    INPUT_FILE=$1
+    MODEL_BINARY=$2
+    OUTPUT_FILE=$3
+
+    $MF_SEGMENT_COMMAND \
+        -i "$INPUT_FILE" \
+        -o "$OUTPUT_FILE" \
+        -m "$MODEL_BINARY" \
+        --lang foo
+
 }
 
 # Perform segmentation with the correct model

@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*-
 from collections import Counter
-import sacremoses as sm
+#import sacremoses as sm
 import itertools as it
 import morfessor
 import flatcat
 import pickle
 import click
+import sys
 import os
+
+IS_PYTHON2 = sys.version.startswith('2.7')
 
 def train_model(lang, 
         model_name, 
@@ -33,13 +37,14 @@ def train_model(lang,
     segm_output_folder: str
         Path to segmentation output folder
     """
-    model = f"morfessor-{model_name}"
-    output_filename = f"{input_file_name}.segmented.{model}"
-    segmentation_filename = f"{output_filename}.segmentation-only"
+    model = "morfessor-{}".format(model_name)
+    output_filename = "{}.segmented.{}".format(input_file_name, model)
+    segmentation_filename = "{}.segmentation-only".format(output_filename)
     OUTPUT_PATH = os.path.join(segm_output_folder, output_filename)
     SEGM_PATH = os.path.join(segm_output_folder, segmentation_filename)
     
-    print(f'Now running: {model}')
+    print('Now running: {}'.format(model))
+
     if 'flatcat' in model:
         run = lambda mn, ip: run_morfessor_flatcat(mn, ip, construction_separator=construction_separator, lang=lang)
     else:
@@ -48,17 +53,29 @@ def train_model(lang,
     model_bin, words, segmentations = run(model , input_path)
     
     segmentation_counts = Counter(segmentations)
+
     if words is not None and segmentations is not None:
-        output_lines = [f"{w}\t{s}" for w, s in zip(words, segmentations)]
-        segmentation_lines = [f'{segmentation_counts[s]} {s}' for s in segmentations]
+        output_lines = [
+                "{}\t{}".format(w,s) 
+
+                for w, s in zip(words, segmentations)]
+        segmentation_lines = [
+                '{} {}'.format(segmentation_counts[s], s) 
+
+                for s in segmentations]
+
         write_file(output_lines, OUTPUT_PATH)
         write_file(segmentation_lines, SEGM_PATH)
     else:
         print('No segmentations received, not going to write to disk...')
     
     # save model to pickle
+
     if model_bin is not None:
-        bin_path = model_output_path or f"../bin/{input_file_name}-{model}-{lang}.bin"
+        bin_path = (
+            model_output_path or 
+            "../bin/{}-{}-{}.bin".format(input_file_name, model, lang)
+        )
         dump_pickle(model_bin, bin_path)
     else:
         print('No model received, not going to write to disk...')
@@ -76,6 +93,12 @@ def segment_word(model, w):
         out = model.segment(w)
     except (KeyError, AttributeError):
         out = model.viterbi_segment(w)[0]
+
+    if IS_PYTHON2:
+        out = [seg.decode('utf-8').encode('utf-8') for seg in out]
+    else:
+        pass
+
     return out
 
 def segment_sentence(model, sentence, tokenizer=None):
@@ -90,19 +113,21 @@ def segment_sentence(model, sentence, tokenizer=None):
     sentence: str
     tokenizer: object
     """
+
     if tokenizer is not None:
         words = tokenizer.tokenize(sentence)
     else:
         words = sentence.split()
 
     segmentations = flatten([segment_word(model, w) for w in words])
-    return  " ".join(segmentations)
+
+    return " ".join(segmentations)
 
 def run_morfessor_flatcat(model_name, input_path, lang='en', seed_segmentation_path=None, construction_separator=" + ", corpus_weight=1.0):
 
     if seed_segmentation_path is None:
-        _ = f"all-flores-words-{lang}.segmented.morfessor-baseline-batch-recursive.segmentation-only"
-        seed_segmentation_path = os.path.abspath(f'../data/segmented/flores/{lang}/{_}')
+        _ = "all-flores-words-{}.segmented.morfessor-baseline-batch-recursive.segmentation-only".format(lang)
+        seed_segmentation_path = os.path.abspath('../data/segmented/flores/{}/{}'.format(lang, _))
 
     io = flatcat.FlatcatIO(construction_separator=construction_separator)
 
@@ -122,6 +147,7 @@ def run_morfessor_flatcat(model_name, input_path, lang='en', seed_segmentation_p
 
     training_type = 'online' if 'online' in model_name else 'batch'
     print('training type = {}'.format(training_type))
+
     if training_type == 'batch':
         model.train_batch()
     elif training_type == 'online':
