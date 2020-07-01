@@ -16,12 +16,12 @@ def load_model(model_file):
 
     # tarball only used for LMVR
     if model_file.endswith('tar.gz'):
-        io = flatcat.FlatcatIO()
+        io = flatcat.FlatcatIO(encoding='utf-8')
         model = io.read_tarball_model_file(model_file)
         model.initialize_hmm()
 
     else:
-        io = morfessor.MorfessorIO()
+        io = morfessor.MorfessorIO(encoding='utf-8')
         model = io.read_binary_model_file(model_file)
 
     return model
