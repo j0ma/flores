@@ -176,36 +176,36 @@ bash $SCRIPTS/download_indic.sh
 
 ## learn BPE with sentencepiece
 #python $SPM_TRAIN \
-    #--input=$TMP/train.$SRC,$TMP/train.$TGT \
-    #--model_prefix=$DATABIN/sentencepiece.bpe \
-    #--vocab_size=$BPESIZE \
-    #--character_coverage=1.0 \
-    #--model_type=bpe
+#--input=$TMP/train.$SRC,$TMP/train.$TGT \
+#--model_prefix=$DATABIN/sentencepiece.bpe \
+#--vocab_size=$BPESIZE \
+#--character_coverage=1.0 \
+#--model_type=bpe
 
 ## encode train/valid/test
 #python $SPM_ENCODE \
-    #--model $DATABIN/sentencepiece.bpe.model \
-    #--output_format=piece \
-    #--inputs $TMP/train.$SRC $TMP/train.$TGT \
-    #--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
-    #--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+#--model $DATABIN/sentencepiece.bpe.model \
+#--output_format=piece \
+#--inputs $TMP/train.$SRC $TMP/train.$TGT \
+#--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
+#--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
 #for SPLIT in "valid" "test"; do
-    #python $SPM_ENCODE \
-        #--model $DATABIN/sentencepiece.bpe.model \
-        #--output_format=piece \
-        #--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
-        #--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
+#python $SPM_ENCODE \
+#--model $DATABIN/sentencepiece.bpe.model \
+#--output_format=piece \
+#--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+#--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
 #done
 
 ## binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.bpe \
-    #--validpref $TMP/valid.bpe \
-    #--testpref $TMP/test.bpe \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.bpe \
+#--validpref $TMP/valid.bpe \
+#--testpref $TMP/test.bpe \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ########################
 
@@ -222,48 +222,48 @@ bash $SCRIPTS/download_indic.sh
 
 ## learn source side BPE with sentencepiece
 #python $SPM_TRAIN \
-    #--input=$TMP/train.$SRC \
-    #--model_prefix=$DATABIN/sentencepiece.$SRC.bpe \
-    #--vocab_size=$BPESIZE \
-    #--character_coverage=1.0 \
-    #--model_type=bpe
+#--input=$TMP/train.$SRC \
+#--model_prefix=$DATABIN/sentencepiece.$SRC.bpe \
+#--vocab_size=$BPESIZE \
+#--character_coverage=1.0 \
+#--model_type=bpe
 
 ## learn target side BPE with sentencepiece
 #python $SPM_TRAIN \
-    #--input=$TMP/train.$TGT \
-    #--model_prefix=$DATABIN/sentencepiece.$TGT.bpe \
-    #--vocab_size=$BPESIZE \
-    #--character_coverage=1.0 \
-    #--model_type=bpe
+#--input=$TMP/train.$TGT \
+#--model_prefix=$DATABIN/sentencepiece.$TGT.bpe \
+#--vocab_size=$BPESIZE \
+#--character_coverage=1.0 \
+#--model_type=bpe
 
 ##--model $DATABIN/sentencepiece.$SRC.bpe.model \
 ## encode source & target side train/valid/test
 #python $SPM_ENCODE \
-    #--inputs $TMP/train.$SRC $TMP/train.$TGT \
-    #--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
-    #--output_format=piece \
-    #--model_src $DATABIN/sentencepiece.$SRC.bpe.model \
-    #--model_tgt $DATABIN/sentencepiece.$TGT.bpe.model \
-    #--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+#--inputs $TMP/train.$SRC $TMP/train.$TGT \
+#--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
+#--output_format=piece \
+#--model_src $DATABIN/sentencepiece.$SRC.bpe.model \
+#--model_tgt $DATABIN/sentencepiece.$TGT.bpe.model \
+#--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
 #for SPLIT in "valid" "test"; do
-    #python $SPM_ENCODE \
-        #--model_src $DATABIN/sentencepiece.$SRC.bpe.model \
-        #--model_tgt $DATABIN/sentencepiece.$TGT.bpe.model \
-        #--output_format=piece \
-        #--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
-        #--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
+#python $SPM_ENCODE \
+#--model_src $DATABIN/sentencepiece.$SRC.bpe.model \
+#--model_tgt $DATABIN/sentencepiece.$TGT.bpe.model \
+#--output_format=piece \
+#--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+#--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
 
 #done
 
 ## binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.bpe \
-    #--validpref $TMP/valid.bpe \
-    #--testpref $TMP/test.bpe \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.bpe \
+#--validpref $TMP/valid.bpe \
+#--testpref $TMP/test.bpe \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ########################################
 ##   JOINT SENTENCEPIECE W/LOWERCASING #
@@ -290,36 +290,36 @@ bash $SCRIPTS/download_indic.sh
 
 ## learn BPE with sentencepiece
 #python $SPM_TRAIN \
-    #--input=$TMP/train.$SRC,$TMP/train.$TGT \
-    #--model_prefix=$DATABIN/sentencepiece.bpe \
-    #--vocab_size=$BPESIZE \
-    #--character_coverage=1.0 \
-    #--model_type=bpe
+#--input=$TMP/train.$SRC,$TMP/train.$TGT \
+#--model_prefix=$DATABIN/sentencepiece.bpe \
+#--vocab_size=$BPESIZE \
+#--character_coverage=1.0 \
+#--model_type=bpe
 
 ## encode train/valid/test
 #python $SPM_ENCODE \
-    #--model $DATABIN/sentencepiece.bpe.model \
-    #--output_format=piece \
-    #--inputs $TMP/train.$SRC $TMP/train.$TGT \
-    #--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
-    #--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+#--model $DATABIN/sentencepiece.bpe.model \
+#--output_format=piece \
+#--inputs $TMP/train.$SRC $TMP/train.$TGT \
+#--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
+#--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
 #for SPLIT in "valid" "test"; do
-    #python $SPM_ENCODE \
-        #--model $DATABIN/sentencepiece.bpe.model \
-        #--output_format=piece \
-        #--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
-        #--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
+#python $SPM_ENCODE \
+#--model $DATABIN/sentencepiece.bpe.model \
+#--output_format=piece \
+#--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+#--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
 #done
 
 ## binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.bpe \
-    #--validpref $TMP/valid.bpe \
-    #--testpref $TMP/test.bpe \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.bpe \
+#--validpref $TMP/valid.bpe \
+#--testpref $TMP/test.bpe \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ################################################
 ##   MOSES TOKENIZATION + MORFESSOR FLATCAT    #
@@ -341,27 +341,27 @@ bash $SCRIPTS/download_indic.sh
 #mkdir -p $TMP_BIN
 
 #for KIND in "train" "valid" "test"; do
-    #for LANGUAGE in si en; do
+#for LANGUAGE in si en; do
 
-        #moses_pipeline \
-            #"$TMP/$KIND.$LANGUAGE" \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$LANGUAGE"
+#moses_pipeline \
+#"$TMP/$KIND.$LANGUAGE" \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$LANGUAGE"
 
-        #convert_lowercase \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$TMP/$KIND.$LANGUAGE.tok.lower"
+#convert_lowercase \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$TMP/$KIND.$LANGUAGE.tok.lower"
 
-        #MF_SEGM_INPUT_FILE=$TMP/$KIND.$LANGUAGE.tok.lower
-        #MF_SEGM_OUTPUT_FILE=$TMP/$KIND.morfessor-flatcat.$LANGUAGE
-        #MF_SEGM_MODEL_FILE=$TMP_BIN/flores.vocab.$LANGUAGE.lowercase-morfessor-flatcat-batch-$LANGUAGE.bin
-        #bash "$SCRIPTS/segment.sh" \
-            #--input "$MF_SEGM_INPUT_FILE" \
-            #--output "$MF_SEGM_OUTPUT_FILE" \
-            #--model flatcat \
-            #--model-binary "$MF_SEGM_MODEL_FILE"
+#MF_SEGM_INPUT_FILE=$TMP/$KIND.$LANGUAGE.tok.lower
+#MF_SEGM_OUTPUT_FILE=$TMP/$KIND.morfessor-flatcat.$LANGUAGE
+#MF_SEGM_MODEL_FILE=$TMP_BIN/flores.vocab.$LANGUAGE.lowercase-morfessor-flatcat-batch-$LANGUAGE.bin
+#bash "$SCRIPTS/segment.sh" \
+#--input "$MF_SEGM_INPUT_FILE" \
+#--output "$MF_SEGM_OUTPUT_FILE" \
+#--model flatcat \
+#--model-binary "$MF_SEGM_MODEL_FILE"
 
-    #done
+#done
 #done
 
 ## comment out due to excessive pruning
@@ -376,13 +376,13 @@ bash $SCRIPTS/download_indic.sh
 ##done
 
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.morfessor-flatcat \
-    #--validpref $TMP/valid.morfessor-flatcat \
-    #--testpref $TMP/test.morfessor-flatcat \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.morfessor-flatcat \
+#--validpref $TMP/valid.morfessor-flatcat \
+#--testpref $TMP/test.morfessor-flatcat \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ###############################################
 #   MOSES TOKENIZATION + MORFESSOR BASELINE   #
@@ -404,27 +404,27 @@ bash $SCRIPTS/download_indic.sh
 #mkdir -p $TMP_BIN
 
 #for KIND in "train" "valid" "test"; do
-    #for LANGUAGE in si en; do
+#for LANGUAGE in si en; do
 
-        #moses_pipeline \
-            #"$TMP/$KIND.$LANGUAGE" \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$LANGUAGE"
+#moses_pipeline \
+#"$TMP/$KIND.$LANGUAGE" \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$LANGUAGE"
 
-        #convert_lowercase \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$TMP/$KIND.$LANGUAGE.tok.lower"
+#convert_lowercase \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$TMP/$KIND.$LANGUAGE.tok.lower"
 
-        #MF_SEGM_INPUT_FILE=$TMP/$KIND.$LANGUAGE.tok.lower
-        #MF_SEGM_OUTPUT_FILE=$TMP/$KIND.morfessor-baseline.$LANGUAGE
-        #MF_SEGM_MODEL_FILE=$TMP_BIN/flores.vocab.$LANGUAGE.lowercase-morfessor-baseline-batch-recursive-$LANGUAGE.bin
-        #bash "$SCRIPTS/segment.sh" \
-            #--input "$MF_SEGM_INPUT_FILE" \
-            #--output "$MF_SEGM_OUTPUT_FILE" \
-            #--model baseline \
-            #--model-binary "$MF_SEGM_MODEL_FILE"
+#MF_SEGM_INPUT_FILE=$TMP/$KIND.$LANGUAGE.tok.lower
+#MF_SEGM_OUTPUT_FILE=$TMP/$KIND.morfessor-baseline.$LANGUAGE
+#MF_SEGM_MODEL_FILE=$TMP_BIN/flores.vocab.$LANGUAGE.lowercase-morfessor-baseline-batch-recursive-$LANGUAGE.bin
+#bash "$SCRIPTS/segment.sh" \
+#--input "$MF_SEGM_INPUT_FILE" \
+#--output "$MF_SEGM_OUTPUT_FILE" \
+#--model baseline \
+#--model-binary "$MF_SEGM_MODEL_FILE"
 
-    #done
+#done
 #done
 
 ## comment out due to excessive pruning
@@ -440,13 +440,13 @@ bash $SCRIPTS/download_indic.sh
 
 ## binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.morfessor-baseline \
-    #--validpref $TMP/valid.morfessor-baseline \
-    #--testpref $TMP/test.morfessor-baseline \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.morfessor-baseline \
+#--validpref $TMP/valid.morfessor-baseline \
+#--testpref $TMP/test.morfessor-baseline \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ############################################
 #   MOSES TOKENIZATION + SUBWORD-NMT BPE   #
@@ -465,6 +465,7 @@ original_preprocessing_loop
 
 TMP_BIN=$ROOT/segmentation-models/
 mkdir -p "$TMP_BIN"
+
 for KIND in "train" "valid" "test"; do
     for LANGUAGE in "$SRC" "$TGT"; do
 
@@ -556,6 +557,12 @@ fairseq-preprocess \
     #source "$(pwd)/scripts/lmvr-environment-variables.sh"
 #fi
 #source "$LMVR_ENV_PATH/bin/activate"
+
+## make sure we're actually running 2.7
+#if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
+    #echo "Need to be running Python 2.7 for LMVR!"
+    #exit 1
+#fi
 
 #for KIND in "train" "valid" "test"; do
     #for LANGUAGE in $SRC $TGT; do
