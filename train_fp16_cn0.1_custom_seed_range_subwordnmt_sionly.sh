@@ -19,8 +19,8 @@ fi
 
 CUDA_DEVICE=$5
 
-TRAIN_SCRIPT="./train_fp16_cn0.1_customseed_subwordnmt_fixperl.sh "
-EVAL_SCRIPT="./evaluate_subwordnmt_fixperl.sh"
+TRAIN_SCRIPT="./train_fp16_cn0.1_customseed_subwordnmt.sh "
+EVAL_SCRIPT="./evaluate_subwordnmt.sh"
 
 for SEED in $(seq $FROM_SEED $TO_SEED);
 do
@@ -34,10 +34,10 @@ do
     echo $CHECKPOINT_FOLDER
 
     # 1. Train NE - EN
-    bash $TRAIN_SCRIPT "ne" "en" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
+    #bash $TRAIN_SCRIPT "ne" "en" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
 
-    # 2. Train EN - NE
-    bash $TRAIN_SCRIPT "en" "ne" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
+    ## 2. Train EN - NE
+    #bash $TRAIN_SCRIPT "en" "ne" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
 
     # 3. Train SI - EN
     bash $TRAIN_SCRIPT "si" "en" $SEED $BPE_SIZE $CUDA_DEVICE $LOG_FOLDER $CHECKPOINT_FOLDER
@@ -50,10 +50,10 @@ do
     echo $RESULTS_FOLDER
 
     # 6. Evaluate NE - EN
-    bash $EVAL_SCRIPT "ne" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
+    #bash $EVAL_SCRIPT "ne" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
-    # 7. Evaluate EN - NE
-    bash $EVAL_SCRIPT "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
+    ## 7. Evaluate EN - NE
+    #bash $EVAL_SCRIPT "en" "ne" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER
 
     # 8. Evaluate SI - EN
     bash $EVAL_SCRIPT "si" "en" $BPE_SIZE $CUDA_DEVICE $RESULTS_FOLDER $CHECKPOINT_FOLDER

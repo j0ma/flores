@@ -8,6 +8,7 @@
 # ARG_OPTIONAL_SINGLE([model])
 # ARG_OPTIONAL_SINGLE([model-binary])
 # ARG_OPTIONAL_SINGLE([bpe-size])
+# ARG_OPTIONAL_SINGLE([codes])
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
 # needed because of Argbash --> m4_ignore([
@@ -35,6 +36,7 @@ _arg_output=
 _arg_model=
 _arg_model_binary=
 _arg_bpe_size=
+_arg_codes=
 
 print_help() {
     USAGE_MSG="""
@@ -43,6 +45,7 @@ print_help() {
                            --model <type of model we are using>
                            --model-binary <path to model binary>
                            [--bpe-size <bpe size>]
+                           [--codes <codes file for bpe>]
 """
     printf '\n%s\n' "segment.sh -- a script for subword segmentation using Morfessor / Flatcat / LMVR / subword-nmt"
     echo "$USAGE_MSG"
@@ -91,6 +94,14 @@ parse_commandline() {
             ;;
         --bpe-size=*)
             _arg_bpe_size="${_key##--bpe-size=}"
+            ;;
+        --codes)
+            test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+            _arg_codes="$2"
+            shift
+            ;;
+        --codes=*)
+            _arg_codes="${_key##--codes=}"
             ;;
         -h | --help)
             print_help
@@ -158,14 +169,14 @@ segment_flatcat() {
 segment_subword_nmt() {
 
     INPUT_FILE=$1
-    OUTPUT_FILE=$3
-    CODES_FILE=$3.codes
     BPE_SIZE=$2
-    LANGUAGE=$4
+    OUTPUT_FILE=$3
+    CODES_FILE=$4
 
-    IS_TRAIN=$(echo $INPUT_FILE | grep "train\.")
-    if [ ! -z "$IS_TRAIN" ]; then
-        echo "Training set detected!"
+    # on
+    TRAIN_MODE=$(echo $INPUT_FILE | grep "train\.all")
+    if [ ! -z "$TRAIN_MODE" ]; then
+        echo "Concatentaed training set detected!"
         echo "BPE Size: $BPE_SIZE"
         echo "Input: $INPUT_FILE"
         echo "Codes: $CODES_FILE"
@@ -177,27 +188,21 @@ segment_subword_nmt() {
             <"$INPUT_FILE" \
             >"$CODES_FILE"
     else
-        echo "Not a training set!"
+        echo "Non-concatenated dataset!"
         echo "Not learning BPE..."
-
-        # we need to grab the correct codes file
-        CODES_FILE=$(
-            echo "$CODES_FILE" |
-                sed "s/valid/train/g" |
-                sed "s/test/train/g"
-        )
 
         echo "BPE Size: $BPE_SIZE"
         echo "Input: $INPUT_FILE"
         echo "Codes: $CODES_FILE"
         echo "Output: $OUTPUT_FILE"
+
+        echo "Applying BPE with subword-nmt..."
+        subword-nmt apply-bpe \
+            -c "$CODES_FILE" \
+            <"$INPUT_FILE" \
+            >"$OUTPUT_FILE"
     fi
 
-    echo "Applying BPE with subword-nmt..."
-    subword-nmt apply-bpe \
-        -c "$CODES_FILE" \
-        <"$INPUT_FILE" \
-        >"$OUTPUT_FILE"
 }
 
 segment_lmvr() {
@@ -240,7 +245,8 @@ subword-nmt)
     segment_subword_nmt \
         "$_arg_input" \
         "$_arg_bpe_size" \
-        "$_arg_output"
+        "$_arg_output" \
+        "$_arg_codes"
     ;;
 *)
     _PRINT_HELP=yes die "FATAL ERROR: Got an unexpected model type '$_arg_model'. Supported: baseline, flatcat, lmvr, subword-nmt" 1
