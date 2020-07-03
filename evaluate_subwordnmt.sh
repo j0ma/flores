@@ -13,7 +13,7 @@ evaluate_fairseq () {
             --path $CHECKPOINT_PATH \
             --beam 5 --lenpen 1.2 \
             --gen-subset test \
-            --remove-bpe=sentencepiece # note: no sacrebleu here
+            --remove-bpe # note: no sacrebleu here
     else
         CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-generate \
             $DATA_DIR \
@@ -21,8 +21,8 @@ evaluate_fairseq () {
             --path $CHECKPOINT_PATH \
             --beam 5 --lenpen 1.2 \
             --gen-subset test \
-            --remove-bpe=sentencepiece \
-            --sacrebleu
+            --sacrebleu \
+            --remove-bpe=sentencepiece
     fi
 }
 
