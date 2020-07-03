@@ -366,7 +366,8 @@ bash $SCRIPTS/download_indic.sh
 #--input "$MF_SEGM_INPUT_FILE" \
 #--output "$MF_SEGM_OUTPUT_FILE" \
 #--model flatcat \
-#--model-binary "$MF_SEGM_MODEL_FILE"
+#--model-binary "$MF_SEGM_MODEL_FILE" \
+#--lang "$LANGUAGE"
 
 #done
 #done
@@ -429,7 +430,8 @@ bash $SCRIPTS/download_indic.sh
 #--input "$MF_SEGM_INPUT_FILE" \
 #--output "$MF_SEGM_OUTPUT_FILE" \
 #--model baseline \
-#--model-binary "$MF_SEGM_MODEL_FILE"
+#--model-binary "$MF_SEGM_MODEL_FILE" \
+#--lang "$LANGUAGE"
 
 #done
 #done
@@ -474,52 +476,54 @@ bash $SCRIPTS/download_indic.sh
 #mkdir -p "$TMP_BIN"
 
 #for KIND in "train" "valid" "test"; do
-    #for LANGUAGE in "$SRC" "$TGT"; do
+#for LANGUAGE in "$SRC" "$TGT"; do
 
-        ## note: in case LANGUAGE != "en",
-        ## only copying is performed
+## note: in case LANGUAGE != "en",
+## only copying is performed
 
-        #moses_pipeline \
-            #"$TMP/$KIND.$LANGUAGE" \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$LANGUAGE"
+#moses_pipeline \
+#"$TMP/$KIND.$LANGUAGE" \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$LANGUAGE"
 
-        #convert_lowercase \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$TMP/$KIND.$LANGUAGE.tok.lower"
-    #done
+#convert_lowercase \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$TMP/$KIND.$LANGUAGE.tok.lower"
+#done
 #done
 
 ## concatenate training sets to one big file
 #rm -f "$TMP/train.all.tok.lower"
 #cat $TMP/train.*.tok.lower \
-    #>> "$TMP/train.all.tok.lower"
+#>> "$TMP/train.all.tok.lower"
 
 ## perform bpe training without segmentation
 #SEGM_INPUT_FILE="$TMP/train.all.tok.lower"
 #JOINT_CODES_FILE="$TMP/subword-nmt.codes"
 
 #bash "$SCRIPTS/segment.sh" \
-    #--input "$SEGM_INPUT_FILE" \
-    #--output "none" \
-    #--model subword-nmt \
-    #--model-binary none \
-    #--bpe-size "$BPESIZE" \
-    #--codes "$JOINT_CODES_FILE"
+#--input "$SEGM_INPUT_FILE" \
+#--output "none" \
+#--model subword-nmt \
+#--model-binary none \
+#--bpe-size "$BPESIZE" \
+#--codes "$JOINT_CODES_FILE" \
+#--lang "foo"
 
 ## apply bpe
 #for KIND in "train" "valid" "test"; do
-    #for LANGUAGE in "$SRC" "$TGT"; do
-        #SEGM_INPUT_FILE="$TMP/$KIND.$LANGUAGE.tok.lower"
-        #SEGM_OUTPUT_FILE=$TMP/$KIND.subword-nmt.$LANGUAGE
-        #bash "$SCRIPTS/segment.sh" \
-            #--input "$SEGM_INPUT_FILE" \
-            #--output "$SEGM_OUTPUT_FILE" \
-            #--model subword-nmt \
-            #--model-binary none \
-            #--bpe-size "$BPESIZE" \
-            #--codes "$JOINT_CODES_FILE"
-    #done
+#for LANGUAGE in "$SRC" "$TGT"; do
+#SEGM_INPUT_FILE="$TMP/$KIND.$LANGUAGE.tok.lower"
+#SEGM_OUTPUT_FILE=$TMP/$KIND.subword-nmt.$LANGUAGE
+#bash "$SCRIPTS/segment.sh" \
+#--input "$SEGM_INPUT_FILE" \
+#--output "$SEGM_OUTPUT_FILE" \
+#--model subword-nmt \
+#--model-binary none \
+#--bpe-size "$BPESIZE" \
+#--codes "$JOINT_CODES_FILE" \
+#--lang "$LANGUAGE"
+#done
 #done
 
 ## comment out due to excessive pruning
@@ -535,13 +539,13 @@ bash $SCRIPTS/download_indic.sh
 
 ## binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.subword-nmt \
-    #--validpref $TMP/valid.subword-nmt \
-    #--testpref $TMP/test.subword-nmt \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.subword-nmt \
+#--validpref $TMP/valid.subword-nmt \
+#--testpref $TMP/test.subword-nmt \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 #################################################
 #   MOSES TOKENIZATION + LMVR (Ataman, 2017)    #
@@ -556,7 +560,6 @@ original_preprocessing_loop
 
 TMP_BIN=$ROOT/segmentation-models/
 mkdir -p "$TMP_BIN"
-
 
 # activate virtual environment
 echo "activating LMVR virtual environment..."
@@ -595,12 +598,14 @@ for KIND in "train" "valid" "test"; do
         echo "Actual segmentation..."
         LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
         LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
-        LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr.model.${LANGUAGE}.tar.gz"	
+        LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr.model.${LANGUAGE}.tar.gz"
         bash "$SCRIPTS/segment.sh" \
             --input "${LMVR_INPUT_FILE}" \
             --output "${LMVR_OUTPUT_FILE}" \
             --model lmvr \
-            --model-binary "${LMVR_MODEL_FILE}"
+            --model-binary "${LMVR_MODEL_FILE}" \
+            --lang "${LANGUAGE}" \
+            --kind "${KIND}"
     done
 done
 

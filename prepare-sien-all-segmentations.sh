@@ -452,120 +452,22 @@ bash $SCRIPTS/download_indic.sh
 #   MOSES TOKENIZATION + SUBWORD-NMT BPE   #
 ############################################
 
-echo "#############################################"
-echo "#   MOSES TOKENIZATION + SUBWORD-NMT BPE    #"
-echo "#############################################"
+#echo "#############################################"
+#echo "#   MOSES TOKENIZATION + SUBWORD-NMT BPE    #"
+#echo "#############################################"
 
-# subword-nmt + moses + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
-mkdir -p "$TMP" "$DATABIN"
-
-original_preprocessing_loop
-
-TMP_BIN=$ROOT/segmentation-models/
-mkdir -p "$TMP_BIN"
-
-for KIND in "train" "valid" "test"; do
-    for LANGUAGE in "$SRC" "$TGT"; do
-
-        # note: in case LANGUAGE != "en",
-        # only copying is performed
-
-        moses_pipeline \
-            "$TMP/$KIND.$LANGUAGE" \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$LANGUAGE"
-
-        convert_lowercase \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$TMP/$KIND.$LANGUAGE.tok.lower"
-    done
-done
-
-# concatenate training sets to one big file
-rm -f "$TMP/train.all.tok.lower"
-cat $TMP/train.*.tok.lower \
-    >> "$TMP/train.all.tok.lower"
-
-# perform bpe training without segmentation
-SEGM_INPUT_FILE="$TMP/train.all.tok.lower"
-JOINT_CODES_FILE="$TMP/subword-nmt.codes"
-
-bash "$SCRIPTS/segment.sh" \
-    --input "$SEGM_INPUT_FILE" \
-    --output "none" \
-    --model subword-nmt \
-    --model-binary none \
-    --bpe-size "$BPESIZE" \
-    --codes "$JOINT_CODES_FILE"
-
-# apply bpe
-for KIND in "train" "valid" "test"; do
-    for LANGUAGE in "$SRC" "$TGT"; do
-        SEGM_INPUT_FILE="$TMP/$KIND.$LANGUAGE.tok.lower"
-        SEGM_OUTPUT_FILE=$TMP/$KIND.subword-nmt.$LANGUAGE
-        bash "$SCRIPTS/segment.sh" \
-            --input "$SEGM_INPUT_FILE" \
-            --output "$SEGM_OUTPUT_FILE" \
-            --model subword-nmt \
-            --model-binary none \
-            --bpe-size "$BPESIZE" \
-            --codes "$JOINT_CODES_FILE"
-    done
-done
-
-# comment out due to excessive pruning
-#for LANGUAGE in ne en; do
-#perl "$MOSES_CLEAN" \
-#-ratio 1.5 \
-#"$TMP/train.subword-nmt" \
-#"$SRC" "$TGT" \
-#"$TMP/train.subword-nmt.clean" \
-#"$TRAIN_MINLEN" \
-#"$TRAIN_MAXLEN"
-#done
-
-# binarize data
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.subword-nmt \
-    --validpref $TMP/valid.subword-nmt \
-    --testpref $TMP/test.subword-nmt \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
-
-#################################################
-#   MOSES TOKENIZATION + LMVR (Ataman, 2017)    #
-#################################################
-
-#echo "LMVR from Ataman (2017) ..."
-#TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
-#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr
-#mkdir -p "$TMP" 
-#mkdir -p "$DATABIN"
+## subword-nmt + moses + lowercase
+#TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
+#mkdir -p "$TMP" "$DATABIN"
 
 #original_preprocessing_loop
 
 #TMP_BIN=$ROOT/segmentation-models/
 #mkdir -p "$TMP_BIN"
 
-## activate virtual environment
-#echo "activating LMVR virtual environment..."
-#if [ -z "$LMVR_ENV_PATH" ]; then
-    #source "$(pwd)/scripts/lmvr-environment-variables.sh"
-#fi
-#source "$LMVR_ENV_PATH/bin/activate"
-
-## make sure we're actually running 2.7
-#if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
-    #echo "Need to be running Python 2.7 for LMVR!"
-    #exit 1
-#fi
-
 #for KIND in "train" "valid" "test"; do
-    #for LANGUAGE in $SRC $TGT; do
+    #for LANGUAGE in "$SRC" "$TGT"; do
 
         ## note: in case LANGUAGE != "en",
         ## only copying is performed
@@ -578,15 +480,38 @@ fairseq-preprocess \
         #convert_lowercase \
             #"$TMP/$KIND.$LANGUAGE.tok" \
             #"$TMP/$KIND.$LANGUAGE.tok.lower"
+    #done
+#done
 
-        #LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
-        #LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
-        #LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.lmvr.model.${LANGUAGE}.tar.gz"
+## concatenate training sets to one big file
+#rm -f "$TMP/train.all.tok.lower"
+#cat $TMP/train.*.tok.lower \
+    #>> "$TMP/train.all.tok.lower"
+
+## perform bpe training without segmentation
+#SEGM_INPUT_FILE="$TMP/train.all.tok.lower"
+#JOINT_CODES_FILE="$TMP/subword-nmt.codes"
+
+#bash "$SCRIPTS/segment.sh" \
+    #--input "$SEGM_INPUT_FILE" \
+    #--output "none" \
+    #--model subword-nmt \
+    #--model-binary none \
+    #--bpe-size "$BPESIZE" \
+    #--codes "$JOINT_CODES_FILE"
+
+## apply bpe
+#for KIND in "train" "valid" "test"; do
+    #for LANGUAGE in "$SRC" "$TGT"; do
+        #SEGM_INPUT_FILE="$TMP/$KIND.$LANGUAGE.tok.lower"
+        #SEGM_OUTPUT_FILE=$TMP/$KIND.subword-nmt.$LANGUAGE
         #bash "$SCRIPTS/segment.sh" \
-            #--input "${LMVR_INPUT_FILE}" \
-            #--output "${LMVR_OUTPUT_FILE}" \
-            #--model lmvr \
-            #--model-binary "${LMVR_MODEL_FILE}"
+            #--input "$SEGM_INPUT_FILE" \
+            #--output "$SEGM_OUTPUT_FILE" \
+            #--model subword-nmt \
+            #--model-binary none \
+            #--bpe-size "$BPESIZE" \
+            #--codes "$JOINT_CODES_FILE"
     #done
 #done
 
@@ -594,25 +519,109 @@ fairseq-preprocess \
 ##for LANGUAGE in ne en; do
 ##perl "$MOSES_CLEAN" \
 ##-ratio 1.5 \
-##"$TMP/train.lmvr" \
+##"$TMP/train.subword-nmt" \
 ##"$SRC" "$TGT" \
-##"$TMP/train.lmvr.clean" \
+##"$TMP/train.subword-nmt.clean" \
 ##"$TRAIN_MINLEN" \
 ##"$TRAIN_MAXLEN"
 ##done
 
-## deactivate the environment
-#deactivate
-
 ## binarize data
 #fairseq-preprocess \
     #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.lmvr \
-    #--validpref $TMP/valid.lmvr \
-    #--testpref $TMP/test.lmvr \
+    #--trainpref $TMP/train.subword-nmt \
+    #--validpref $TMP/valid.subword-nmt \
+    #--testpref $TMP/test.subword-nmt \
     #--destdir $DATABIN \
     #--joined-dictionary \
     #--workers 4
+
+#################################################
+#   MOSES TOKENIZATION + LMVR (Ataman, 2017)    #
+#################################################
+
+echo "LMVR from Ataman (2017) ..."
+TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr
+mkdir -p "$TMP" 
+mkdir -p "$DATABIN"
+
+original_preprocessing_loop
+
+TMP_BIN=$ROOT/segmentation-models/
+mkdir -p "$TMP_BIN"
+
+# activate virtual environment
+echo "activating LMVR virtual environment..."
+if [ -z "$LMVR_ENV_PATH" ]; then
+    source "$(pwd)/scripts/lmvr-environment-variables.sh"
+fi
+source "$LMVR_ENV_PATH/bin/activate"
+
+# make sure we're actually running 2.7
+if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
+    echo "Need to be running Python 2.7 for LMVR!"
+    exit 1
+fi
+
+for KIND in "train" "valid" "test"; do
+    for LANGUAGE in "$SRC" "$TGT"; do
+
+        echo "Processing ${KIND} set for ${LANGUAGE}"
+        echo "First moses pipeline..."
+
+        moses_pipeline \
+            "$TMP/$KIND.$LANGUAGE" \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$LANGUAGE"
+
+        echo "Lowercasing..."
+
+        convert_lowercase \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$TMP/$KIND.$LANGUAGE.tok.lower"
+
+        echo "Check python version"
+        which python
+        python --version
+
+        echo "Actual segmentation..."
+        LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
+        LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
+        LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr.model.${LANGUAGE}.tar.gz"
+        bash "$SCRIPTS/segment.sh" \
+            --input "${LMVR_INPUT_FILE}" \
+            --output "${LMVR_OUTPUT_FILE}" \
+            --model lmvr \
+            --model-binary "${LMVR_MODEL_FILE}" \
+            --lang "${LANGUAGE}" \
+            --kind "${KIND}"
+    done
+done
+
+# comment out due to excessive pruning
+#for LANGUAGE in ne en; do
+#perl "$MOSES_CLEAN" \
+#-ratio 1.5 \
+#"$TMP/train.lmvr" \
+#"$SRC" "$TGT" \
+#"$TMP/train.lmvr.clean" \
+#"$TRAIN_MINLEN" \
+#"$TRAIN_MAXLEN"
+#done
+
+# deactivate the environment
+deactivate
+
+# binarize data
+fairseq-preprocess \
+    --source-lang $SRC --target-lang $TGT \
+    --trainpref $TMP/train.lmvr \
+    --validpref $TMP/valid.lmvr \
+    --testpref $TMP/test.lmvr \
+    --destdir $DATABIN \
+    --joined-dictionary \
+    --workers 4
 
 #################################################
 #   MOSES TOKENIZATION + MORSEL (Lignos, 2010)  #
