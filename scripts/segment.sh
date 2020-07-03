@@ -159,6 +159,7 @@ done
 
 ROOT=$(dirname "$0")
 MF_SEGMENT_COMMAND="python $ROOT/segment-sentences-morfessor.py"
+STITCH_COMMAND="python $ROOT/stitch-segmentations-together.py"
 
 # Set up the segmentation functions
 segment_morfessor_baseline() {
@@ -251,12 +252,16 @@ segment_lmvr() {
         -o "$LMVR_SEGM_OUTPUT_FNAME"
 
     echo "stitching sentences together..."
-    cat "$LMVR_SEGM_OUTPUT_FNAME" |
-        sed "s/\s+/@@ /g" |
-        sed "s/\s\s\+/ /g" |
-        tr '\n' ' ' |
-        sed "s/\s\s/\n/g" \
-            >"$OUTPUT_FILE"
+    $STITCH_COMMAND \
+        --input-file "$LMVR_SEGM_OUTPUT_FNAME" \
+        --output-file "$OUTPUT_FILE"
+
+    #cat "$LMVR_SEGM_OUTPUT_FNAME" |
+        #sed "s/\s+/@@ /g" |
+        #sed "s/\s\s\+/ /g" |
+        #tr '\n' ' ' |
+        #sed "s/\s\s/\n/g" \
+            #>"$OUTPUT_FILE"
 
 }
 
