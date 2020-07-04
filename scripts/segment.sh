@@ -256,13 +256,6 @@ segment_lmvr() {
         --input-file "$LMVR_SEGM_OUTPUT_FNAME" \
         --output-file "$OUTPUT_FILE"
 
-    #cat "$LMVR_SEGM_OUTPUT_FNAME" |
-        #sed "s/\s+/@@ /g" |
-        #sed "s/\s\s\+/ /g" |
-        #tr '\n' ' ' |
-        #sed "s/\s\s/\n/g" \
-            #>"$OUTPUT_FILE"
-
 }
 
 # Perform segmentation with the correct model
