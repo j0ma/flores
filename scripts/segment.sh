@@ -5,6 +5,8 @@
 # Created by argbash-init v2.8.1
 # ARG_OPTIONAL_SINGLE([input])
 # ARG_OPTIONAL_SINGLE([output])
+# ARG_OPTIONAL_SINGLE([lang])
+# ARG_OPTIONAL_SINGLE([kind])
 # ARG_OPTIONAL_SINGLE([model])
 # ARG_OPTIONAL_SINGLE([model-binary])
 # ARG_OPTIONAL_SINGLE([bpe-size])
@@ -33,6 +35,8 @@ begins_with_short_option() {
 # THE DEFAULTS INITIALIZATION - OPTIONALS
 _arg_input=
 _arg_output=
+_arg_lang=
+_arg_kind=
 _arg_model=
 _arg_model_binary=
 _arg_bpe_size=
@@ -42,6 +46,8 @@ print_help() {
     USAGE_MSG="""
     Usage: bash segment.sh --input <untokenized input file> 
                            --output <tokenized output file> 
+                           --lang <name of language> 
+                           --kind <train/valid/test> 
                            --model <type of model we are using>
                            --model-binary <path to model binary>
                            [--bpe-size <bpe size>]
@@ -70,6 +76,22 @@ parse_commandline() {
             ;;
         --output=*)
             _arg_output="${_key##--output=}"
+            ;;
+        --lang)
+            test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+            _arg_lang="$2"
+            shift
+            ;;
+        --lang=*)
+            _arg_lang="${_key##--lang=}"
+            ;;
+        --kind)
+            test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+            _arg_kind="$2"
+            shift
+            ;;
+        --kind=*)
+            _arg_kind="${_key##--kind=}"
             ;;
         --model)
             test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
@@ -131,12 +153,13 @@ validate() {
     [ -z "$1" ] && print_help && exit 1
 }
 
-for var in "$_arg_input" "$_arg_output" "$_arg_model" "$_arg_model_binary"; do
+for var in "$_arg_input" "$_arg_output" "$_arg_lang" "$_arg_model" "$_arg_model_binary"; do
     validate "$var"
 done
 
 ROOT=$(dirname "$0")
 MF_SEGMENT_COMMAND="python $ROOT/segment-sentences-morfessor.py"
+STITCH_COMMAND="python $ROOT/stitch-segmentations-together.py"
 
 # Set up the segmentation functions
 segment_morfessor_baseline() {
@@ -144,6 +167,7 @@ segment_morfessor_baseline() {
     INPUT_FILE=$1
     MODEL_BINARY=$2
     OUTPUT_FILE=$3
+    LANGUAGE=$4
 
     $MF_SEGMENT_COMMAND \
         -i "$INPUT_FILE" \
@@ -157,6 +181,7 @@ segment_flatcat() {
     INPUT_FILE=$1
     MODEL_BINARY=$2
     OUTPUT_FILE=$3
+    LANGUAGE=$4
 
     echo "Segmenting with Flatcat..."
     $MF_SEGMENT_COMMAND \
@@ -172,6 +197,7 @@ segment_subword_nmt() {
     BPE_SIZE=$2
     OUTPUT_FILE=$3
     CODES_FILE=$4
+    LANGUAGE=$5
 
     # on
     TRAIN_MODE=$(echo $INPUT_FILE | grep "train\.all")
@@ -211,12 +237,24 @@ segment_lmvr() {
     INPUT_FILE=$1
     MODEL_BINARY=$2
     OUTPUT_FILE=$3
+    LANGUAGE=$4
+    KIND=$5
 
-    $MF_SEGMENT_COMMAND \
-        -i "$INPUT_FILE" \
-        -o "$OUTPUT_FILE" \
-        -m "$MODEL_BINARY" \
-        --lang foo
+    OUTPUT_FOLDER_PATH=$(dirname "$OUTPUT_FILE")
+    LMVR_SEGM_OUTPUT_FNAME="$OUTPUT_FOLDER_PATH/$KIND.lmvr.intermediate.$LANGUAGE"
+
+    lmvr-segment \
+        "$MODEL_BINARY" \
+        "$INPUT_FILE" \
+        -p 10 \
+        --output-newlines \
+        --encoding "utf-8" \
+        -o "$LMVR_SEGM_OUTPUT_FNAME"
+
+    echo "stitching sentences together..."
+    $STITCH_COMMAND \
+        --input-file "$LMVR_SEGM_OUTPUT_FNAME" \
+        --output-file "$OUTPUT_FILE"
 
 }
 
@@ -226,19 +264,24 @@ baseline)
     segment_morfessor_baseline \
         "$_arg_input" \
         "$_arg_model_binary" \
-        "$_arg_output"
+        "$_arg_output" \
+        "$_arg_lang"
     ;;
 flatcat)
     segment_flatcat \
         "$_arg_input" \
         "$_arg_model_binary" \
-        "$_arg_output"
+        "$_arg_output" \
+        "$_arg_lang"
     ;;
 lmvr)
+    validate "$_arg_kind"
     segment_lmvr \
         "$_arg_input" \
         "$_arg_model_binary" \
-        "$_arg_output"
+        "$_arg_output" \
+        "$_arg_lang" \
+        "$_arg_kind"
     ;;
 subword-nmt)
     validate "$_arg_bpe_size"
@@ -246,7 +289,8 @@ subword-nmt)
         "$_arg_input" \
         "$_arg_bpe_size" \
         "$_arg_output" \
-        "$_arg_codes"
+        "$_arg_codes" \
+        "$_arg_lang"
     ;;
 *)
     _PRINT_HELP=yes die "FATAL ERROR: Got an unexpected model type '$_arg_model'. Supported: baseline, flatcat, lmvr, subword-nmt" 1
