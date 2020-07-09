@@ -167,7 +167,8 @@ evaluate_fairseq_interactive () {
 
     if [ "$SRC_LANG" = "en" ];
     then
-        CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-interactive \
+        #CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-interactive \
+        fairseq-interactive \
             "${DATA_DIR}" \
             --source-lang "${SRC_LANG}" \
             --target-lang "${TGT_LANG}" \
@@ -176,7 +177,7 @@ evaluate_fairseq_interactive () {
             --gen-subset "${SPLIT}" \
             --remove-bpe # note: no sacrebleu here
     else
-        CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-interactive \
+        fairseq-interactive \
             "${DATA_DIR}" \
             --source-lang "${SRC_LANG}" \
             --target-lang "${TGT_LANG}" \
