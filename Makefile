@@ -1,5 +1,11 @@
-init: install download
+init: create_folders install download
 
+create_folders:
+	mkdir -p translation-output/lmvr
+	mkdir -p translation-output/lmvr-tuned
+	mkdir -p translation-output/subword-nmt
+	mkdir -p translation-output/morsel
+	mkdir -p translation-output/baseline
 install:
 	pip install fairseq sacrebleu sentencepiece
 	bash ./scripts/download-lmvr.sh

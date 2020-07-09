@@ -229,3 +229,10 @@ popd
 for ((i = 0; i < ${#REMOVE_FILE_PATHS[@]}; ++i)); do
     rm -rf ${REMOVE_FILE_PATHS[i]}
 done
+
+# create translation output folders
+mkdir -p translation-output/lmvr
+mkdir -p translation-output/lmvr-tuned
+mkdir -p translation-output/subword-nmt
+mkdir -p translation-output/morsel
+mkdir -p translation-output/baseline
