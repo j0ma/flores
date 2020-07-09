@@ -1,11 +1,7 @@
-init: create_folders install download
+init: create_output_folders install download
 
-create_folders:
-	mkdir -p translation-output/lmvr
-	mkdir -p translation-output/lmvr-tuned
-	mkdir -p translation-output/subword-nmt
-	mkdir -p translation-output/morsel
-	mkdir -p translation-output/baseline
+create_output_folders:
+	bash ./scripts/create-translation-output-folders.sh
 install:
 	pip install fairseq sacrebleu sentencepiece
 	bash ./scripts/download-lmvr.sh
@@ -510,4 +506,3 @@ evaluate_all:
 
 	# 4. Evaluate EN - SI
 	bash evaluate.sh "en" "si"
-
