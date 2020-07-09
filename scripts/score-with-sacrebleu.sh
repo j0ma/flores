@@ -2,6 +2,7 @@ SRC=$1
 TGT=$2
 PRED=$3
 REF=$4
+LOGFILE=$5
 
 if [ "${TGT}"="en" ]; then
     TOK="13a"
@@ -13,7 +14,5 @@ cat "${PRED}" |
     sacrebleu \
         --language-pair "${SRC}-${TGT}" \
         -lc --tokenize "${TOK}" \
-        "${REF}"
-
-
-
+        "${REF}" \
+        >> "${LOGFILE}"

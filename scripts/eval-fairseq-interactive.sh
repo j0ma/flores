@@ -5,8 +5,12 @@
 # ARG_OPTIONAL_SINGLE([tgt])
 # ARG_OPTIONAL_SINGLE([eval-on])
 # ARG_OPTIONAL_SINGLE([data-folder])
+# ARG_OPTIONAL_SINGLE([data-bin-folder])
 # ARG_OPTIONAL_SINGLE([model-checkpoint])
+# ARG_OPTIONAL_SINGLE([model-type])
 # ARG_OPTIONAL_SINGLE([output-file])
+# ARG_OPTIONAL_SINGLE([cuda-device])
+
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
 # needed because of Argbash --> m4_ignore([
@@ -37,14 +41,17 @@ _arg_src=
 _arg_tgt=
 _arg_eval_on=
 _arg_data_folder=
+_arg_data_folder=
 _arg_model_checkpoint=
+_arg_model_type=
 _arg_output_file=
+_arg_cuda_device=0
 
 
 print_help()
 {
 	printf '%s\n' "Evaluate your NMT model & produce actual output!"
-	printf 'Usage: %s [--src <arg>] [--tgt <arg>] [--eval-on <arg>] [--data-folder <arg>] [--model-checkpoint <arg>] [--output-file <arg>] [-h|--help]\n' "$0"
+	printf 'Usage: %s [--src <arg>] [--tgt <arg>] [--eval-on <arg>] [--data-folder <arg>] [--data-bin-folder <arg>] [--model-checkpoint <arg>] [--model-type <arg>] [--output-file <arg>] [-h|--help]\n' "$0"
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -87,6 +94,14 @@ parse_commandline()
 			--data-folder=*)
 				_arg_data_folder="${_key##--data-folder=}"
 				;;
+			--data-bin-folder)
+				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+				_arg_data_bin_folder="$2"
+				shift
+				;;
+			--data-bin-folder=*)
+				_arg_data_bin_folder="${_key##--data-bin-folder=}"
+				;;
 			--model-checkpoint)
 				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
 				_arg_model_checkpoint="$2"
@@ -95,6 +110,14 @@ parse_commandline()
 			--model-checkpoint=*)
 				_arg_model_checkpoint="${_key##--model-checkpoint=}"
 				;;
+			--model-type)
+				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+				_arg_model_type="$2"
+				shift
+				;;
+			--model-type=*)
+				_arg_model_type="${_key##--model-type=}"
+				;;
 			--output-file)
 				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
 				_arg_output_file="$2"
@@ -102,6 +125,14 @@ parse_commandline()
 				;;
 			--output-file=*)
 				_arg_output_file="${_key##--output-file=}"
+				;;
+			--cuda-device)
+				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+				_arg_cuda_device="$2"
+				shift
+				;;
+			--cuda-device=*)
+				_arg_cuda_device="${_key##--cuda-device=}"
 				;;
 			-h|--help)
 				print_help
@@ -146,33 +177,38 @@ evaluate_fairseq_interactive () {
             --remove-bpe # note: no sacrebleu here
     else
         CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-interactive \
-
             "${DATA_DIR}" \
             --source-lang "${SRC_LANG}" \
             --target-lang "${TGT_LANG}" \
             --path "${CHECKPOINT_PATH}" \
             --beam 5 --lenpen 1.2 \
-            --gen-subset test \
+            --gen-subset "${SPLIT}" \
             --remove-bpe \
             --sacrebleu
     fi
 }
 
-DEFAULT_CUDA_DEVICE=0
-
 printf 'Value of --%s: %s\n' 'src' "$_arg_src"
 printf 'Value of --%s: %s\n' 'tgt' "$_arg_tgt"
 printf 'Value of --%s: %s\n' 'eval-on' "$_arg_eval_on"
 printf 'Value of --%s: %s\n' 'data-folder' "$_arg_data_folder"
+printf 'Value of --%s: %s\n' 'data-bin-folder' "$_arg_data_bin_folder"
 printf 'Value of --%s: %s\n' 'model-checkpoint' "$_arg_model_checkpoint"
+printf 'Value of --%s: %s\n' 'model-type' "$_arg_model_type"
 printf 'Value of --%s: %s\n' 'output-file' "$_arg_output_file"
+printf 'Value of --%s: %s\n' 'cuda-device' "$_arg_cuda_device"
 
-evaluate_fairseq \
-    "${_arg_src}" \
-    "${_arg_tgt}" \
-    "${_arg_model_checkpoint}" \
-    "${_arg_data_folder}" \
-    "${DEFAULT_CUDA_DEVICE}" \
-    > "${_arg_output_file}"
+INPUT_PATH="${_arg_data_folder}/${_arg_eval_on}.${_arg_model_type}.${_arg_src}"
+
+cat "${INPUT_PATH}" |
+    evaluate_fairseq_interactive \
+        "${_arg_src}" \
+        "${_arg_tgt}" \
+        "${_arg_model_checkpoint}" \
+        "${_arg_data_bin_folder}" \
+        "${_arg_cuda_device}" \
+        "${_arg_eval_on}" \
+            2> /dev/null \
+            > "${_arg_output_file}"
 
 # ] <-- needed because of Argbash
