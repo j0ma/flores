@@ -2,7 +2,50 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 import click
+import os
 import re
+
+BLEU_REGEX='1\.4\.3 = (\d+\.\d+)'
+PAIRS = ('en-ne', 'ne-en', 'en-si', 'si-en')
+SEEDS = (10, 11, 12, 13, 14)
+
+def get_bleu(report):
+    return float(re.findall(BLEU_REGEX, report)[0])
+
+def load_seed_results_sacrebleu(p="./translation-output/"):
+    methods = os.listdir(p)
+    results = []
+    for method in methods:
+        for seed in SEEDS:
+            for pair in PAIRS:
+                src, tgt = pair.split('-')
+                fname = f"{p}/{method}/seed-{seed}/{pair}.output.raw.log"
+                try:
+                    with open(fname, 'r') as f:
+                        bleu_report = f.read()
+                except FileNotFoundError:
+                    continue
+                bleu_score = get_bleu(bleu_report)
+                results.append({
+                    'pair': pair,
+                    'method': method,
+                    'seed': seed,
+                    'bleu': bleu_score
+                })
+    raw = pd.DataFrame(results)
+    raw = raw.set_index(['seed', 'method', 'pair'], 1)\
+             .unstack()
+    # raw = pd.DataFrame(results).set_index('seed')
+    agg = raw.describe().loc[['count','mean', 'std', '25%', '50%', '75%']].T.round(3)
+    agg2 = agg[['mean', 'std']].copy()
+    agg2['std_err'] = agg2['std']/np.sqrt(agg['count'].copy())
+    agg2['lb'] = agg2['mean'] - 2*agg2['std_err']
+    agg2['ub'] = agg2['mean'] + 2*agg2['std_err']
+    agg = agg.round(3)
+    agg2 = agg2.round(3)
+
+    return raw, agg, agg2
+    #return raw
 
 
 def load_seed_results(p):
@@ -30,9 +73,11 @@ def load_seed_results(p):
     return raw, agg, agg2
 
 @click.command()
-@click.option('--input_file', required=True,
+@click.option('--input_file', required=False,
               help='File to load experimental results from.')
-def main(input_file):    
+@click.option('--translation_output', required=False,
+              help='Folder to load translation output & BLEUsfrom.')
+def main(input_file, translation_output):    
     reported = pd.Series(
         {
             'en-ne': 4.3,
@@ -42,7 +87,8 @@ def main(input_file):
         }
     )
 
-    raw, agg, agg2 = load_seed_results(input_file)
+    # raw, agg, agg2 = load_seed_results(input_file)
+    raw, agg, agg2 = load_seed_results_sacrebleu(translation_output)
 
     print('### Raw results')
     print(raw)
@@ -56,11 +102,13 @@ def main(input_file):
     print('\n### Reported results')
     print(reported)
 
-    print('\n### Difference from reported')
-    print(raw - reported)
+    # TODO: figure out a fast way to do this diff
+    #       when multiple models are present
+    # print('\n### Difference from reported')
+    # print(raw - reported)
 
-    print('\n### Fraction of overestimates')
-    print(((raw - reported) > 0).mean(axis=0))
+    # print('\n### Fraction of scores above paper')
+    # print(((raw - reported) > 0).mean(axis=0))
 
 if __name__ == '__main__':
     main()
