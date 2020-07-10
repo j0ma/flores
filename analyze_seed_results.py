@@ -5,12 +5,12 @@ import click
 import os
 import re
 
-BLEU_REGEX='1\.4\.3 = (\d+\.\d+)'
+BLEU_REGEX='version.* = (\d+\.\d+)'
 PAIRS = ('en-ne', 'ne-en', 'en-si', 'si-en')
 SEEDS = (10, 11, 12, 13, 14)
 
 def get_bleu(report):
-    return float(re.findall(BLEU_REGEX, report)[0])
+    return float(report.split(' = ')[1][:4])
 
 def load_seed_results_sacrebleu(p="./translation-output/"):
     methods = os.listdir(p)
@@ -25,6 +25,10 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
                         bleu_report = f.read()
                 except FileNotFoundError:
                     continue
+
+                if not bleu_report:
+                    continue
+
                 bleu_score = get_bleu(bleu_report)
                 results.append({
                     'pair': pair,
@@ -33,7 +37,7 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
                     'bleu': bleu_score
                 })
     raw = pd.DataFrame(results)
-    raw = raw.set_index(['seed', 'method', 'pair'], 1)\
+    raw = raw.set_index(['method', 'seed', 'pair'], 1)\
              .unstack()
     # raw = pd.DataFrame(results).set_index('seed')
     agg = raw.describe().loc[['count','mean', 'std', '25%', '50%', '75%']].T.round(3)
