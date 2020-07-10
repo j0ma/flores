@@ -37,11 +37,10 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
                     'bleu': bleu_score
                 })
     raw = pd.DataFrame(results)
-    raw = raw.set_index(['method', 'seed', 'pair'], 1)\
-             .unstack()
-    # raw = pd.DataFrame(results).set_index('seed')
-    agg = raw.describe().loc[['count','mean', 'std', '25%', '50%', '75%']].T.round(3)
+    agg = raw.groupby(['method', 'pair']).bleu.describe().copy()
     agg2 = agg[['mean', 'std']].copy()
+    agg = agg[['count','mean', 'std', '25%', '50%', '75%']]
+    raw = raw.set_index(['method','seed', 'pair']).unstack()
     agg2['std_err'] = agg2['std']/np.sqrt(agg['count'].copy())
     agg2['lb'] = agg2['mean'] - 2*agg2['std_err']
     agg2['ub'] = agg2['mean'] + 2*agg2['std_err']
@@ -49,7 +48,7 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
     agg2 = agg2.round(3)
 
     return raw, agg, agg2
-    #return raw
+    # return raw
 
 
 def load_seed_results(p):
@@ -81,7 +80,9 @@ def load_seed_results(p):
               help='File to load experimental results from.')
 @click.option('--translation_output', required=False,
               help='Folder to load translation output & BLEUsfrom.')
-def main(input_file, translation_output):    
+def main(input_file=None, translation_output=None):    
+    legacy_mode = bool(input_file is not None) 
+    if legacy_mode: print('Legacy mode activated')
     reported = pd.Series(
         {
             'en-ne': 4.3,
@@ -91,8 +92,10 @@ def main(input_file, translation_output):
         }
     )
 
-    # raw, agg, agg2 = load_seed_results(input_file)
-    raw, agg, agg2 = load_seed_results_sacrebleu(translation_output)
+    if legacy_mode:
+        raw, agg, agg2 = load_seed_results(input_file)
+    else:
+        raw, agg, agg2 = load_seed_results_sacrebleu(translation_output)
 
     print('### Raw results')
     print(raw)
@@ -103,16 +106,17 @@ def main(input_file, translation_output):
     print('\n### Confidence interval')
     print(agg2)
 
-    print('\n### Reported results')
+    print('\n### Reported results from paper')
     print(reported)
 
     # TODO: figure out a fast way to do this diff
     #       when multiple models are present
-    # print('\n### Difference from reported')
-    # print(raw - reported)
+    if legacy_mode:
+        print('\n### Difference from reported')
+        print(raw - reported)
 
-    # print('\n### Fraction of scores above paper')
-    # print(((raw - reported) > 0).mean(axis=0))
+        print('\n### Fraction of scores above paper')
+        print(((raw - reported) > 0).mean(axis=0))
 
 if __name__ == '__main__':
     main()
