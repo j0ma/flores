@@ -9,7 +9,7 @@
 # ARG_OPTIONAL_SINGLE([model-checkpoint])
 # ARG_OPTIONAL_SINGLE([model-type])
 # ARG_OPTIONAL_SINGLE([output-file])
-# ARG_OPTIONAL_SINGLE([cuda-device])
+# ARG_OPTIONAL_SINGLE([remove-bpe])
 
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
@@ -45,7 +45,7 @@ _arg_data_folder=
 _arg_model_checkpoint=
 _arg_model_type=
 _arg_output_file=
-_arg_cuda_device=0
+_arg_remove_bpe="regular"
 
 
 print_help()
@@ -126,13 +126,13 @@ parse_commandline()
 			--output-file=*)
 				_arg_output_file="${_key##--output-file=}"
 				;;
-			--cuda-device)
+			--remove-bpe)
 				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
-				_arg_cuda_device="$2"
+				_arg_remove_bpe="$2"
 				shift
 				;;
-			--cuda-device=*)
-				_arg_cuda_device="${_key##--cuda-device=}"
+			--remove-bpe=*)
+				_arg_remove_bpe="${_key##--remove-bpe=}"
 				;;
 			-h|--help)
 				print_help
@@ -162,8 +162,19 @@ evaluate_fairseq_interactive () {
     TGT_LANG=$2
     CHECKPOINT_PATH=$3
     DATA_DIR=$4
-    CUDA_DEVICE=$5
+    REMOVE_BPE=$5
     SPLIT=$6
+
+    if [ "${REMOVE_BPE}"="standard" ]
+    then
+        REMOVE_BPE_FLAG="--remove-bpe"
+    elif [ "${REMOVE_BPE}"="sentencepiece" ]
+    then
+        REMOVE_BPE_FLAG="--remove-bpe=sentencepiece"
+    else
+        echo "Invalid setting for --remove-bpe!"
+        exit 1
+    fi
 
     if [ "$SRC_LANG" = "en" ];
     then
@@ -197,7 +208,7 @@ printf 'Value of --%s: %s\n' 'data-bin-folder' "$_arg_data_bin_folder"
 printf 'Value of --%s: %s\n' 'model-checkpoint' "$_arg_model_checkpoint"
 printf 'Value of --%s: %s\n' 'model-type' "$_arg_model_type"
 printf 'Value of --%s: %s\n' 'output-file' "$_arg_output_file"
-printf 'Value of --%s: %s\n' 'cuda-device' "$_arg_cuda_device"
+printf 'Value of --%s: %s\n' 'remove-bpe' "$_arg_remove_bpe"
 
 INPUT_PATH="${_arg_data_folder}/${_arg_eval_on}.${_arg_model_type}.${_arg_src}"
 
@@ -207,7 +218,7 @@ cat "${INPUT_PATH}" |
         "${_arg_tgt}" \
         "${_arg_model_checkpoint}" \
         "${_arg_data_bin_folder}" \
-        "${_arg_cuda_device}" \
+        "${_arg_remove_bpe}" \
         "${_arg_eval_on}" \
             2> /dev/null \
             > "${_arg_output_file}"

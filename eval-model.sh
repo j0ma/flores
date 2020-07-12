@@ -10,7 +10,7 @@
 # ARG_OPTIONAL_SINGLE([model-type])
 # ARG_OPTIONAL_SINGLE([output-file])
 # ARG_OPTIONAL_SINGLE([reference])
-# ARG_OPTIONAL_SINGLE([cuda-device])
+# ARG_OPTIONAL_SINGLE([remove-bpe])
 
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
@@ -43,11 +43,11 @@ _arg_model_checkpoint=
 _arg_model_type=
 _arg_output_file=
 _arg_reference=
-_arg_cuda_device=0
+_arg_remove_bpe="regular"
 
 print_help() {
     printf '%s\n' "<The general help message of my script>"
-    printf 'Usage: %s [--src <arg>] [--tgt <arg>] [--eval-on <arg>] [--data-folder <arg>] [--data-bin-folder <arg>] [--model-checkpoint <arg>] [--output-file <arg>] [--reference <arg>] [--cuda-device <arg>] [-h|--help]\n' "$0"
+    printf 'Usage: %s [--src <arg>] [--tgt <arg>] [--eval-on <arg>] [--data-folder <arg>] [--data-bin-folder <arg>] [--model-checkpoint <arg>] [--output-file <arg>] [--reference <arg>] [--remove-bpe <arg>] [-h|--help]\n' "$0"
     printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -127,13 +127,13 @@ parse_commandline() {
         --reference=*)
             _arg_reference="${_key##--reference=}"
             ;;
-        --cuda-device)
+        --remove-bpe)
             test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
-            _arg_cuda_device="$2"
+            _arg_remove_bpe="$2"
             shift
             ;;
-        --cuda-device=*)
-            _arg_cuda_device="${_key##--cuda-device=}"
+        --remove-bpe=*)
+            _arg_remove_bpe="${_key##--remove-bpe=}"
             ;;
         -h | --help)
             print_help
@@ -167,7 +167,7 @@ printf 'Value of --%s: %s\n' 'model-checkpoint' "$_arg_model_checkpoint"
 printf 'Value of --%s: %s\n' 'model-type' "$_arg_model_type"
 printf 'Value of --%s: %s\n' 'output-file' "$_arg_output_file"
 printf 'Value of --%s: %s\n' 'reference' "$_arg_reference"
-printf 'Value of --%s: %s\n' 'cuda-device' "$_arg_cuda_device"
+printf 'Value of --%s: %s\n' 'remove-bpe' "$_arg_remove_bpe"
 
 ROOT="$(pwd)"
 SCRIPTS="${ROOT}/scripts"
@@ -182,7 +182,7 @@ bash "$SCRIPTS/eval-fairseq-interactive.sh" \
     --model-checkpoint "${_arg_model_checkpoint}" \
     --model-type "${_arg_model_type}" \
     --output-file "${_arg_output_file}" \
-    --cuda-device "${_arg_cuda_device}"
+    --remove-bpe "${_arg_remove_bpe}"
 
 echo "Done! Fixing translation output..."
 # grep the actual translation output

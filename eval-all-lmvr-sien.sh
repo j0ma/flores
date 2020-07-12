@@ -17,5 +17,5 @@ for cp in $(ls ./checkpoints/*lmvr-si*/checkpoints_si_en/checkpoint_best.pt); do
         --model-type lmvr \
         --output-file ./translation-output/lmvr/seed-${_seed}/si-en.output.raw \
         --reference ./data/wiki_si_en_lmvr/test.en \
-        --cuda-device 0
+        --remove-bpe "regular"
 done

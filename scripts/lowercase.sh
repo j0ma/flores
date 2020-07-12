@@ -17,6 +17,7 @@ fi
 LOWERCASE_SCRIPT="$MOSES_SCRIPTS/tokenizer/lowercase.perl"
 
 cd "${TRAIN_FOLDER}" || exit
+echo "Now in ${TRAIN_FOLDER}"
 
 for input_file in ./*; do
     output_file=$input_file"_new"
