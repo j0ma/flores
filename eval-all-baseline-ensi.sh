@@ -20,5 +20,6 @@ for cp in $(ls ./checkpoints/*exp333*lowercase*/checkpoints_en_si/checkpoint_bes
         --model-type bpe \
         --output-file ./translation-output/baseline/seed-${_seed}/en-si.output.raw \
         --reference ./data/wiki_si_en_bpe5000_lowercase/test.si \
-        --remove-bpe "sentencepiece"
+        --remove-bpe "sentencepiece" &
 done
+wait

@@ -20,5 +20,6 @@ for cp in $(ls ./checkpoints/*exp333*lowercase*/checkpoints_ne_en/checkpoint_bes
         --model-type bpe \
         --output-file ./translation-output/baseline/seed-${_seed}/ne-en.output.raw \
         --reference ./data/wiki_ne_en_bpe5000_lowercase/test.en \
-        --cuda-device 0
+        --remove-bpe "sentencepiece" &
 done
+wait
