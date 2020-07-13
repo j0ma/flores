@@ -270,56 +270,56 @@ bash $SCRIPTS/download_indic.sh
 ##   - lowercased input before BPE     #
 ########################################
 
-echo "#######################################"
-echo "#   JOINT SENTENCEPIECE + LOWERCASE   #"
-echo "#######################################"
+#echo "#######################################"
+#echo "#   JOINT SENTENCEPIECE + LOWERCASE   #"
+#echo "#######################################"
 
-echo "Joint Sentencepiece + lowercasing..." 
-SPM_TRAIN=$SCRIPTS/spm_train.py
-SPM_ENCODE=$SCRIPTS/spm_encode.py
+#echo "Joint Sentencepiece + lowercasing..." 
+#SPM_TRAIN=$SCRIPTS/spm_train.py
+#SPM_ENCODE=$SCRIPTS/spm_encode.py
 
-# vanilla + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
-mkdir -p "$TMP" "$DATABIN"
+## vanilla + lowercase
+#TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
+#mkdir -p "$TMP" "$DATABIN"
 
-original_preprocessing_loop
+#original_preprocessing_loop
 
-# lowercase english side
-$SCRIPTS/lowercase.sh $TMP
+## lowercase english side
+#$SCRIPTS/lowercase.sh $TMP
 
-# learn BPE with sentencepiece
-python $SPM_TRAIN \
-    --input=$TMP/train.$SRC,$TMP/train.$TGT \
-    --model_prefix=$DATABIN/sentencepiece.bpe \
-    --vocab_size=$BPESIZE \
-    --character_coverage=1.0 \
-    --model_type=bpe
+## learn BPE with sentencepiece
+#python $SPM_TRAIN \
+    #--input=$TMP/train.$SRC,$TMP/train.$TGT \
+    #--model_prefix=$DATABIN/sentencepiece.bpe \
+    #--vocab_size=$BPESIZE \
+    #--character_coverage=1.0 \
+    #--model_type=bpe
 
-# encode train/valid/test
-python $SPM_ENCODE \
-    --model $DATABIN/sentencepiece.bpe.model \
-    --output_format=piece \
-    --inputs $TMP/train.$SRC $TMP/train.$TGT \
-    --outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
-    --min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
-for SPLIT in "valid" "test"; do
-    python $SPM_ENCODE \
-        --model $DATABIN/sentencepiece.bpe.model \
-        --output_format=piece \
-        --inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
-        --outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
-done
+## encode train/valid/test
+#python $SPM_ENCODE \
+    #--model $DATABIN/sentencepiece.bpe.model \
+    #--output_format=piece \
+    #--inputs $TMP/train.$SRC $TMP/train.$TGT \
+    #--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
+    #--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+#for SPLIT in "valid" "test"; do
+    #python $SPM_ENCODE \
+        #--model $DATABIN/sentencepiece.bpe.model \
+        #--output_format=piece \
+        #--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+        #--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
+#done
 
-# binarize data
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.bpe \
-    --validpref $TMP/valid.bpe \
-    --testpref $TMP/test.bpe \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
+## binarize data
+#fairseq-preprocess \
+    #--source-lang $SRC --target-lang $TGT \
+    #--trainpref $TMP/train.bpe \
+    #--validpref $TMP/valid.bpe \
+    #--testpref $TMP/test.bpe \
+    #--destdir $DATABIN \
+    #--joined-dictionary \
+    #--workers 4
 
 ################################################
 ##   MOSES TOKENIZATION + MORFESSOR FLATCAT    #
@@ -627,8 +627,54 @@ fairseq-preprocess \
 #   MOSES TOKENIZATION + MORSEL (Lignos, 2010)  #
 #################################################
 
-#echo "MORSEL from Lignos (2010) ..."
-#echo "Not implemented!"
-#TMP=$DATA/wiki_${SRC}_${TGT}_morsel
-#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_morsel
-#mkdir -p "$TMP" "$DATABIN"
+echo "MORSEL from Lignos (2010) ..."
+TMP=$DATA/wiki_${SRC}_${TGT}_morsel
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_morsel
+mkdir -p "$TMP" "$DATABIN"
+
+original_preprocessing_loop
+
+for KIND in "train" "valid" "test"; do
+    for LANGUAGE in "$SRC" "$TGT"; do
+
+        echo "Processing ${KIND} set for ${LANGUAGE}"
+        echo "First moses pipeline..."
+        moses_pipeline \
+            "$TMP/$KIND.$LANGUAGE" \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$LANGUAGE"
+
+        echo "Lowercasing..."
+        convert_lowercase \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$TMP/$KIND.$LANGUAGE.tok.lower"
+
+        echo "Actual segmentation..."
+        MORSEL_ROOT="./segmentation-models/morsel/${SRC}_${TGT}/${LANGUAGE}/"
+        bash ./scripts/segment_using_morsel.sh \
+            --sentences "${TMP}/${KIND}.${LANGUAGE}.tok.lower" \
+            --morsel-segmentations "${MORSEL_ROOT}/morsel_seg_bpe_map.txt" \
+            --bpe-codes "${MORSEL_ROOT}/stem_code.txt" \
+            --output-file "${TMP}/${KIND}.morsel.${LANGUAGE}"
+    done
+done
+
+# comment out due to excessive pruning
+#for LANGUAGE in ne en; do
+    #perl "$MOSES_CLEAN" \
+    #-ratio 1.5 \
+    #"$TMP/train.morsel" \
+    #"$SRC" "$TGT" \
+    #"$TMP/train.morsel.clean" \
+    #"$TRAIN_MINLEN" \
+    #"$TRAIN_MAXLEN"
+#done
+
+fairseq-preprocess \
+    --source-lang $SRC --target-lang $TGT \
+    --trainpref $TMP/train.morsel \
+    --validpref $TMP/valid.morsel \
+    --testpref $TMP/test.morsel \
+    --destdir $DATABIN \
+    --joined-dictionary \
+    --workers 4

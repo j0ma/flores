@@ -59,7 +59,7 @@ train() {
     LOG_FILE="baseline_"$SRC_LANG"_"$TGT_LANG".log"
     LOG_OUTPUT_PATH="$LOG_DIR/$LOG_FILE"
 
-    echo "================ FLORES BASELINE WITH CLIP_NORM=0.1, BPE=$BPE_SIZE AND SEED=$RAND_SEED  ================" >>$LOG_OUTPUT_PATH
+    echo "================ FLORES BASELINE WITH CLIP_NORM=0.1, BPE=$BPE_SIZE AND SEED=$RAND_SEED USING MORSEL ================" >>$LOG_OUTPUT_PATH
     echo "About to train the supervised for the following language pair: "$SRC_LANG_CAP"-"$TGT_LANG_CAP >>$LOG_OUTPUT_PATH
     echo "Logging output to: $LOG_OUTPUT_PATH"
 
@@ -70,9 +70,9 @@ train() {
 
     # infer data directory
     if [ "$SRC_LANG" = "si" ] || [ "$TGT_LANG" = "si" ]; then
-        DATA_DIR="data-bin/wiki_si_en_bpe"$BPE_SIZE"_nonjoint/"
+        DATA_DIR="data-bin/wiki_si_en_morsel/"
     else
-        DATA_DIR="data-bin/wiki_ne_en_bpe"$BPE_SIZE"_nonjoint/"
+        DATA_DIR="data-bin/wiki_ne_en_morsel/"
     fi
 
     echo "Data folder is: "$DATA_DIR >>$LOG_OUTPUT_PATH

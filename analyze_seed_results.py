@@ -22,7 +22,7 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
                 fname = f"{p}/{method}/seed-{seed}/{pair}.output.raw.log"
                 try:
                     with open(fname, 'r') as f:
-                        bleu_report = f.read()
+                        bleu_report = f.readlines()[-1]
                 except FileNotFoundError:
                     continue
 

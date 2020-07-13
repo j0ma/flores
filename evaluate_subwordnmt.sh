@@ -22,7 +22,7 @@ evaluate_fairseq () {
             --beam 5 --lenpen 1.2 \
             --gen-subset test \
             --sacrebleu \
-            --remove-bpe=sentencepiece
+            --remove-bpe
     fi
 }
 
