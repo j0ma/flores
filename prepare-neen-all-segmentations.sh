@@ -277,69 +277,69 @@ bash $SCRIPTS/download_indic.sh
 ##   - lowercased input before BPE     #
 ########################################
 
-#echo "#######################################"
-#echo "#   JOINT SENTENCEPIECE + LOWERCASE   #"
-#echo "#######################################"
+echo "#######################################"
+echo "#   JOINT SENTENCEPIECE + LOWERCASE   #"
+echo "#######################################"
 
-#echo "Joint Sentencepiece + lowercasing with AWK (old)..."
-#SPM_TRAIN=$SCRIPTS/spm_train.py
-#SPM_ENCODE=$SCRIPTS/spm_encode.py
+echo "Joint Sentencepiece + lowercasing"
+SPM_TRAIN=$SCRIPTS/spm_train.py
+SPM_ENCODE=$SCRIPTS/spm_encode.py
 
-## vanilla + lowercase
-#TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
-#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
-#mkdir -p "$TMP" "$DATABIN"
+# vanilla + lowercase
+TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
+mkdir -p "$TMP" "$DATABIN"
 
-#original_preprocessing_loop
+original_preprocessing_loop
 
-## lowercase english side
-#$SCRIPTS/lowercase.sh $TMP
+# lowercase english side
+$SCRIPTS/lowercase.sh $TMP
 
-## learn BPE with sentencepiece
-#python $SPM_TRAIN \
-#--input=$TMP/train.$SRC,$TMP/train.$TGT \
-#--model_prefix=$DATABIN/sentencepiece.bpe \
-#--vocab_size=$BPESIZE \
-#--character_coverage=1.0 \
-#--model_type=bpe
+# learn BPE with sentencepiece
+python $SPM_TRAIN \
+    --input=$TMP/train.$SRC,$TMP/train.$TGT \
+    --model_prefix=$DATABIN/sentencepiece.bpe \
+    --vocab_size=$BPESIZE \
+    --character_coverage=1.0 \
+    --model_type=bpe
 
-## encode train/valid/test
-#python $SPM_ENCODE \
-#--model $DATABIN/sentencepiece.bpe.model \
-#--output_format=piece \
-#--inputs $TMP/train.$SRC $TMP/train.$TGT \
-#--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
-#--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
-#for SPLIT in "valid" "test"; do
-#python $SPM_ENCODE \
-#--model $DATABIN/sentencepiece.bpe.model \
-#--output_format=piece \
-#--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
-#--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
-#done
+# encode train/valid/test
+python $SPM_ENCODE \
+    --model $DATABIN/sentencepiece.bpe.model \
+    --output_format=piece \
+    --inputs $TMP/train.$SRC $TMP/train.$TGT \
+    --outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
+    --min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+for SPLIT in "valid" "test"; do
+    python $SPM_ENCODE \
+        --model $DATABIN/sentencepiece.bpe.model \
+        --output_format=piece \
+        --inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+        --outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
+done
 
-## binarize data
-#fairseq-preprocess \
-#--source-lang $SRC --target-lang $TGT \
-#--trainpref $TMP/train.bpe \
-#--validpref $TMP/valid.bpe \
-#--testpref $TMP/test.bpe \
-#--destdir $DATABIN \
-#--joined-dictionary \
-#--workers 4
+# binarize data
+fairseq-preprocess \
+    --source-lang $SRC --target-lang $TGT \
+    --trainpref $TMP/train.bpe \
+    --validpref $TMP/valid.bpe \
+    --testpref $TMP/test.bpe \
+    --destdir $DATABIN \
+    --joined-dictionary \
+    --workers 4
 
 ################################################
 ##   MOSES TOKENIZATION + MORFESSOR FLATCAT    #
 ################################################
 
-echo "###############################################"
-echo "#   MOSES TOKENIZATION + MORFESSOR FLATCAT    #"
-echo "###############################################"
+#echo "###############################################"
+#echo "#   MOSES TOKENIZATION + MORFESSOR FLATCAT    #"
+#echo "###############################################"
 
-# morfessor flatcat + moses + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_flatcat
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_flatcat
-mkdir -p "$TMP" "$DATABIN"
+## morfessor flatcat + moses + lowercase
+#TMP=$DATA/wiki_${SRC}_${TGT}_flatcat
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_flatcat
+#mkdir -p "$TMP" "$DATABIN"
 
 #original_preprocessing_loop
 
@@ -383,27 +383,27 @@ mkdir -p "$TMP" "$DATABIN"
 ##"$TRAIN_MAXLEN"
 ##done
 
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.morfessor-flatcat \
-    --validpref $TMP/valid.morfessor-flatcat \
-    --testpref $TMP/test.morfessor-flatcat \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
+#fairseq-preprocess \
+    #--source-lang $SRC --target-lang $TGT \
+    #--trainpref $TMP/train.morfessor-flatcat \
+    #--validpref $TMP/valid.morfessor-flatcat \
+    #--testpref $TMP/test.morfessor-flatcat \
+    #--destdir $DATABIN \
+    #--joined-dictionary \
+    #--workers 4
 
 ###############################################
 #   MOSES TOKENIZATION + MORFESSOR BASELINE   #
 ###############################################
 
-echo "###############################################"
-echo "#   MOSES TOKENIZATION + MORFESSOR BASELINE   #"
-echo "###############################################"
+#echo "###############################################"
+#echo "#   MOSES TOKENIZATION + MORFESSOR BASELINE   #"
+#echo "###############################################"
 
-# morfessor baseline + moses + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_morfessorbaseline
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_morfessorbaseline
-mkdir -p "$TMP" "$DATABIN"
+## morfessor baseline + moses + lowercase
+#TMP=$DATA/wiki_${SRC}_${TGT}_morfessorbaseline
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_morfessorbaseline
+#mkdir -p "$TMP" "$DATABIN"
 
 #original_preprocessing_loop
 
@@ -448,27 +448,27 @@ mkdir -p "$TMP" "$DATABIN"
 ##done
 
 # binarize data
-fairseq-preprocess \
---source-lang $SRC --target-lang $TGT \
---trainpref $TMP/train.morfessor-baseline \
---validpref $TMP/valid.morfessor-baseline \
---testpref $TMP/test.morfessor-baseline \
---destdir $DATABIN \
---joined-dictionary \
---workers 4
+#fairseq-preprocess \
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.morfessor-baseline \
+#--validpref $TMP/valid.morfessor-baseline \
+#--testpref $TMP/test.morfessor-baseline \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ############################################
 #   MOSES TOKENIZATION + SUBWORD-NMT BPE   #
 ############################################
 
-echo "#############################################"
-echo "#   MOSES TOKENIZATION + SUBWORD-NMT BPE    #"
-echo "#############################################"
+#echo "#############################################"
+#echo "#   MOSES TOKENIZATION + SUBWORD-NMT BPE    #"
+#echo "#############################################"
 
-# subword-nmt + moses + lowercase
-TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
-mkdir -p "$TMP" "$DATABIN"
+## subword-nmt + moses + lowercase
+#TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_subwordnmt
+#mkdir -p "$TMP" "$DATABIN"
 
 #original_preprocessing_loop
 
@@ -538,23 +538,23 @@ mkdir -p "$TMP" "$DATABIN"
 ##done
 
 # binarize data
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.subword-nmt \
-    --validpref $TMP/valid.subword-nmt \
-    --testpref $TMP/test.subword-nmt \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
+#fairseq-preprocess \
+    #--source-lang $SRC --target-lang $TGT \
+    #--trainpref $TMP/train.subword-nmt \
+    #--validpref $TMP/valid.subword-nmt \
+    #--testpref $TMP/test.subword-nmt \
+    #--destdir $DATABIN \
+    #--joined-dictionary \
+    #--workers 4
 
 #################################################
 #   MOSES TOKENIZATION + LMVR (Ataman, 2017)    #
 #################################################
 
-echo "LMVR from Ataman (2017) ..."
-TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr
-mkdir -p "$TMP" "$DATABIN"
+#echo "LMVR from Ataman (2017) ..."
+#TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr
+#mkdir -p "$TMP" "$DATABIN"
 
 #original_preprocessing_loop
 
@@ -623,16 +623,16 @@ mkdir -p "$TMP" "$DATABIN"
 ## deactivate the environment
 #deactivate
 
-echo "Done! Time to binarize the data..."
-# binarize data
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.lmvr \
-    --validpref $TMP/valid.lmvr \
-    --testpref $TMP/test.lmvr \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
+#echo "Done! Time to binarize the data..."
+## binarize data
+#fairseq-preprocess \
+    #--source-lang $SRC --target-lang $TGT \
+    #--trainpref $TMP/train.lmvr \
+    #--validpref $TMP/valid.lmvr \
+    #--testpref $TMP/test.lmvr \
+    #--destdir $DATABIN \
+    #--joined-dictionary \
+    #--workers 4
 
 #################################################
 #   MOSES TOKENIZATION + MORSEL (Lignos, 2010)  #

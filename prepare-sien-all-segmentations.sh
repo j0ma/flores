@@ -270,56 +270,56 @@ bash $SCRIPTS/download_indic.sh
 ##   - lowercased input before BPE     #
 ########################################
 
-#echo "#######################################"
-#echo "#   JOINT SENTENCEPIECE + LOWERCASE   #"
-#echo "#######################################"
+echo "#######################################"
+echo "#   JOINT SENTENCEPIECE + LOWERCASE   #"
+echo "#######################################"
 
-#echo "Joint Sentencepiece + lowercasing with AWK (old)..."
-#SPM_TRAIN=$SCRIPTS/spm_train.py
-#SPM_ENCODE=$SCRIPTS/spm_encode.py
+echo "Joint Sentencepiece + lowercasing..." 
+SPM_TRAIN=$SCRIPTS/spm_train.py
+SPM_ENCODE=$SCRIPTS/spm_encode.py
 
-## vanilla + lowercase
-#TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
-#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
-#mkdir -p "$TMP" "$DATABIN"
+# vanilla + lowercase
+TMP=$DATA/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_bpe${BPESIZE}_lowercase
+mkdir -p "$TMP" "$DATABIN"
 
-#original_preprocessing_loop
+original_preprocessing_loop
 
-## lowercase english side
-#$SCRIPTS/lowercase.sh $TMP
+# lowercase english side
+$SCRIPTS/lowercase.sh $TMP
 
-## learn BPE with sentencepiece
-#python $SPM_TRAIN \
-#--input=$TMP/train.$SRC,$TMP/train.$TGT \
-#--model_prefix=$DATABIN/sentencepiece.bpe \
-#--vocab_size=$BPESIZE \
-#--character_coverage=1.0 \
-#--model_type=bpe
+# learn BPE with sentencepiece
+python $SPM_TRAIN \
+    --input=$TMP/train.$SRC,$TMP/train.$TGT \
+    --model_prefix=$DATABIN/sentencepiece.bpe \
+    --vocab_size=$BPESIZE \
+    --character_coverage=1.0 \
+    --model_type=bpe
 
-## encode train/valid/test
-#python $SPM_ENCODE \
-#--model $DATABIN/sentencepiece.bpe.model \
-#--output_format=piece \
-#--inputs $TMP/train.$SRC $TMP/train.$TGT \
-#--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
-#--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
-#for SPLIT in "valid" "test"; do
-#python $SPM_ENCODE \
-#--model $DATABIN/sentencepiece.bpe.model \
-#--output_format=piece \
-#--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
-#--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
-#done
+# encode train/valid/test
+python $SPM_ENCODE \
+    --model $DATABIN/sentencepiece.bpe.model \
+    --output_format=piece \
+    --inputs $TMP/train.$SRC $TMP/train.$TGT \
+    --outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
+    --min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+for SPLIT in "valid" "test"; do
+    python $SPM_ENCODE \
+        --model $DATABIN/sentencepiece.bpe.model \
+        --output_format=piece \
+        --inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+        --outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
+done
 
-## binarize data
-#fairseq-preprocess \
-#--source-lang $SRC --target-lang $TGT \
-#--trainpref $TMP/train.bpe \
-#--validpref $TMP/valid.bpe \
-#--testpref $TMP/test.bpe \
-#--destdir $DATABIN \
-#--joined-dictionary \
-#--workers 4
+# binarize data
+fairseq-preprocess \
+    --source-lang $SRC --target-lang $TGT \
+    --trainpref $TMP/train.bpe \
+    --validpref $TMP/valid.bpe \
+    --testpref $TMP/test.bpe \
+    --destdir $DATABIN \
+    --joined-dictionary \
+    --workers 4
 
 ################################################
 ##   MOSES TOKENIZATION + MORFESSOR FLATCAT    #
@@ -540,88 +540,88 @@ bash $SCRIPTS/download_indic.sh
 #   MOSES TOKENIZATION + LMVR (Ataman, 2017)    #
 #################################################
 
-echo "LMVR from Ataman (2017) ..."
-TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr
-mkdir -p "$TMP" 
-mkdir -p "$DATABIN"
+#echo "LMVR from Ataman (2017) ..."
+#TMP=$DATA/wiki_${SRC}_${TGT}_lmvr
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr
+#mkdir -p "$TMP" 
+#mkdir -p "$DATABIN"
 
-original_preprocessing_loop
+#original_preprocessing_loop
 
-TMP_BIN=$ROOT/segmentation-models/
-mkdir -p "$TMP_BIN"
+#TMP_BIN=$ROOT/segmentation-models/
+#mkdir -p "$TMP_BIN"
 
-# activate virtual environment
-echo "activating LMVR virtual environment..."
-if [ -z "$LMVR_ENV_PATH" ]; then
-    source "$(pwd)/scripts/lmvr-environment-variables.sh"
-fi
-source "$LMVR_ENV_PATH/bin/activate"
+## activate virtual environment
+#echo "activating LMVR virtual environment..."
+#if [ -z "$LMVR_ENV_PATH" ]; then
+    #source "$(pwd)/scripts/lmvr-environment-variables.sh"
+#fi
+#source "$LMVR_ENV_PATH/bin/activate"
 
-# make sure we're actually running 2.7
-if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
-    echo "Need to be running Python 2.7 for LMVR!"
-    exit 1
-fi
+## make sure we're actually running 2.7
+#if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
+    #echo "Need to be running Python 2.7 for LMVR!"
+    #exit 1
+#fi
 
-for KIND in "train" "valid" "test"; do
-    for LANGUAGE in "$SRC" "$TGT"; do
+#for KIND in "train" "valid" "test"; do
+    #for LANGUAGE in "$SRC" "$TGT"; do
 
-        echo "Processing ${KIND} set for ${LANGUAGE}"
-        echo "First moses pipeline..."
+        #echo "Processing ${KIND} set for ${LANGUAGE}"
+        #echo "First moses pipeline..."
 
-        moses_pipeline \
-            "$TMP/$KIND.$LANGUAGE" \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$LANGUAGE"
+        #moses_pipeline \
+            #"$TMP/$KIND.$LANGUAGE" \
+            #"$TMP/$KIND.$LANGUAGE.tok" \
+            #"$LANGUAGE"
 
-        echo "Lowercasing..."
+        #echo "Lowercasing..."
 
-        convert_lowercase \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$TMP/$KIND.$LANGUAGE.tok.lower"
+        #convert_lowercase \
+            #"$TMP/$KIND.$LANGUAGE.tok" \
+            #"$TMP/$KIND.$LANGUAGE.tok.lower"
 
-        echo "Check python version"
-        which python
-        python --version
+        #echo "Check python version"
+        #which python
+        #python --version
 
-        echo "Actual segmentation..."
-        LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
-        LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
-        LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr.model.${LANGUAGE}.tar.gz"
-        bash "$SCRIPTS/segment.sh" \
-            --input "${LMVR_INPUT_FILE}" \
-            --output "${LMVR_OUTPUT_FILE}" \
-            --model lmvr \
-            --model-binary "${LMVR_MODEL_FILE}" \
-            --lang "${LANGUAGE}" \
-            --kind "${KIND}"
-    done
-done
-
-# comment out due to excessive pruning
-#for LANGUAGE in ne en; do
-#perl "$MOSES_CLEAN" \
-#-ratio 1.5 \
-#"$TMP/train.lmvr" \
-#"$SRC" "$TGT" \
-#"$TMP/train.lmvr.clean" \
-#"$TRAIN_MINLEN" \
-#"$TRAIN_MAXLEN"
+        #echo "Actual segmentation..."
+        #LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
+        #LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
+        #LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr.model.${LANGUAGE}.tar.gz"
+        #bash "$SCRIPTS/segment.sh" \
+            #--input "${LMVR_INPUT_FILE}" \
+            #--output "${LMVR_OUTPUT_FILE}" \
+            #--model lmvr \
+            #--model-binary "${LMVR_MODEL_FILE}" \
+            #--lang "${LANGUAGE}" \
+            #--kind "${KIND}"
+    #done
 #done
 
-# deactivate the environment
-deactivate
+## comment out due to excessive pruning
+##for LANGUAGE in ne en; do
+##perl "$MOSES_CLEAN" \
+##-ratio 1.5 \
+##"$TMP/train.lmvr" \
+##"$SRC" "$TGT" \
+##"$TMP/train.lmvr.clean" \
+##"$TRAIN_MINLEN" \
+##"$TRAIN_MAXLEN"
+##done
 
-# binarize data
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.lmvr \
-    --validpref $TMP/valid.lmvr \
-    --testpref $TMP/test.lmvr \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
+## deactivate the environment
+#deactivate
+
+## binarize data
+#fairseq-preprocess \
+    #--source-lang $SRC --target-lang $TGT \
+    #--trainpref $TMP/train.lmvr \
+    #--validpref $TMP/valid.lmvr \
+    #--testpref $TMP/test.lmvr \
+    #--destdir $DATABIN \
+    #--joined-dictionary \
+    #--workers 4
 
 #################################################
 #   MOSES TOKENIZATION + MORSEL (Lignos, 2010)  #

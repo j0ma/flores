@@ -173,6 +173,7 @@ ROOT="$(pwd)"
 SCRIPTS="${ROOT}/scripts"
 
 echo "Evaluating model checkpoint...."
+echo "Remove BPE: ${_arg_remove_bpe}"
 # evaluate model checkpoint & create log
 bash "$SCRIPTS/eval-fairseq-interactive.sh" \
     --src "${_arg_src}" --tgt "${_arg_tgt}" \

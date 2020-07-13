@@ -165,10 +165,12 @@ evaluate_fairseq_interactive () {
     REMOVE_BPE=$5
     SPLIT=$6
 
-    if [ "${REMOVE_BPE}"="standard" ]
+    echo "Invoking fairseq-interactive"
+
+    if [ "${REMOVE_BPE}" = "regular" ] || [ "${REMOVE_BPE}" = "standard" ]
     then
         REMOVE_BPE_FLAG="--remove-bpe"
-    elif [ "${REMOVE_BPE}"="sentencepiece" ]
+    elif [ "${REMOVE_BPE}" = "sentencepiece" ]
     then
         REMOVE_BPE_FLAG="--remove-bpe=sentencepiece"
     else
@@ -186,7 +188,7 @@ evaluate_fairseq_interactive () {
             --path "${CHECKPOINT_PATH}" \
             --beam 5 --lenpen 1.2 \
             --gen-subset "${SPLIT}" \
-            --remove-bpe # note: no sacrebleu here
+            "${REMOVE_BPE_FLAG}" # note: no sacrebleu here
     else
         fairseq-interactive \
             "${DATA_DIR}" \
@@ -195,7 +197,7 @@ evaluate_fairseq_interactive () {
             --path "${CHECKPOINT_PATH}" \
             --beam 5 --lenpen 1.2 \
             --gen-subset "${SPLIT}" \
-            --remove-bpe \
+            "${REMOVE_BPE_FLAG}" \
             --sacrebleu
     fi
 }
