@@ -48,7 +48,6 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
     agg2 = agg2.round(3)
 
     return raw, agg, agg2
-    # return raw
 
 
 def load_seed_results(p):
@@ -80,7 +79,8 @@ def load_seed_results(p):
               help='File to load experimental results from.')
 @click.option('--translation_output', required=False,
               help='Folder to load translation output & BLEUsfrom.')
-def main(input_file=None, translation_output=None):    
+@click.option('--output_file', required=False)
+def main(input_file=None, translation_output=None, output_file=None):    
     legacy_mode = bool(input_file is not None) 
     if legacy_mode: print('Legacy mode activated')
     reported = pd.Series(
@@ -117,6 +117,10 @@ def main(input_file=None, translation_output=None):
 
         print('\n### Fraction of scores above paper')
         print(((raw - reported) > 0).mean(axis=0))
+
+    if output_file:
+        print("Outputting to CSV...")
+        raw.stack().reset_index().to_csv(output_file, index=False)
 
 if __name__ == '__main__':
     main()
