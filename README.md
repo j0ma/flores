@@ -3,6 +3,84 @@
 This repository is my own fork of FAIR's FLoRes repository.
 My main reason for forking was to create training and evaluation scripts that are well-automated.
 
+### Experimental results as of 7/13/2020
+
+These are based on evaluation using `fairseq-interactive` and `sacrebleu`. All BLEU scores are case-insensitive.
+
+```
+### Raw results
+                    bleu                  
+pair               en-ne en-si ne-en si-en
+method        seed                        
+baseline      10     4.6   1.2   8.3   7.3
+              11     4.4   1.4   8.5   7.5
+              12     4.6   0.8   8.3   7.3
+              13     4.5   1.0   8.3   7.5
+              14     4.6   1.0   8.1   7.3
+baseline-fp16 10     4.3   0.9   8.5   7.4
+              11     4.7   1.6   8.7   7.6
+              12     4.4   1.0   8.3   7.5
+              13     4.6   0.8   8.5   7.5
+              14     4.5   1.1   8.1   7.6
+lmvr          10     3.9   1.1   8.1   7.0
+              11     4.0   1.4   8.1   6.9
+              12     4.0   1.0   8.0   7.2
+              13     4.1   1.3   8.4   7.4
+              14     4.2   1.2   7.9   7.2
+subword-nmt   10     4.2   0.8   8.6   7.7
+              11     4.5   0.8   8.3   8.0
+              12     4.6   0.8   8.5   7.7
+              13     4.5   1.1   8.3   7.4
+              14     4.3   0.9   8.6   8.0
+
+### Summary statistics
+                     count  mean    std  25%  50%  75%
+method        pair                                    
+baseline      en-ne    5.0  4.54  0.089  4.5  4.6  4.6
+              en-si    5.0  1.08  0.228  1.0  1.0  1.2
+              ne-en    5.0  8.30  0.141  8.3  8.3  8.3
+              si-en    5.0  7.38  0.110  7.3  7.3  7.5
+baseline-fp16 en-ne    5.0  4.50  0.158  4.4  4.5  4.6
+              en-si    5.0  1.08  0.311  0.9  1.0  1.1
+              ne-en    5.0  8.42  0.228  8.3  8.5  8.5
+              si-en    5.0  7.52  0.084  7.5  7.5  7.6
+lmvr          en-ne    5.0  4.04  0.114  4.0  4.0  4.1
+              en-si    5.0  1.20  0.158  1.1  1.2  1.3
+              ne-en    5.0  8.10  0.187  8.0  8.1  8.1
+              si-en    5.0  7.14  0.195  7.0  7.2  7.2
+subword-nmt   en-ne    5.0  4.42  0.164  4.3  4.5  4.5
+              en-si    5.0  0.88  0.130  0.8  0.8  0.9
+              ne-en    5.0  8.46  0.152  8.3  8.5  8.6
+              si-en    5.0  7.76  0.251  7.7  7.7  8.0
+
+### Confidence interval
+                     mean    std  std_err     lb     ub
+method        pair                                     
+baseline      en-ne  4.54  0.089    0.040  4.460  4.620
+              en-si  1.08  0.228    0.102  0.876  1.284
+              ne-en  8.30  0.141    0.063  8.174  8.426
+              si-en  7.38  0.110    0.049  7.282  7.478
+baseline-fp16 en-ne  4.50  0.158    0.071  4.359  4.641
+              en-si  1.08  0.311    0.139  0.801  1.359
+              ne-en  8.42  0.228    0.102  8.216  8.624
+              si-en  7.52  0.084    0.037  7.445  7.595
+lmvr          en-ne  4.04  0.114    0.051  3.938  4.142
+              en-si  1.20  0.158    0.071  1.059  1.341
+              ne-en  8.10  0.187    0.084  7.933  8.267
+              si-en  7.14  0.195    0.087  6.966  7.314
+subword-nmt   en-ne  4.42  0.164    0.073  4.273  4.567
+              en-si  0.88  0.130    0.058  0.763  0.997
+              ne-en  8.46  0.152    0.068  8.324  8.596
+              si-en  7.76  0.251    0.112  7.536  7.984
+
+### Reported results from paper
+en-ne    4.3
+ne-en    7.6
+en-si    1.2
+si-en    7.2
+
+```
+
 
 #### Notes
 - target-side bpe learned from untokenized text.
