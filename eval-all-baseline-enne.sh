@@ -7,7 +7,7 @@ get_seed() {
 }
 
 # NE - EN
-for cp in $(ls ./checkpoints/*exp333*baseline*/checkpoints_en_ne/checkpoint_best.pt); do
+for cp in $(ls ./checkpoints/*exp333*lowercase*/checkpoints_en_ne/checkpoint_best.pt); do
     _seed=$(get_seed $cp)
     echo 'Seed:'$_seed
     [ -z $_seed ] && echo "Seed not found!" && exit 1

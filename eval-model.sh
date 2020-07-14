@@ -19,6 +19,8 @@
 # Argbash is a bash code generator used to get arguments parsing right.
 # Argbash is FREE SOFTWARE, see https://argbash.io for more info
 
+set -eo pipefail
+
 die() {
     local _ret=$2
     test -n "$_ret" || _ret=1
@@ -207,15 +209,16 @@ fi
 
 echo "Done! Validating number of lines..."
 # validate that there are were no lines lost
-lines_in_ref=$(wc -l "${_arg_reference}")
-lines_in_output=$(wc -l "${_arg_output_file}.${_arg_tgt}")
-lines_in_detok=$(wc -l "${FINAL_INPUT}")
-lines_in_stitched=$(wc -l "${FINAL_OUTPUT}")
+lines_in_ref=$(wc -l "${_arg_reference}" | cut -d' ' -f1)
+lines_in_output=$(wc -l "${_arg_output_file}.${_arg_tgt}" | cut -d' ' -f1)
+lines_in_detok=$(wc -l "${FINAL_INPUT}" | cut -d' ' -f1)
+lines_in_stitched=$(wc -l "${FINAL_OUTPUT}" | cut -d' ' -f1)
 
-for out in "${lines_in_output}" "${lines_in_detok}"; do
+for out in "${lines_in_output}" "${lines_in_detok}" "${lines_in_stitched}"; do
     if [ ! "${lines_in_ref}" = "${out}" ]; then
         echo "Line number mismatch!"
         echo "Reference: ${lines_in_ref}"
+        echo "'out': ${out}"
         echo "Plain output: ${lines_in_output}"
         echo "Detokenized: ${lines_in_detok}"
         echo "Final output: ${lines_in_stitched}"

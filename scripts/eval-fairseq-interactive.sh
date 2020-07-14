@@ -18,6 +18,7 @@
 # Argbash is a bash code generator used to get arguments parsing right.
 # Argbash is FREE SOFTWARE, see https://argbash.io for more info
 
+set -exo pipefail
 
 die()
 {
@@ -165,41 +166,44 @@ evaluate_fairseq_interactive () {
     REMOVE_BPE=$5
     SPLIT=$6
 
+    FAIRSEQ_CMD="""\
+        fairseq-interactive \
+            "${DATA_DIR}" \
+            --source-lang "${SRC_LANG}" \
+            --target-lang "${TGT_LANG}" \
+            --path "${CHECKPOINT_PATH}" \
+            --beam 5 --lenpen 1.2 \
+            --gen-subset "${SPLIT}" \
+    """
+
+    case  "${REMOVE_BPE}"  in
+        "regular"|"standard")       
+            FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe"
+            ;;
+        "sentencepiece")       
+            FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe=sentencepiece"
+            ;;
+        *)              
+            echo "Not removing BPE!"
+    esac 
+
+    #if [ "${REMOVE_BPE}" = "regular" ] || [ "${REMOVE_BPE}" = "standard" ]
+    #then
+        #FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe"
+    #elif [ "${REMOVE_BPE}" = "sentencepiece" ]
+    #then
+        #FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe=sentencepiece"
+    #else
+        #echo "Not removing BPE!"
+    #fi
+
+    if [ ! "${SRC_LANG}" = "en" ];
+    then
+        FAIRSEQ_CMD="${FAIRSEQ_CMD} --sacrebleu"
+    fi
+
     echo "Invoking fairseq-interactive"
-
-    if [ "${REMOVE_BPE}" = "regular" ] || [ "${REMOVE_BPE}" = "standard" ]
-    then
-        REMOVE_BPE_FLAG="--remove-bpe"
-    elif [ "${REMOVE_BPE}" = "sentencepiece" ]
-    then
-        REMOVE_BPE_FLAG="--remove-bpe=sentencepiece"
-    else
-        echo "Invalid setting for --remove-bpe!"
-        exit 1
-    fi
-
-    if [ "$SRC_LANG" = "en" ];
-    then
-        #CUDA_VISIBLE_DEVICES=$CUDA_DEVICE fairseq-interactive \
-        fairseq-interactive \
-            "${DATA_DIR}" \
-            --source-lang "${SRC_LANG}" \
-            --target-lang "${TGT_LANG}" \
-            --path "${CHECKPOINT_PATH}" \
-            --beam 5 --lenpen 1.2 \
-            --gen-subset "${SPLIT}" \
-            "${REMOVE_BPE_FLAG}" # note: no sacrebleu here
-    else
-        fairseq-interactive \
-            "${DATA_DIR}" \
-            --source-lang "${SRC_LANG}" \
-            --target-lang "${TGT_LANG}" \
-            --path "${CHECKPOINT_PATH}" \
-            --beam 5 --lenpen 1.2 \
-            --gen-subset "${SPLIT}" \
-            "${REMOVE_BPE_FLAG}" \
-            --sacrebleu
-    fi
+    $FAIRSEQ_CMD
 }
 
 printf 'Value of --%s: %s\n' 'src' "$_arg_src"
@@ -222,7 +226,8 @@ cat "${INPUT_PATH}" |
         "${_arg_data_bin_folder}" \
         "${_arg_remove_bpe}" \
         "${_arg_eval_on}" \
-            2> /dev/null \
             > "${_arg_output_file}"
+
+            #2> /dev/null \
 
 # ] <-- needed because of Argbash

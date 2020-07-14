@@ -15,4 +15,4 @@ cat "${PRED}" |
         --language-pair "${SRC}-${TGT}" \
         -lc --tokenize "${TOK}" \
         "${REF}" \
-        >> "${LOGFILE}"
+        > "${LOGFILE}"

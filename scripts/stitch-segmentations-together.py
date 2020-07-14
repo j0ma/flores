@@ -3,9 +3,9 @@ import sys
 import os
 import re
 
-sys.stdin.reconfigure(encoding="utf-8")
-sys.stdout.reconfigure(encoding="utf-8")
-sys.stderr.reconfigure(encoding="utf-8")
+# sys.stdin.reconfigure(encoding="utf-8")
+# sys.stdout.reconfigure(encoding="utf-8")
+# sys.stderr.reconfigure(encoding="utf-8")
 
 SUPPORTED_MODELS = {"lmvr", "morsel"}
 DOUBLE_PLUS = "⧺"
@@ -130,8 +130,7 @@ def main(
         sentences = read_morsel_segmentations(input_path)
     with open(output_path, "w") as f:
         # f.writelines(s+"\n" for s in sentences)
-        f.write("\n".join(sentences))
-
+        f.write("\n".join(sentences)+"\n")
 
 if __name__ == "__main__":
     main()
