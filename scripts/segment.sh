@@ -254,7 +254,10 @@ segment_lmvr() {
     echo "stitching sentences together..."
     $STITCH_COMMAND \
         --input-file "$LMVR_SEGM_OUTPUT_FNAME" \
-        --output-file "$OUTPUT_FILE"
+        --output-file "$OUTPUT_FILE" \
+        --model-type "lmvr" \
+        --convert-to-bpe \
+        --bpe-separator "@@"
 
 }
 

@@ -192,20 +192,33 @@ bash "$SCRIPTS/fix-trans-output.sh" \
     "${_arg_src}" \
     "${_arg_tgt}"
 
+# for morsel & lmvr-tuned, stitch together behavior happens here
+FINAL_INPUT="${_arg_output_file}.detok.${_arg_tgt}"
+if [ "${_arg_model_type}" = "morsel" ] || [ "${_arg_model_type}" = "lmvr-tuned" ]; then
+    echo "Stitching together MORSEL / LMVR-tuned segmented data..."
+    FINAL_OUTPUT="${FINAL_INPUT}.stitched"
+    python scripts/stitch-segmentations-together.py \
+        --input-path "${FINAL_INPUT}" \
+        --output-path "${FINAL_OUTPUT}" \
+        --model-type "${_arg_model_type}"
+else
+    FINAL_OUTPUT="${_arg_output_file}.detok.${_arg_tgt}"
+fi
+
 echo "Done! Validating number of lines..."
 # validate that there are were no lines lost
 lines_in_ref=$(wc -l "${_arg_reference}")
 lines_in_output=$(wc -l "${_arg_output_file}.${_arg_tgt}")
-lines_in_detok=$(wc -l "${_arg_output_file}.detok.${_arg_tgt}")
+lines_in_detok=$(wc -l "${FINAL_INPUT}")
+lines_in_stitched=$(wc -l "${FINAL_OUTPUT}")
 
-for out in "${lines_in_output}" "${lines_in_detok}"
-do
-    if [ ! "${lines_in_ref}"="${out}" ]
-    then
+for out in "${lines_in_output}" "${lines_in_detok}"; do
+    if [ ! "${lines_in_ref}" = "${out}" ]; then
         echo "Line number mismatch!"
         echo "Reference: ${lines_in_ref}"
         echo "Plain output: ${lines_in_output}"
         echo "Detokenized: ${lines_in_detok}"
+        echo "Final output: ${lines_in_stitched}"
         exit 1
     fi
 done
