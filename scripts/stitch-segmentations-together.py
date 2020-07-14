@@ -7,7 +7,7 @@ import re
 # sys.stdout.reconfigure(encoding="utf-8")
 # sys.stderr.reconfigure(encoding="utf-8")
 
-SUPPORTED_MODELS = {"lmvr", "morsel"}
+SUPPORTED_MODELS = {"lmvr", "morsel", "lmvr-tuned"}
 DOUBLE_PLUS = "⧺"
 LMVR_SEP = "+"
 
@@ -122,7 +122,7 @@ def main(
     input_path, output_path, model_type, bpe_separator, convert_to_bpe=False
 ):
     assert model_type in SUPPORTED_MODELS, "Error: Unsupported model!"
-    if model_type == 'lmvr':
+    if 'lmvr' in model_type:
         sentences = read_lmvr_segmentations(input_path)
         if convert_to_bpe:
             sentences = convert_lmvr_to_bpe_notation(sentences, bpe_separator)

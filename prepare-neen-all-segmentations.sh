@@ -299,36 +299,36 @@ bash $SCRIPTS/download_indic.sh
 
 ## learn BPE with sentencepiece
 #python $SPM_TRAIN \
-    #--input=$TMP/train.$SRC,$TMP/train.$TGT \
-    #--model_prefix=$DATABIN/sentencepiece.bpe \
-    #--vocab_size=$BPESIZE \
-    #--character_coverage=1.0 \
-    #--model_type=bpe
+#--input=$TMP/train.$SRC,$TMP/train.$TGT \
+#--model_prefix=$DATABIN/sentencepiece.bpe \
+#--vocab_size=$BPESIZE \
+#--character_coverage=1.0 \
+#--model_type=bpe
 
 ## encode train/valid/test
 #python $SPM_ENCODE \
-    #--model $DATABIN/sentencepiece.bpe.model \
-    #--output_format=piece \
-    #--inputs $TMP/train.$SRC $TMP/train.$TGT \
-    #--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
-    #--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+#--model $DATABIN/sentencepiece.bpe.model \
+#--output_format=piece \
+#--inputs $TMP/train.$SRC $TMP/train.$TGT \
+#--outputs $TMP/train.bpe.$SRC $TMP/train.bpe.$TGT \
+#--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
 #for SPLIT in "valid" "test"; do
-    #python $SPM_ENCODE \
-        #--model $DATABIN/sentencepiece.bpe.model \
-        #--output_format=piece \
-        #--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
-        #--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
+#python $SPM_ENCODE \
+#--model $DATABIN/sentencepiece.bpe.model \
+#--output_format=piece \
+#--inputs $TMP/$SPLIT.$SRC $TMP/$SPLIT.$TGT \
+#--outputs $TMP/$SPLIT.bpe.$SRC $TMP/$SPLIT.bpe.$TGT
 #done
 
 ## binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.bpe \
-    #--validpref $TMP/valid.bpe \
-    #--testpref $TMP/test.bpe \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.bpe \
+#--validpref $TMP/valid.bpe \
+#--testpref $TMP/test.bpe \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ################################################
 ##   MOSES TOKENIZATION + MORFESSOR FLATCAT    #
@@ -386,13 +386,13 @@ bash $SCRIPTS/download_indic.sh
 ##done
 
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.morfessor-flatcat \
-    #--validpref $TMP/valid.morfessor-flatcat \
-    #--testpref $TMP/test.morfessor-flatcat \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.morfessor-flatcat \
+#--validpref $TMP/valid.morfessor-flatcat \
+#--testpref $TMP/test.morfessor-flatcat \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 ###############################################
 #   MOSES TOKENIZATION + MORFESSOR BASELINE   #
@@ -541,13 +541,13 @@ bash $SCRIPTS/download_indic.sh
 
 # binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.subword-nmt \
-    #--validpref $TMP/valid.subword-nmt \
-    #--testpref $TMP/test.subword-nmt \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.subword-nmt \
+#--validpref $TMP/valid.subword-nmt \
+#--testpref $TMP/test.subword-nmt \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 #################################################
 #   MOSES TOKENIZATION + LMVR (Ataman, 2017)    #
@@ -566,49 +566,49 @@ bash $SCRIPTS/download_indic.sh
 ## activate virtual environment
 #echo "activating LMVR virtual environment..."
 #if [ -z "$LMVR_ENV_PATH" ]; then
-    #source "$(pwd)/scripts/lmvr-environment-variables.sh"
+#source "$(pwd)/scripts/lmvr-environment-variables.sh"
 #fi
 #source "$LMVR_ENV_PATH/bin/activate"
 
 ## make sure we're actually running 2.7
 #if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
-    #echo "Need to be running Python 2.7 for LMVR!"
-    #exit 1
+#echo "Need to be running Python 2.7 for LMVR!"
+#exit 1
 #fi
 
 #for KIND in "train" "valid" "test"; do
-    #for LANGUAGE in "$SRC" "$TGT"; do
+#for LANGUAGE in "$SRC" "$TGT"; do
 
-        #echo "Processing ${KIND} set for ${LANGUAGE}"
-        #echo "First moses pipeline..."
+#echo "Processing ${KIND} set for ${LANGUAGE}"
+#echo "First moses pipeline..."
 
-        #moses_pipeline \
-            #"$TMP/$KIND.$LANGUAGE" \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$LANGUAGE"
+#moses_pipeline \
+#"$TMP/$KIND.$LANGUAGE" \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$LANGUAGE"
 
-        #echo "Lowercasing..."
+#echo "Lowercasing..."
 
-        #convert_lowercase \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$TMP/$KIND.$LANGUAGE.tok.lower"
+#convert_lowercase \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$TMP/$KIND.$LANGUAGE.tok.lower"
 
-        #echo "Check python version"
-        #which python
-        #python --version
+#echo "Check python version"
+#which python
+#python --version
 
-        #echo "Actual segmentation..."
-        #LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
-        #LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
-        #LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr.model.${LANGUAGE}.tar.gz"
-        #bash "$SCRIPTS/segment.sh" \
-            #--input "${LMVR_INPUT_FILE}" \
-            #--output "${LMVR_OUTPUT_FILE}" \
-            #--model lmvr \
-            #--model-binary "${LMVR_MODEL_FILE}" \
-            #--lang "${LANGUAGE}" \
-            #--kind "${KIND}"
-    #done
+#echo "Actual segmentation..."
+#LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
+#LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr.${LANGUAGE}"
+#LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr.model.${LANGUAGE}.tar.gz"
+#bash "$SCRIPTS/segment.sh" \
+#--input "${LMVR_INPUT_FILE}" \
+#--output "${LMVR_OUTPUT_FILE}" \
+#--model lmvr \
+#--model-binary "${LMVR_MODEL_FILE}" \
+#--lang "${LANGUAGE}" \
+#--kind "${KIND}"
+#done
 #done
 
 # comment out due to excessive pruning
@@ -628,75 +628,80 @@ bash $SCRIPTS/download_indic.sh
 #echo "Done! Time to binarize the data..."
 ## binarize data
 #fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.lmvr \
-    #--validpref $TMP/valid.lmvr \
-    #--testpref $TMP/test.lmvr \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.lmvr \
+#--validpref $TMP/valid.lmvr \
+#--testpref $TMP/test.lmvr \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 
 #######################################################
 #   MOSES TOKENIZATION + Tuned LMVR (Ataman, 2017)    #
 #######################################################
 
-#echo "Tuned LMVR based on Ataman (2017) ..."
-#TMP=$DATA/wiki_${SRC}_${TGT}_lmvr-tuned
-#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr-tuned
-#mkdir -p "$TMP" "$DATABIN"
+echo "Tuned LMVR based on Ataman (2017) ..."
+TMP=$DATA/wiki_${SRC}_${TGT}_lmvr-tuned
+DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_lmvr-tuned
+mkdir -p "$TMP" "$DATABIN"
 
-#original_preprocessing_loop
+original_preprocessing_loop
 
-#TMP_BIN=$ROOT/segmentation-models/
-#mkdir -p "$TMP_BIN"
+TMP_BIN=$ROOT/segmentation-models/
+mkdir -p "$TMP_BIN"
 
-## activate virtual environment
-#echo "activating LMVR virtual environment..."
-#if [ -z "$LMVR_ENV_PATH" ]; then
-    #source "$(pwd)/scripts/lmvr-environment-variables.sh"
-#fi
-#source "$LMVR_ENV_PATH/bin/activate"
+# activate virtual environment
+echo "activating LMVR virtual environment..."
+if [ -z "$LMVR_ENV_PATH" ]; then
+    source "$(pwd)/scripts/lmvr-environment-variables.sh"
+fi
+source "$LMVR_ENV_PATH/bin/activate"
 
-## make sure we're actually running 2.7
-#if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
-    #echo "Need to be running Python 2.7 for LMVR!"
-    #exit 1
-#fi
+# make sure we're actually running 2.7
+if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
+    echo "Need to be running Python 2.7 for LMVR!"
+    exit 1
+fi
 
-#for KIND in "train" "valid" "test"; do
-    #for LANGUAGE in "$SRC" "$TGT"; do
+for KIND in "train" "valid" "test"; do
+    for LANGUAGE in "$SRC" "$TGT"; do
 
-        #echo "Processing ${KIND} set for ${LANGUAGE}"
-        #echo "First moses pipeline..."
+        echo "Processing ${KIND} set for ${LANGUAGE}"
+        echo "First moses pipeline..."
 
-        #moses_pipeline \
-            #"$TMP/$KIND.$LANGUAGE" \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$LANGUAGE"
+        moses_pipeline \
+            "$TMP/$KIND.$LANGUAGE" \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$LANGUAGE"
 
-        #echo "Lowercasing..."
+        echo "Lowercasing..."
 
-        #convert_lowercase \
-            #"$TMP/$KIND.$LANGUAGE.tok" \
-            #"$TMP/$KIND.$LANGUAGE.tok.lower"
+        convert_lowercase \
+            "$TMP/$KIND.$LANGUAGE.tok" \
+            "$TMP/$KIND.$LANGUAGE.tok.lower"
 
-        #echo "Check python version"
-        #which python
-        #python --version
+        echo "Check python version"
+        which python
+        python --version
 
-        #echo "Actual segmentation..."
-        #LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
-        #LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr-tuned.${LANGUAGE}"
-        #LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr-tuned.model.${LANGUAGE}.tar.gz"
-        #bash "$SCRIPTS/segment.sh" \
-            #--input "${LMVR_INPUT_FILE}" \
-            #--output "${LMVR_OUTPUT_FILE}" \
-            #--model lmvr-tuned \
-            #--model-binary "${LMVR_MODEL_FILE}" \
-            #--lang "${LANGUAGE}" \
-            #--kind "${KIND}"
-    #done
-#done
+        echo "Actual segmentation..."
+        LMVR_INPUT_FILE="${TMP}/${KIND}.${LANGUAGE}.tok.lower"
+        LMVR_OUTPUT_FILE="${TMP}/${KIND}.lmvr-tuned.${LANGUAGE}"
+        if [ "${LANGUAGE}" = "en" ]; then
+            LANG_ALIAS="${SRC}_en"
+        else
+            LANG_ALIAS="${LANGUAGE}"
+        fi
+        LMVR_MODEL_FILE="${TMP_BIN}/flores.vocab.2500.lmvr-tuned.model.${LANG_ALIAS}.tar.gz"
+        bash "$SCRIPTS/segment.sh" \
+            --input "${LMVR_INPUT_FILE}" \
+            --output "${LMVR_OUTPUT_FILE}" \
+            --model lmvr-tuned \
+            --model-binary "${LMVR_MODEL_FILE}" \
+            --lang "${LANGUAGE}" \
+            --kind "${KIND}"
+    done
+done
 
 # comment out due to excessive pruning
 #for LANGUAGE in ne en; do
@@ -709,72 +714,72 @@ bash $SCRIPTS/download_indic.sh
 #"$TRAIN_MAXLEN"
 #done
 
-## deactivate the environment
-#deactivate
+# deactivate the environment
+deactivate
 
-#echo "Done! Time to binarize the data..."
-## binarize data
-#fairseq-preprocess \
-    #--source-lang $SRC --target-lang $TGT \
-    #--trainpref $TMP/train.lmvr-tuned \
-    #--validpref $TMP/valid.lmvr-tuned \
-    #--testpref $TMP/test.lmvr-tuned \
-    #--destdir $DATABIN \
-    #--joined-dictionary \
-    #--workers 4
+echo "Done! Time to binarize the data..."
+# binarize data
+fairseq-preprocess \
+    --source-lang $SRC --target-lang $TGT \
+    --trainpref $TMP/train.lmvr-tuned \
+    --validpref $TMP/valid.lmvr-tuned \
+    --testpref $TMP/test.lmvr-tuned \
+    --destdir $DATABIN \
+    --joined-dictionary \
+    --workers 4
 
 #################################################
 #   MOSES TOKENIZATION + MORSEL (Lignos, 2010)  #
 #################################################
 
-echo "MORSEL from Lignos (2010) ..."
-TMP=$DATA/wiki_${SRC}_${TGT}_morsel
-DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_morsel
-mkdir -p "$TMP" "$DATABIN"
+#echo "MORSEL from Lignos (2010) ..."
+#TMP=$DATA/wiki_${SRC}_${TGT}_morsel
+#DATABIN=$ROOT/data-bin/wiki_${SRC}_${TGT}_morsel
+#mkdir -p "$TMP" "$DATABIN"
 
-original_preprocessing_loop
+#original_preprocessing_loop
 
-for KIND in "train" "valid" "test"; do
-    for LANGUAGE in "$SRC" "$TGT"; do
+#for KIND in "train" "valid" "test"; do
+#for LANGUAGE in "$SRC" "$TGT"; do
 
-        echo "Processing ${KIND} set for ${LANGUAGE}"
-        echo "First moses pipeline..."
-        moses_pipeline \
-            "$TMP/$KIND.$LANGUAGE" \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$LANGUAGE"
+#echo "Processing ${KIND} set for ${LANGUAGE}"
+#echo "First moses pipeline..."
+#moses_pipeline \
+#"$TMP/$KIND.$LANGUAGE" \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$LANGUAGE"
 
-        echo "Lowercasing..."
-        convert_lowercase \
-            "$TMP/$KIND.$LANGUAGE.tok" \
-            "$TMP/$KIND.$LANGUAGE.tok.lower"
+#echo "Lowercasing..."
+#convert_lowercase \
+#"$TMP/$KIND.$LANGUAGE.tok" \
+#"$TMP/$KIND.$LANGUAGE.tok.lower"
 
-        echo "Actual segmentation..."
-        MORSEL_ROOT="./segmentation-models/morsel/${SRC}_${TGT}/${LANGUAGE}/"
-        bash ./scripts/segment_using_morsel.sh \
-            --sentences "${TMP}/${KIND}.${LANGUAGE}.tok.lower" \
-            --morsel-segmentations "${MORSEL_ROOT}/morsel_seg_bpe_map.txt" \
-            --bpe-codes "${MORSEL_ROOT}/stem_code.txt" \
-            --output-file "${TMP}/${KIND}.morsel.${LANGUAGE}"
-    done
-done
-
-# comment out due to excessive pruning
-#for LANGUAGE in ne en; do
-    #perl "$MOSES_CLEAN" \
-    #-ratio 1.5 \
-    #"$TMP/train.morsel" \
-    #"$SRC" "$TGT" \
-    #"$TMP/train.morsel.clean" \
-    #"$TRAIN_MINLEN" \
-    #"$TRAIN_MAXLEN"
+#echo "Actual segmentation..."
+#MORSEL_ROOT="./segmentation-models/morsel/${SRC}_${TGT}/${LANGUAGE}/"
+#bash ./scripts/segment_using_morsel.sh \
+#--sentences "${TMP}/${KIND}.${LANGUAGE}.tok.lower" \
+#--morsel-segmentations "${MORSEL_ROOT}/morsel_seg_bpe_map.txt" \
+#--bpe-codes "${MORSEL_ROOT}/stem_code.txt" \
+#--output-file "${TMP}/${KIND}.morsel.${LANGUAGE}"
+#done
 #done
 
-fairseq-preprocess \
-    --source-lang $SRC --target-lang $TGT \
-    --trainpref $TMP/train.morsel \
-    --validpref $TMP/valid.morsel \
-    --testpref $TMP/test.morsel \
-    --destdir $DATABIN \
-    --joined-dictionary \
-    --workers 4
+## comment out due to excessive pruning
+##for LANGUAGE in ne en; do
+##perl "$MOSES_CLEAN" \
+##-ratio 1.5 \
+##"$TMP/train.morsel" \
+##"$SRC" "$TGT" \
+##"$TMP/train.morsel.clean" \
+##"$TRAIN_MINLEN" \
+##"$TRAIN_MAXLEN"
+##done
+
+#fairseq-preprocess \
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref $TMP/train.morsel \
+#--validpref $TMP/valid.morsel \
+#--testpref $TMP/test.morsel \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4

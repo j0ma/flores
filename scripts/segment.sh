@@ -261,6 +261,33 @@ segment_lmvr() {
 
 }
 
+segment_lmvr_tuned() {
+
+    echo "performing lmvr segmentation..."
+    INPUT_FILE=$1
+    MODEL_BINARY=$2
+    OUTPUT_FILE=$3
+    LANGUAGE=$4
+    KIND=$5
+
+    OUTPUT_FOLDER_PATH=$(dirname "$OUTPUT_FILE")
+    LMVR_SEGM_OUTPUT_FNAME="$OUTPUT_FOLDER_PATH/$KIND.lmvr-tuned.intermediate.$LANGUAGE"
+
+    lmvr-segment \
+        "$MODEL_BINARY" \
+        "$INPUT_FILE" \
+        -p 10 \
+        --output-newlines \
+        --encoding "utf-8" \
+        -o "$LMVR_SEGM_OUTPUT_FNAME"
+
+    echo "stitching sentences together..."
+    $STITCH_COMMAND \
+        --input-file "$LMVR_SEGM_OUTPUT_FNAME" \
+        --output-file "$OUTPUT_FILE" \
+        --model-type "lmvr"
+
+}
 # Perform segmentation with the correct model
 case "$_arg_model" in
 baseline)
@@ -280,6 +307,16 @@ flatcat)
 lmvr)
     validate "$_arg_kind"
     segment_lmvr \
+        "$_arg_input" \
+        "$_arg_model_binary" \
+        "$_arg_output" \
+        "$_arg_lang" \
+        "$_arg_kind"
+    ;;
+lmvr)
+    # FIXME
+    validate "$_arg_kind"
+    segment_lmvr_tuned \
         "$_arg_input" \
         "$_arg_model_binary" \
         "$_arg_output" \
