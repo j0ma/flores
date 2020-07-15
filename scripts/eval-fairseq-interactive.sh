@@ -174,6 +174,8 @@ evaluate_fairseq_interactive () {
             --path "${CHECKPOINT_PATH}" \
             --beam 5 --lenpen 1.2 \
             --gen-subset "${SPLIT}" \
+            --max-sentences 128 \
+            --buffer-size 128 \
     """
 
     case  "${REMOVE_BPE}"  in
