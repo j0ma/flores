@@ -18,7 +18,7 @@
 # Argbash is a bash code generator used to get arguments parsing right.
 # Argbash is FREE SOFTWARE, see https://argbash.io for more info
 
-set -exo pipefail
+set -eo pipefail
 
 die()
 {

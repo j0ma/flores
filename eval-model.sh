@@ -230,7 +230,7 @@ echo "Done! Computing BLEU..."
 # compute the BLEU score
 bash "$SCRIPTS/score-with-sacrebleu.sh" \
     "${_arg_src}" "${_arg_tgt}" \
-    "${_arg_output_file}.detok.${_arg_tgt}" \
+    "${FINAL_OUTPUT}" \
     "${_arg_reference}" \
     "${_arg_output_file}.log"
 

@@ -98,7 +98,7 @@ def main(input_file=None, translation_output=None, output_file=None):
         raw, agg, agg2 = load_seed_results_sacrebleu(translation_output)
 
     print('### Raw results')
-    print(raw)
+    print(raw)#.unstack().stack(0).reset_index(0))
 
     print('\n### Summary statistics')
     print(agg)
