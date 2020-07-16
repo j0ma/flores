@@ -195,24 +195,32 @@ bash "$SCRIPTS/fix-trans-output.sh" \
     "${_arg_tgt}"
 
 # for morsel & lmvr-tuned, stitch together behavior happens here
-FINAL_INPUT="${_arg_output_file}.detok.${_arg_tgt}"
+stitch_input="${_arg_output_file}.${_arg_tgt}"
+stitch_output="${_arg_output_file}.stitched.${_arg_tgt}"
 if [ "${_arg_model_type}" = "morsel" ] || [ "${_arg_model_type}" = "lmvr-tuned" ]; then
     echo "Stitching together MORSEL / LMVR-tuned segmented data..."
-    FINAL_OUTPUT="${FINAL_INPUT}.stitched"
     python scripts/stitch-segmentations-together.py \
-        --input-path "${FINAL_INPUT}" \
-        --output-path "${FINAL_OUTPUT}" \
+        --input-path "${stitch_input}" \
+        --output-path "${stitch_output}" \
         --model-type "${_arg_model_type}"
 else
-    FINAL_OUTPUT="${_arg_output_file}.detok.${_arg_tgt}"
+    cp "${stitch_input}" "${stitch_output}"
 fi
+
+echo "Done! Detokenizing..."
+# grep the actual translation output
+detok_output="${_arg_output_file}.stitched.detok.${_arg_tgt}"
+bash "$SCRIPTS/detokenize.sh" \
+    "${stitch_output}" \
+    "${detok_output}" \
+    "${_arg_tgt}"
 
 echo "Done! Validating number of lines..."
 # validate that there are were no lines lost
 lines_in_ref=$(wc -l "${_arg_reference}" | cut -d' ' -f1)
 lines_in_output=$(wc -l "${_arg_output_file}.${_arg_tgt}" | cut -d' ' -f1)
-lines_in_detok=$(wc -l "${FINAL_INPUT}" | cut -d' ' -f1)
-lines_in_stitched=$(wc -l "${FINAL_OUTPUT}" | cut -d' ' -f1)
+lines_in_stitched=$(wc -l "${stitch_output}" | cut -d' ' -f1)
+lines_in_detok=$(wc -l "${detok_output}" | cut -d' ' -f1)
 
 for out in "${lines_in_output}" "${lines_in_detok}" "${lines_in_stitched}"; do
     if [ ! "${lines_in_ref}" = "${out}" ]; then
@@ -220,8 +228,8 @@ for out in "${lines_in_output}" "${lines_in_detok}" "${lines_in_stitched}"; do
         echo "Reference: ${lines_in_ref}"
         echo "'out': ${out}"
         echo "Plain output: ${lines_in_output}"
+        echo "Stitched: ${lines_in_stitched}"
         echo "Detokenized: ${lines_in_detok}"
-        echo "Final output: ${lines_in_stitched}"
         exit 1
     fi
 done
@@ -230,8 +238,14 @@ echo "Done! Computing BLEU..."
 # compute the BLEU score
 bash "$SCRIPTS/score-with-sacrebleu.sh" \
     "${_arg_src}" "${_arg_tgt}" \
-    "${FINAL_OUTPUT}" \
+    "${detok_output}" \
     "${_arg_reference}" \
-    "${_arg_output_file}.log"
+    "${_arg_output_file}.bleu.log"
+
+echo "Done! Computing CHRF3..."
+python "${SCRIPTS}/score-with-chrf.py" \
+    --hypotheses-file "${detok_output}" \
+    --references-file "${_arg_reference}" \
+    --output-file "${_arg_output_file}.chrf3.log"
 
 # ] <-- needed because of Argbash

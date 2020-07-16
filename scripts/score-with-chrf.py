@@ -13,6 +13,7 @@ def read_lines(fp):
 @click.command()
 @click.option("--hypotheses-file")
 @click.option("--references-file")
+@click.option("--output-file")
 @click.option("--min-len", default=1)
 @click.option("--max-len", default=6)
 @click.option("--beta", default=3)
@@ -20,6 +21,7 @@ def read_lines(fp):
 def main(
     hypotheses_file,
     references_file,
+    output_file,
     min_len,
     max_len,
     beta,
@@ -36,7 +38,14 @@ def main(
         beta=beta,
         ignore_whitespace=ignore_whitespace,
     )
-    sys.stdout.write(f"ChrF{beta} = {score}\n")
+    
+
+    output_msg=f"ChrF{beta} = {score}\n"
+    if output_file == "-":
+        sys.stdout.write(output_msg)
+    else:
+        with open(output_file, 'w') as f:
+            f.write(output_msg)
 
 
 if __name__ == "__main__":
