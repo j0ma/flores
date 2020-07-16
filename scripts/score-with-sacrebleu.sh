@@ -4,9 +4,11 @@ PRED=$3
 REF=$4
 LOGFILE=$5
 
-if [ "${TGT}"="en" ]; then
+if [ "${TGT}" = "en" ]; then
+    echo "Setting tokenizer = 13a"
     TOK="13a"
 else
+    echo "Setting tokenizer = none"
     TOK="none"
 fi
 

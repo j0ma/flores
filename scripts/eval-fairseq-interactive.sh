@@ -172,10 +172,10 @@ evaluate_fairseq_interactive () {
             --source-lang "${SRC_LANG}" \
             --target-lang "${TGT_LANG}" \
             --path "${CHECKPOINT_PATH}" \
-            --beam 5 --lenpen 1.2 \
+            --beam 5 --lenpen 1.2 --cpu \
             --gen-subset "${SPLIT}" \
-            --max-sentences 128 \
-            --buffer-size 128 \
+            --max-sentences 256 \
+            --buffer-size 256 \
     """
 
     case  "${REMOVE_BPE}"  in

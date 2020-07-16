@@ -13,7 +13,7 @@ def get_bleu(report):
     return float(report.split(' = ')[1][:4])
 
 def load_seed_results_sacrebleu(p="./translation-output/"):
-    methods = os.listdir(p)
+    methods = [m for m in os.listdir(p) if not m.endswith('.py')]
     results = []
     for method in methods:
         for seed in SEEDS:
@@ -37,6 +37,7 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
                     'bleu': bleu_score
                 })
     raw = pd.DataFrame(results)
+    print(raw)
     agg = raw.groupby(['method', 'pair']).bleu.describe().copy()
     agg2 = agg[['mean', 'std']].copy()
     agg = agg[['count','mean', 'std', '25%', '50%', '75%']]

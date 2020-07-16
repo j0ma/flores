@@ -38,6 +38,7 @@ def main(
         beta=beta,
         ignore_whitespace=ignore_whitespace,
     )
+    score = round(score, 3)
     
 
     output_msg=f"ChrF{beta} = {score}\n"
