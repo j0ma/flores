@@ -135,9 +135,9 @@ for pair in "fi-en" "kk-en"; do
 
     if [ "${!lang_flag}" = "on" ]; then
         echo "Creating folders for ${pair}"
-        for subfolder in "compressed" "raw" "interim" "final"; do
+        for subfolder in "compressed" "bin" "raw" "interim" "final"; do
 
-            [ "${subfolder}" = "compressed" ] \
+            [ "${subfolder}" = "compressed" ] || [ "${subfolder}" = "bin" ] \
                 && mkdir -vp "${_arg_output_folder}/${pair}/${subfolder}" \
                 && continue
 
