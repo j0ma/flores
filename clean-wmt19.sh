@@ -34,6 +34,12 @@ if [ -z "${MOSES_SCRIPTS}" ]; then
     exit 1
 fi
 
+ROOT=$(dirname "$0")
+SCRIPTS=$ROOT/scripts
+DATA=$ROOT/data
+SPM_TRAIN=$SCRIPTS/spm_train.py
+SPM_ENCODE=$SCRIPTS/spm_encode.py
+
 MOSES_TOKENIZER_SCRIPT="$MOSES_SCRIPTS/tokenizer/tokenizer.perl"
 MOSES_DETOKENIZER_SCRIPT="$MOSES_SCRIPTS/tokenizer/detokenizer.perl"
 MOSES_LOWERCASE_SCRIPT="$MOSES_SCRIPTS/tokenizer/lowercase.perl"
@@ -267,20 +273,20 @@ printf "'%s' is %s\\n" 'lmvr-tuned' "$_arg_lmvr_tuned"
 printf "'%s' is %s\\n" 'morsel' "$_arg_morsel"
 
 # take note of the foreign language
-for lang in "${_arg_src}" "${_arg_tgt}"
-do 
+for lang in "${_arg_src}" "${_arg_tgt}"; do
     if [ "${lang}" = "en" ]; then
         continue
     fi
     foreign=$lang
 done
 
+
 interim_data_folder="${_arg_folder}/${foreign}-en/interim/"
 final_data_folder="${_arg_folder}/${foreign}-en/final/"
-for split in "train" "dev" "test"
-do 
-    for lang in "${_arg_src}" "${_arg_tgt}"
-    do
+data_bin_folder="data-bin/wmt19/${foreign}-en/"
+
+for split in "train" "dev" "test"; do
+    for lang in "${_arg_src}" "${_arg_tgt}"; do
         interim_path="${interim_data_folder}/${split}"
         final_path="${final_data_folder}/${split}"
         output_fname="${split}.${lang}"
@@ -299,11 +305,102 @@ do
             output_fname="${output_fname}.lower"
         fi
 
-        # finally output everything to /final
-        cp -v  "${interim_path}/${output_fname}" \
-            "${final_path}/${output_fname}"
     done
 done
 
+if [ "${_arg_subword_nmt}" = "on" ]; then
 
+    model_name="subword-nmt"
+
+    # concatenate training sets to one big file
+    rm -f "${interim_data_folder}/train.all.tok.lower"
+    cat "${interim_data_folder}/train/"train.*.tok.lower \
+        >"${interim_data_folder}/train/train.all.tok.lower"
+
+    # perform bpe training without segmentation
+    segm_input_file="${interim_data_folder}/train/train.all.tok.lower"
+    joint_codes_file="${interim_data_folder}/train/subword-nmt.codes"
+
+    bash "$SCRIPTS/segment.sh" \
+        --input "${segm_input_file}" \
+        --output "none" \
+        --model "${model_name}" \
+        --model-binary none \
+        --bpe-size "${_arg_bpe_num_merges}" \
+        --codes "${joint_codes_file}" \
+        --lang "foo"
+
+    # apply bpe
+    for split in "train" "dev" "test"; do
+        for lang in "${_arg_src}" "${_arg_tgt}"; do
+            segm_input_file="${interim_data_folder}/${split}/${split}.${lang}.tok.lower"
+            segm_output_file=${final_path}/${split}/${split}.${model_name}.${lang}
+            bash "$SCRIPTS/segment.sh" \
+                --input "${segm_input_file}" \
+                --output "${segm_output_file}" \
+                --model "${model_name}" \
+                --model-binary none \
+                --bpe-size "${_arg_bpe_num_merges}" \
+                --codes "${joint_codes_file}" \
+                --lang "${lang}"
+        done
+    done
+
+    # binarize data
+    fairseq-preprocess \
+        --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
+        --trainpref ${final_path}/train.${model_name} \
+        --validpref ${final_path}/valid.${model_name} \
+        --testpref ${final_path}/test.${model_name} \
+        --destdir ${data_bin_folder} \
+        --joined-dictionary \
+        --workers 4
+
+elif [ "${_arg_sentencepiece}" = "on" ]; then
+
+    echo "sentencepiece not implemented" && exit 1
+
+    ## learn BPE with sentencepiece
+    #python $SPM_TRAIN \
+    #--input=${interim_path}/train.$SRC,${interim_path}/train.$TGT \
+    #--model_prefix=$DATABIN/sentencepiece.bpe \
+    #--vocab_size=$BPESIZE \
+    #--character_coverage=1.0 \
+    #--model_type=bpe
+
+    ## encode train/valid/test
+    #python $SPM_ENCODE \
+    #--model $DATABIN/sentencepiece.bpe.model \
+    #--output_format=piece \
+    #--inputs ${interim_path}/train.$SRC ${interim_path}/train.$TGT \
+    #--outputs ${interim_path}/train.bpe.$SRC ${interim_path}/train.bpe.$TGT \
+    #--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+
+    #python $SPM_ENCODE \
+    #--model $DATABIN/sentencepiece.bpe.model \
+    #--output_format=piece \
+    #--inputs ${interim_path}/$SPLIT.$SRC ${interim_path}/$SPLIT.$TGT \
+    #--outputs ${interim_path}/$SPLIT.bpe.$SRC ${interim_path}/$SPLIT.bpe.$TGT
+
+elif [ "${_arg_lmvr}" = "on" ]; then
+    echo "LMVR not implemented" && exit 1
+elif [ "${_arg_lmvr_tuned}" = "on" ]; then
+    echo "LMVR-tuned not implemented" && exit 1
+elif [ "${_arg_morsel}" = "on" ]; then
+    echo "MORSEL no implmemented" && exit 1
+fi
+
+# finally output everything to /final
+#cp -v "${interim_p}/${output_fname}" \
+    #"${final_path}/${output_fname}"
+
+## binarize data
+#fairseq-preprocess \
+#--source-lang $SRC --target-lang $TGT \
+#--trainpref ${interim_path}/train.bpe \
+#--validpref ${interim_path}/valid.bpe \
+#--testpref ${interim_path}/test.bpe \
+#--destdir $DATABIN \
+#--joined-dictionary \
+#--workers 4
 # ] <-- needed because of Argbash
