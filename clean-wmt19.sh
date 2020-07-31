@@ -334,7 +334,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     for split in "train" "dev" "test"; do
         for lang in "${_arg_src}" "${_arg_tgt}"; do
             segm_input_file="${interim_data_folder}/${split}/${split}.${lang}.tok.lower"
-            segm_output_file=${final_path}/${split}/${split}.${model_name}.${lang}
+            segm_output_file=${final_data_folder}/${split}/${split}.${model_name}.${lang}
             bash "$SCRIPTS/segment.sh" \
                 --input "${segm_input_file}" \
                 --output "${segm_output_file}" \
@@ -349,9 +349,9 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     # binarize data
     fairseq-preprocess \
         --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
-        --trainpref ${final_path}/train.${model_name} \
-        --validpref ${final_path}/valid.${model_name} \
-        --testpref ${final_path}/test.${model_name} \
+        --trainpref ${final_data_folder}/train/train.${model_name} \
+        --validpref ${final_data_folder}/dev/dev.${model_name} \
+        --testpref ${final_data_folder}/test/test.${model_name} \
         --destdir ${data_bin_folder} \
         --joined-dictionary \
         --workers 4
