@@ -98,30 +98,27 @@ printf "'%s' is %s\\n" 'kk-en' "$_arg_kk_en"
 mkdir -p "${_arg_output_folder}"
 
 # Hard-coded URLs for downloading translation data
-#fi_train_data_urls=(
-#http://www.statmt.org/europarl/v9/training/europarl-v9.fi-en.tsv.gz
-#https://s3.amazonaws.com/web-language-models/paracrawl/release3/en-fi.bicleaner07.tmx.gz
-#https://tilde-model.s3-eu-west-1.amazonaws.com/rapid2016.en-fi.tmx.zip
-#)
-
-#fi_train_data_urls=(
-#https://tilde-model.s3-eu-west-1.amazonaws.com/rapid2016.en-fi.tmx.zip
-#)
 fi_train_data_urls=(
-    http://0.0.0.0:8000/fi-en/compressed/europarl-v9.fi-en.tsv.gz
-    http://0.0.0.0:8000/fi-en/compressed/en-fi.bicleaner07.tmx.gz
-    http://0.0.0.0:8000/fi-en/compressed/rapid2016.en-fi.tmx.zip
+    http://www.statmt.org/europarl/v9/training/europarl-v9.fi-en.tsv.gz
+    https://s3.amazonaws.com/web-language-models/paracrawl/release3/en-fi.bicleaner07.tmx.gz
+    https://tilde-model.s3-eu-west-1.amazonaws.com/rapid2016.en-fi.tmx.zip
 )
 
-#http://data.statmt.org/news-commentary/v14/training/news-commentary-v14.en-kk.tsv.gz
-#kk_train_data_urls=(
-#http://data.statmt.org/news-commentary/v14/training/news-commentary-v14-wmt19.en-kk.tsv.gz
+#fi_train_data_urls=(
+    #http://0.0.0.0:8000/fi-en/compressed/europarl-v9.fi-en.tsv.gz
+    #http://0.0.0.0:8000/fi-en/compressed/en-fi.bicleaner07.tmx.gz
+    #http://0.0.0.0:8000/fi-en/compressed/rapid2016.en-fi.tmx.zip
 #)
 
 kk_train_data_urls=(
-    http://0.0.0.0:8000/kk-en/compressed/news-commentary-v14-wmt19.en-kk.tsv.gz
+    http://data.statmt.org/news-commentary/v14/training/news-commentary-v14-wmt19.en-kk.tsv.gz
     http://data.statmt.org/wikititles/v1/wikititles-v1.kk-en.tsv.gz
 )
+
+#kk_train_data_urls=(
+    #http://0.0.0.0:8000/kk-en/compressed/news-commentary-v14-wmt19.en-kk.tsv.gz
+    #http://data.statmt.org/wikititles/v1/wikititles-v1.kk-en.tsv.gz
+#)
 
 # Same for dev data
 all_dev_data_url="http://data.statmt.org/wmt19/translation-task/dev.tgz"
