@@ -283,7 +283,7 @@ done
 
 interim_data_folder="${_arg_folder}/${foreign}-en/interim/"
 final_data_folder="${_arg_folder}/${foreign}-en/final/"
-data_bin_folder="data-bin/wmt19/${foreign}-en/"
+data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/"
 
 for split in "train" "dev" "test"; do
     for lang in "${_arg_src}" "${_arg_tgt}"; do
