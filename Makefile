@@ -18,7 +18,9 @@ train_wmt19_fien_test:
 		--bpe-size 5000 --cuda-device 1 \
 		--model-name subword-nmt \
 		--clip-norm 0.1 \
-		--data-dir data-bin/wmt19-subword-nmt/fi-en
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-subword-nmt/fi-en \
 		--fp16 --slug "wmt19-fien-test"
 
 train_wmt19_kken_test:
@@ -28,7 +30,9 @@ train_wmt19_kken_test:
 		--bpe-size 5000 --cuda-device 2 \
 		--model-name subword-nmt \
 		--clip-norm 0.1 \
-		--data-dir data-bin/wmt19-subword-nmt/kk-en
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en \
 		--fp16 --slug "wmt19-kken-test"
 exp26:
 
