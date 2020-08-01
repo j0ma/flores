@@ -275,10 +275,12 @@ for seed in $(seq "$_arg_from_seed" "$_arg_to_seed"); do
     _arg_slug="$_arg_slug-seed$seed"
 
     if [ "$_arg_checkpoint_dir" = "auto" ]; then
+        echo "INFO: Creating checkpoint dir..."
         _arg_checkpoint_dir=$(bash ./create_checkpoint_folder.sh $_arg_slug)
     fi
 
     if [ "$_arg_log_dir" = "auto" ]; then
+        echo "INFO: Creating log dir..."
         _arg_log_dir=$(bash ./create_log_folder.sh "$_arg_slug")
     fi
     
