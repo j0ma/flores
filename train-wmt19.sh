@@ -290,8 +290,8 @@ for seed in $(seq "$_arg_from_seed" "$_arg_to_seed"); do
         "$_arg_tgt" \
         "$seed" \
         "$_arg_bpe_size" \
-        "$_arg_cuda_device" \
         "$_arg_log_dir" \
+        "$_arg_cuda_device" \
         "$_arg_checkpoint_dir" \
         "$_arg_model_name" \
         "$_arg_clip_norm" \
