@@ -21,6 +21,15 @@ train_wmt19_fien_test:
 		--data-dir data-bin/wmt19-subword-nmt/fi-en
 		--fp16 --slug "wmt19-fien-test"
 
+train_wmt19_kken_test:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 10 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en
+		--fp16 --slug "wmt19-kken-test"
 exp26:
 
 	# Testing non-joint BPE with BPE=5000
