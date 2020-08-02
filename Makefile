@@ -19,7 +19,7 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
-train_wmt19_fien_test:
+train_wmt19_fien_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src fi --tgt en \
 		--from-seed 10 --to-seed 10 \
@@ -29,9 +29,9 @@ train_wmt19_fien_test:
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
 		--data-dir data-bin/wmt19-subword-nmt/fi-en \
-		--fp16 --slug "wmt19-fien-test"
+		--fp16 --slug "wmt19-fien-subword-nmt"
 
-train_wmt19_kken_test:
+train_wmt19_kken_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
 		--from-seed 10 --to-seed 11 \
@@ -41,9 +41,9 @@ train_wmt19_kken_test:
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
 		--data-dir data-bin/wmt19-subword-nmt/kk-en \
-		--fp16 --slug "wmt19-kken-test"
+		--fp16 --slug "wmt19-kken-subword-nmt"
 
-train_wmt19_enkk_test:
+train_wmt19_enkk_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
 		--from-seed 10 --to-seed 11 \
@@ -53,7 +53,7 @@ train_wmt19_enkk_test:
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
 		--data-dir data-bin/wmt19-subword-nmt/kk-en \
-		--fp16 --slug "wmt19-enkk-test"
+		--fp16 --slug "wmt19-enkk-subword-nmt"
 
 exp26:
 
