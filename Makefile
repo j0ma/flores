@@ -31,10 +31,23 @@ train_wmt19_fien_subword_nmt:
 		--data-dir data-bin/wmt19-subword-nmt/fi-en \
 		--fp16 --slug "wmt19-fien-subword-nmt"
 
+
+train_wmt19_enkk_subword_nmt:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 1 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en \
+		--fp16 --slug "wmt19-enkk-subword-nmt"
+
 train_wmt19_kken_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
-		--from-seed 10 --to-seed 11 \
+		--from-seed 10 --to-seed 14 \
 		--bpe-size 5000 --cuda-device 2 \
 		--model-name subword-nmt \
 		--clip-norm 0.1 \
@@ -43,17 +56,29 @@ train_wmt19_kken_subword_nmt:
 		--data-dir data-bin/wmt19-subword-nmt/kk-en \
 		--fp16 --slug "wmt19-kken-subword-nmt"
 
-train_wmt19_enkk_subword_nmt:
+train_wmt19_enkk_sentencepiece:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
 		--from-seed 10 --to-seed 11 \
 		--bpe-size 5000 --cuda-device 1 \
-		--model-name subword-nmt \
+		--model-name sentencepiece \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-subword-nmt/kk-en \
-		--fp16 --slug "wmt19-enkk-subword-nmt"
+		--data-dir data-bin/wmt19-sentencepiece/kk-en \
+		--fp16 --slug "wmt19-enkk-sentencepiece"
+
+train_wmt19_kken_sentencepiece:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 11 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name sentencepiece \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-sentencepiece/kk-en \
+		--fp16 --slug "wmt19-kken-sentencepiece"
 
 exp26:
 
