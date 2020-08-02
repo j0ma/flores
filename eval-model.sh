@@ -197,12 +197,19 @@ bash "$SCRIPTS/fix-trans-output.sh" \
 # for morsel & lmvr-tuned, stitch together behavior happens here
 stitch_input="${_arg_output_file}.${_arg_tgt}"
 stitch_output="${_arg_output_file}.stitched.${_arg_tgt}"
-if [ "${_arg_model_type}" = "morsel" ] || [ "${_arg_model_type}" = "lmvr-tuned" ]; then
-    echo "Stitching together MORSEL / LMVR-tuned segmented data..."
+if [ "${_arg_model_type}" = "morsel" ]; then
+    echo "Stitching together MORSEL segmented data..."
     python scripts/stitch-segmentations-together.py \
         --input-path "${stitch_input}" \
         --output-path "${stitch_output}" \
         --model-type "${_arg_model_type}"
+elif [ "${_arg_model_type}" = "lmvr-tuned" ]; then
+    echo "Stitching together LMVR-tuned segmented data..."
+    python scripts/stitch-segmentations-together.py \
+        --input-path "${stitch_input}" \
+        --output-path "${stitch_output}" \
+        --model-type "${_arg_model_type}" \
+        --remove-lmvr
 else
     cp "${stitch_input}" "${stitch_output}"
 fi
