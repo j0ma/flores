@@ -189,7 +189,7 @@ train_fairseq() {
     TGT_LANG=$2
     CHECKPOINT_DIR=$3
     DATA_DIR=$4
-    RAND_SEED=$5
+    local RAND_SEED=$5
     CUDA_DEVICE=$6
     FP16=$7
 
@@ -226,12 +226,13 @@ train() {
 
     SRC_LANG=$1
     TGT_LANG=$2
-    RAND_SEED=$3
+    local RAND_SEED=$3
     SRC_LANG_CAP=$(echo $SRC_LANG | awk '{print toupper($0)}')
     TGT_LANG_CAP=$(echo $TGT_LANG | awk '{print toupper($0)}')
     BPE_SIZE=$4
     CUDA_DEVICE=$5
     LOG_DIR=$6
+    echo "Log dir arg: ${LOG_DIR}"
     CHECKPOINT_DIR=$7
     CHECKPOINT_DIR="${CHECKPOINT_DIR}/checkpoints_${SRC_LANG}_${TGT_LANG}"
     MODEL_NAME=$8
@@ -278,12 +279,17 @@ for seed in $(seq "$_arg_from_seed" "$_arg_to_seed"); do
 
     if [ "$_arg_checkpoint_dir" = "auto" ]; then
         echo "INFO: Creating checkpoint dir..."
-        _arg_checkpoint_dir=$(bash ./create_checkpoint_folder.sh $_arg_slug)
+        checkpoint_dir=$(bash ./create_checkpoint_folder.sh $slug)
+    else
+        checkpoint_dir=$_arg_checkpoint_dir
     fi
 
     if [ "$_arg_log_dir" = "auto" ]; then
-        echo "INFO: Creating log dir..."
-        _arg_log_dir=$(bash ./create_log_folder.sh "$_arg_slug")
+        echo "INFO: Creating log dir with slug..."
+        echo $slug
+        log_dir=$(bash ./create_log_folder.sh "$slug")
+    else
+        log_dir=$_arg_log_dir
     fi
     
     train \
@@ -292,8 +298,8 @@ for seed in $(seq "$_arg_from_seed" "$_arg_to_seed"); do
         "$seed" \
         "$_arg_bpe_size" \
         "$_arg_cuda_device" \
-        "$_arg_log_dir" \
-        "$_arg_checkpoint_dir" \
+        "$log_dir" \
+        "$checkpoint_dir" \
         "$_arg_model_name" \
         "$_arg_clip_norm" \
         "$_arg_data_dir" \

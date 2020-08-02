@@ -283,7 +283,6 @@ done
 
 interim_data_folder="${_arg_folder}/${foreign}-en/interim/"
 final_data_folder="${_arg_folder}/${foreign}-en/final/"
-data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/"
 
 for split in "train" "dev" "test"; do
     for lang in "${_arg_src}" "${_arg_tgt}"; do
@@ -309,6 +308,8 @@ for split in "train" "dev" "test"; do
 done
 
 if [ "${_arg_subword_nmt}" = "on" ]; then
+
+    echo "subword-nmt detected!"
 
     model_name="subword-nmt"
 
@@ -346,6 +347,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
         done
     done
 
+    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/"
     # binarize data
     fairseq-preprocess \
         --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
