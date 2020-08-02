@@ -253,8 +253,8 @@ segment_lmvr() {
 
     echo "stitching sentences together..."
     $STITCH_COMMAND \
-        --input-file "$LMVR_SEGM_OUTPUT_FNAME" \
-        --output-file "$OUTPUT_FILE" \
+        --input-path "$LMVR_SEGM_OUTPUT_FNAME" \
+        --output-path "$OUTPUT_FILE" \
         --model-type "lmvr" \
         --convert-to-bpe \
         --bpe-separator "@@"
@@ -283,9 +283,9 @@ segment_lmvr_tuned() {
 
     echo "stitching sentences together..."
     $STITCH_COMMAND \
-        --input-file "$LMVR_SEGM_OUTPUT_FNAME" \
-        --output-file "$OUTPUT_FILE" \
-        --model-type "lmvr"
+        --input-path "$LMVR_SEGM_OUTPUT_FNAME" \
+        --output-path "$OUTPUT_FILE" \
+        --model-type "lmvr-tuned"
 
 }
 # Perform segmentation with the correct model
@@ -313,8 +313,7 @@ lmvr)
         "$_arg_lang" \
         "$_arg_kind"
     ;;
-lmvr)
-    # FIXME
+lmvr-tuned)
     validate "$_arg_kind"
     segment_lmvr_tuned \
         "$_arg_input" \
@@ -333,7 +332,7 @@ subword-nmt)
         "$_arg_lang"
     ;;
 *)
-    _PRINT_HELP=yes die "FATAL ERROR: Got an unexpected model type '$_arg_model'. Supported: baseline, flatcat, lmvr, subword-nmt" 1
+    _PRINT_HELP=yes die "FATAL ERROR: Got an unexpected model type '$_arg_model'. Supported: baseline, flatcat, lmvr, lmvr-tuned, subword-nmt" 1
     ;;
 esac
 
