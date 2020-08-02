@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -exo pipefail
 
 # Created by argbash-init v2.8.1
 # ARG_OPTIONAL_SINGLE([folder])
@@ -253,8 +253,8 @@ TRAIN_MINLEN=1   # remove sentences with <1 BPE token
 TRAIN_MAXLEN=250 # remove sentences with >250 BPE tokens
 
 printf 'Value of --%s: %s\n' 'folder' "$_arg_folder"
-printf 'Value of --%s: %s\n' 'src' "$_arg_src"
-printf 'Value of --%s: %s\n' 'tgt' "$_arg_tgt"
+printf 'Value of --%s: %s\n' 'src' "${_arg_src}"
+printf 'Value of --%s: %s\n' 'tgt' "${_arg_tgt}"
 printf 'Value of --%s: %s\n' 'bpe-num-merges' "$_arg_bpe_num_merges"
 printf 'Value of --%s: %s\n' 'bpe-vocab-size' "$_arg_bpe_vocab_size"
 printf 'Value of --%s: %s\n' 'lmvr-vocab-size' "$_arg_lmvr_vocab_size"
@@ -279,7 +279,6 @@ for lang in "${_arg_src}" "${_arg_tgt}"; do
     fi
     foreign=$lang
 done
-
 
 interim_data_folder="${_arg_folder}/${foreign}-en/interim/"
 final_data_folder="${_arg_folder}/${foreign}-en/final/"
@@ -311,6 +310,9 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
 
     echo "subword-nmt detected!"
 
+    test -z "${_arg_bpe_num_merges}" \
+        && echo "Please provide BPE vocab size!" && exit 1
+
     model_name="subword-nmt"
 
     # concatenate training sets to one big file
@@ -318,7 +320,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     cat "${interim_data_folder}/train/"train.*.tok.lower \
         >"${interim_data_folder}/train/train.all.tok.lower"
 
-    # perform bpe training without segmentation
+    # perform bpe training without outputting segmentation
     segm_input_file="${interim_data_folder}/train/train.all.tok.lower"
     joint_codes_file="${interim_data_folder}/train/subword-nmt.codes"
 
@@ -331,7 +333,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
         --codes "${joint_codes_file}" \
         --lang "foo"
 
-    # apply bpe
+    # apply bpe and output segmentation
     for split in "train" "dev" "test"; do
         for lang in "${_arg_src}" "${_arg_tgt}"; do
             segm_input_file="${interim_data_folder}/${split}/${split}.${lang}.tok.lower"
@@ -348,6 +350,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     done
 
     data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/"
+    #mkdir -p "${data_bin_folder}"
     # binarize data
     fairseq-preprocess \
         --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
@@ -356,33 +359,43 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
         --testpref ${final_data_folder}/test/test.${model_name} \
         --destdir ${data_bin_folder} \
         --joined-dictionary \
-        --workers 4
+        --workers 8
 
 elif [ "${_arg_sentencepiece}" = "on" ]; then
 
-    echo "sentencepiece not implemented" && exit 1
+    test -z "${_arg_bpe_vocab_size}" \
+        && echo "Please provide BPE vocab size!" && exit 1
 
-    ## learn BPE with sentencepiece
-    #python $SPM_TRAIN \
-    #--input=${interim_path}/train.$SRC,${interim_path}/train.$TGT \
-    #--model_prefix=$DATABIN/sentencepiece.bpe \
-    #--vocab_size=$BPESIZE \
-    #--character_coverage=1.0 \
-    #--model_type=bpe
+    model_name="sentencepiece"
+    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/"
+    mkdir -p "${data_bin_folder}"
 
-    ## encode train/valid/test
-    #python $SPM_ENCODE \
-    #--model $DATABIN/sentencepiece.bpe.model \
-    #--output_format=piece \
-    #--inputs ${interim_path}/train.$SRC ${interim_path}/train.$TGT \
-    #--outputs ${interim_path}/train.bpe.$SRC ${interim_path}/train.bpe.$TGT \
-    #--min-len $TRAIN_MINLEN --max-len $TRAIN_MAXLEN
+    # learn BPE with sentencepiece
+    python $SPM_TRAIN \
+        --input=${interim_data_folder}/train/train.${_arg_src},${interim_data_folder}/train/train.${_arg_tgt} \
+        --model_prefix=${data_bin_folder}/sentencepiece.bpe \
+        --vocab_size=$_arg_bpe_vocab_size \
+        --character_coverage=1.0 \
+        --model_type=bpe
 
-    #python $SPM_ENCODE \
-    #--model $DATABIN/sentencepiece.bpe.model \
-    #--output_format=piece \
-    #--inputs ${interim_path}/$SPLIT.$SRC ${interim_path}/$SPLIT.$TGT \
-    #--outputs ${interim_path}/$SPLIT.bpe.$SRC ${interim_path}/$SPLIT.bpe.$TGT
+    # encode train/valid/test
+    for split in "train" "dev" "test"; do
+        python $SPM_ENCODE \
+            --model ${data_bin_folder}/sentencepiece.bpe.model \
+            --output_format=piece \
+            --inputs ${interim_data_folder}/$split/$split.${_arg_src} ${interim_data_folder}/$split/$split.${_arg_tgt} \
+            --outputs ${final_data_folder}/$split/$split.${model_name}.${_arg_src} ${final_data_folder}/$split/$split.${model_name}.${_arg_tgt}
+    done
+
+    # binarize data
+    fairseq-preprocess \
+        --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
+        --trainpref ${final_data_folder}/train/train.${model_name} \
+        --validpref ${final_data_folder}/dev/dev.${model_name} \
+        --testpref ${final_data_folder}/test/test.${model_name} \
+        --destdir ${data_bin_folder} \
+        --joined-dictionary \
+        --workers 8
 
 elif [ "${_arg_lmvr}" = "on" ]; then
     echo "LMVR not implemented" && exit 1
@@ -394,7 +407,7 @@ fi
 
 # finally output everything to /final
 #cp -v "${interim_p}/${output_fname}" \
-    #"${final_path}/${output_fname}"
+#"${final_path}/${output_fname}"
 
 ## binarize data
 #fairseq-preprocess \
@@ -402,7 +415,7 @@ fi
 #--trainpref ${interim_path}/train.bpe \
 #--validpref ${interim_path}/valid.bpe \
 #--testpref ${interim_path}/test.bpe \
-#--destdir $DATABIN \
+#--destdir ${data_bin_folder} \
 #--joined-dictionary \
 #--workers 4
 # ] <-- needed because of Argbash

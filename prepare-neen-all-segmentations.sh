@@ -499,7 +499,7 @@ bash $SCRIPTS/download_indic.sh
 #cat $TMP/train.*.tok.lower \
 #>> "$TMP/train.all.tok.lower"
 
-## perform bpe training without segmentation
+## perform bpe training without outputting segmentation
 #SEGM_INPUT_FILE="$TMP/train.all.tok.lower"
 #JOINT_CODES_FILE="$TMP/subword-nmt.codes"
 
