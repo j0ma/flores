@@ -34,7 +34,7 @@ train_wmt19_fien_test:
 train_wmt19_kken_test:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
-		--from-seed 10 --to-seed 10 \
+		--from-seed 10 --to-seed 11 \
 		--bpe-size 5000 --cuda-device 2 \
 		--model-name subword-nmt \
 		--clip-norm 0.1 \
@@ -46,7 +46,7 @@ train_wmt19_kken_test:
 train_wmt19_enkk_test:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
-		--from-seed 10 --to-seed 14 \
+		--from-seed 10 --to-seed 11 \
 		--bpe-size 5000 --cuda-device 1 \
 		--model-name subword-nmt \
 		--clip-norm 0.1 \
