@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exo pipefail
+set -eo pipefail
 
 # Created by argbash-init v2.8.1
 # ARG_OPTIONAL_SINGLE([folder])
