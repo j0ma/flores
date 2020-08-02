@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#set -exo pipefail
+
 # NOTE: THIS SCRIPT USES ARGBASH TO SET UP COMMAND LINE ARGUMENTS
 
 # Created by argbash-init v2.8.1
