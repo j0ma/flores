@@ -1,5 +1,13 @@
 init: create_output_folders install download
 
+prep_wmt19:
+	./download-wmt19.sh \
+		--kk-en --fi-en \
+		--output-folder ./data/wmt19
+	./convert-sent-per-line-wmt19.sh \
+		--kk-en --fi-en \
+		--output-folder ./data/wmt19
+
 create_output_folders:
 	bash ./scripts/create-translation-output-folders.sh
 install:

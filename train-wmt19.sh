@@ -272,7 +272,9 @@ printf 'Value of --%s: %s\n' 'log-dir' "$_arg_log_dir"
 printf "'%s' is %s\\n" 'fp16' "$_arg_fp16"
 
 for seed in $(seq "$_arg_from_seed" "$_arg_to_seed"); do
-    _arg_slug="$_arg_slug-seed$seed"
+    echo $seed #&& continue
+    slug="$_arg_slug-seed$seed"
+    echo $slug
 
     if [ "$_arg_checkpoint_dir" = "auto" ]; then
         echo "INFO: Creating checkpoint dir..."
