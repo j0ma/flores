@@ -34,6 +34,19 @@ train_wmt19_kken_test:
 		--log-dir "auto" \
 		--data-dir data-bin/wmt19-subword-nmt/kk-en \
 		--fp16 --slug "wmt19-kken-test"
+
+train_wmt19_enkk_test:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 1 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en \
+		--fp16 --slug "wmt19-enkk-test"
+
 exp26:
 
 	# Testing non-joint BPE with BPE=5000
