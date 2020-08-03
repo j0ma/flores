@@ -59,8 +59,8 @@ train_wmt19_kken_subword_nmt:
 train_wmt19_enkk_sentencepiece:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
-		--from-seed 10 --to-seed 11 \
-		--bpe-size 5000 --cuda-device 1 \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 2 \
 		--model-name sentencepiece \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
@@ -71,7 +71,7 @@ train_wmt19_enkk_sentencepiece:
 train_wmt19_kken_sentencepiece:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
-		--from-seed 10 --to-seed 11 \
+		--from-seed 10 --to-seed 14 \
 		--bpe-size 5000 --cuda-device 2 \
 		--model-name sentencepiece \
 		--clip-norm 0.1 \
