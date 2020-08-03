@@ -4,6 +4,7 @@
 # ARG_OPTIONAL_SINGLE([src])
 # ARG_OPTIONAL_SINGLE([tgt])
 # ARG_OPTIONAL_SINGLE([eval-on])
+# ARG_OPTIONAL_SINGLE([input-path])
 # ARG_OPTIONAL_SINGLE([data-folder])
 # ARG_OPTIONAL_SINGLE([data-bin-folder])
 # ARG_OPTIONAL_SINGLE([model-checkpoint])
@@ -41,7 +42,7 @@ begins_with_short_option()
 _arg_src=
 _arg_tgt=
 _arg_eval_on=
-_arg_data_folder=
+_arg_input_path=
 _arg_data_folder=
 _arg_model_checkpoint=
 _arg_model_type=
@@ -52,7 +53,7 @@ _arg_remove_bpe="regular"
 print_help()
 {
 	printf '%s\n' "Evaluate your NMT model & produce actual output!"
-	printf 'Usage: %s [--src <arg>] [--tgt <arg>] [--eval-on <arg>] [--data-folder <arg>] [--data-bin-folder <arg>] [--model-checkpoint <arg>] [--model-type <arg>] [--output-file <arg>] [-h|--help]\n' "$0"
+	printf 'Usage: %s [--src <arg>] [--tgt <arg>] [--eval-on <arg>] [--input-folder <arg>]  [--data-folder <arg>] [--data-bin-folder <arg>] [--model-checkpoint <arg>] [--model-type <arg>] [--output-file <arg>] [-h|--help]\n' "$0"
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -86,6 +87,14 @@ parse_commandline()
 				;;
 			--eval-on=*)
 				_arg_eval_on="${_key##--eval-on=}"
+				;;
+			--input-path)
+				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+				_arg_input_path="$2"
+				shift
+				;;
+			--input-path=*)
+				_arg_input_path="${_key##--input-path=}"
 				;;
 			--data-folder)
 				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
@@ -218,7 +227,11 @@ printf 'Value of --%s: %s\n' 'model-type' "$_arg_model_type"
 printf 'Value of --%s: %s\n' 'output-file' "$_arg_output_file"
 printf 'Value of --%s: %s\n' 'remove-bpe' "$_arg_remove_bpe"
 
-INPUT_PATH="${_arg_data_folder}/${_arg_eval_on}.${_arg_model_type}.${_arg_src}"
+if [ -z "${_arg_input_path}" ]; then
+    INPUT_PATH="${_arg_input_path}"
+else
+    INPUT_PATH="${_arg_data_folder}/${_arg_eval_on}.${_arg_model_type}.${_arg_src}"
+fi
 
 cat "${INPUT_PATH}" |
     evaluate_fairseq_interactive \
@@ -229,7 +242,5 @@ cat "${INPUT_PATH}" |
         "${_arg_remove_bpe}" \
         "${_arg_eval_on}" \
             > "${_arg_output_file}"
-
-            #2> /dev/null \
 
 # ] <-- needed because of Argbash
