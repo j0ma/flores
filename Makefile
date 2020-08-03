@@ -19,6 +19,18 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+eval_wmt19_enkk_subword_nmt:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-enkk-subword-nmt*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-subword-nmt/kk-en" \
+		--segmentation-model-type "subword-nmt" \
+		--model-name "subword-nmt" \
+		--reference "./data/wmt19/kk-en/interim/test/test.kk" \
+		--remove-bpe-type "regular"
+
+
 train_wmt19_fien_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src fi --tgt en \

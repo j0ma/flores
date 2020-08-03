@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 # Created by argbash-init v2.8.1
 # ARG_OPTIONAL_SINGLE([checkpoint-glob])
@@ -174,7 +175,9 @@ get_seed() {
         sed "s/seed//g"
 }
 
-for checkpoint in $(ls "${_arg_checkpoint_glob}"); do
+checkpoint_files=${_arg_checkpoint_glob}/checkpoints_${_arg_src}_${_arg_tgt}/checkpoint_best.pt
+for checkpoint in $checkpoint_files; do
+    echo $checkpoint
     _seed=$(get_seed "${checkpoint}")
     echo "Seed: ${_seed}"
     [ -z "${_seed}" ] && echo "Seed not found!" && exit 1
@@ -185,7 +188,7 @@ for checkpoint in $(ls "${_arg_checkpoint_glob}"); do
         --data-bin-folder "${_arg_data_bin_folder}" \
         --model-checkpoint "${checkpoint}" \
         --model-type "${_arg_segmentation_model_type}" \
-        --output-file "./translation-output-wmt19/${_arg_model_name}/seed-${_seed}/en-ne.output.raw" \
+        --output-file "./translation-output-wmt19/${_arg_model_name}/seed-${_seed}/${_arg_src}-${_arg_tgt}.output.raw" \
         --reference "${_arg_reference}" \
         --remove-bpe "${_arg_remove_bpe_type}" &
 done

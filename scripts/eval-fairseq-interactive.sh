@@ -227,9 +227,10 @@ printf 'Value of --%s: %s\n' 'model-type' "$_arg_model_type"
 printf 'Value of --%s: %s\n' 'output-file' "$_arg_output_file"
 printf 'Value of --%s: %s\n' 'remove-bpe' "$_arg_remove_bpe"
 
-if [ -z "${_arg_input_path}" ]; then
+if [ ! -z "${_arg_input_path}" ]; then
     INPUT_PATH="${_arg_input_path}"
 else
+    echo "using default input path..."
     INPUT_PATH="${_arg_data_folder}/${_arg_eval_on}.${_arg_model_type}.${_arg_src}"
 fi
 
