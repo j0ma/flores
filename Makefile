@@ -19,6 +19,28 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+eval_wmt19_enkk_sentencepiece:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-enkk-sentencepiece*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-sentencepiece/kk-en" \
+		--segmentation-model-type "sentencepiece" \
+		--model-name "baseline" \
+		--reference "./data/wmt19/kk-en/interim/test/test.kk" \
+		--remove-bpe-type "sentencepiece"
+
+eval_wmt19_kken_sentencepiece:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-kken-sentencepiece*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-sentencepiece/kk-en" \
+		--segmentation-model-type "sentencepiece" \
+		--model-name "baseline" \
+		--reference "./data/wmt19/kk-en/interim/test/test.en" \
+		--remove-bpe-type "sentencepiece"
+
 eval_wmt19_enkk_subword_nmt:
 	bash ./eval-wmt19.sh \
 		--checkpoint-glob "./checkpoints/*wmt19-enkk-subword-nmt*" \
@@ -28,6 +50,17 @@ eval_wmt19_enkk_subword_nmt:
 		--segmentation-model-type "subword-nmt" \
 		--model-name "subword-nmt" \
 		--reference "./data/wmt19/kk-en/interim/test/test.kk" \
+		--remove-bpe-type "regular"
+
+eval_wmt19_kken_subword_nmt:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-kken-subword-nmt*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-subword-nmt/kk-en" \
+		--segmentation-model-type "subword-nmt" \
+		--model-name "subword-nmt" \
+		--reference "./data/wmt19/kk-en/interim/test/test.en" \
 		--remove-bpe-type "regular"
 
 
