@@ -46,6 +46,9 @@ def read_lmvr_segmentations(fp, sep="@@"):
     return sentences
 
 
+def is_lmvr_suffix(s):
+    return s.startswith(LMVR_SEP) and len(s) > 1
+
 def convert_lmvr_to_bpe_notation(sentences, sep="@@"):
     def is_lmvr_suffix(s):
         return s.startswith(LMVR_SEP) and len(s) > 1
@@ -70,7 +73,6 @@ def convert_lmvr_to_bpe_notation(sentences, sep="@@"):
                 cur = f"{cur}{sep}"
             tokens_bpe.append(cur)
 
-        # now we handle the final token
         final = tokens_lmvr[-1]
 
         if is_lmvr_suffix(final):
@@ -82,11 +84,31 @@ def convert_lmvr_to_bpe_notation(sentences, sep="@@"):
 
     return sentences_bpe
 
-
-def read_morsel_segmentations(fp):
+def desegment_lmvr(fp):
     """
-    Read in a corpus of sentences, and un-segment
-    words according to the MORSEL notatoin.
+    Read in a corpus of sentences, and desegment
+    words according to the MORSEL notation.
+    """
+    sentences = read_lines(fp)
+    sentences_joined = []
+
+    for sent in sentences:
+        out = ""
+
+        for tok in sent.split(" "):
+            if is_lmvr_suffix(tok):
+                out = f"{out}{tok[1:]}"
+            else:
+                out = f"{out} {tok}"
+        
+        sentences_joined.append(out.strip())
+
+    return sentences_joined
+
+def desegment_morsel(fp):
+    """
+    Read in a corpus of sentences, and desegment
+    words according to the MORSEL notation.
     """
 
     lines = [
@@ -99,37 +121,31 @@ def read_morsel_segmentations(fp):
 
     return lines
 
-
-"""
-for line_num, line in enumerate(sys.stdin, 1):
-    fields = line.rstrip("\n").split(" ")
-    if len(fields) != 2:
-        raise ValueError(f"Line {line_num} is not properly formatted: {repr(line)}")
-    count, word = fields
-    if not word.strip():
-        print(f"Skipping whitespace word of length {len(word)} on line {line_num}: {repr(line)}", file=sys.stderr)
-        continue
-"""
-
-
 @click.command()
 @click.option("--input-path")
 @click.option("--output-path")
 @click.option("--model-type", required=True)
 @click.option("--bpe-separator", default="@@")
 @click.option("--convert-to-bpe", is_flag=True, default=False)
+@click.option("--desegment", is_flag=True, default=False)
 def main(
-    input_path, output_path, model_type, bpe_separator, convert_to_bpe=False
+    input_path, output_path, model_type, bpe_separator, convert_to_bpe=False, desegment=False
 ):
     assert model_type in SUPPORTED_MODELS, "Error: Unsupported model!"
+
     if 'lmvr' in model_type:
-        sentences = read_lmvr_segmentations(input_path)
-        if convert_to_bpe:
-            sentences = convert_lmvr_to_bpe_notation(sentences, bpe_separator)
+
+        if desegment:
+            sentences = desegment_lmvr(input_path)
+        else:
+            sentences = read_lmvr_segmentations(input_path)
+            if convert_to_bpe:
+                sentences = convert_lmvr_to_bpe_notation(sentences, bpe_separator)
+
     elif model_type == 'morsel':
-        sentences = read_morsel_segmentations(input_path)
+        sentences = desegment_morsel(input_path)
+
     with open(output_path, "w") as f:
-        # f.writelines(s+"\n" for s in sentences)
         f.write("\n".join(sentences)+"\n")
 
 if __name__ == "__main__":
