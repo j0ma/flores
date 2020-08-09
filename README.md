@@ -4,7 +4,7 @@ This repository is my own fork of FAIR's FLoRes repository.
 My main reason for forking was to create training and evaluation scripts that are well-automated.
 
 ## Notes
-- removed extraneous empty line from lmvr tuned segmentations in the interest of time (8/9/20)
+- manually removed extraneous empty line from lmvr tuned segmentations in the interest of time (8/9/20)
 
 ### Experimental results as of 8/9/2020
 
