@@ -6,7 +6,7 @@ import os
 import re
 
 BLEU_REGEX='version.* = (\d+\.\d+)'
-PAIRS = ('en-ne', 'ne-en', 'en-si', 'si-en')
+PAIRS = ('en-ne', 'ne-en', 'en-si', 'si-en', 'kk-en', 'en-kk')
 SEEDS = (10, 11, 12, 13, 14)
 
 def get_bleu(report):
@@ -19,7 +19,7 @@ def load_seed_results_sacrebleu(p="./translation-output/"):
         for seed in SEEDS:
             for pair in PAIRS:
                 src, tgt = pair.split('-')
-                fname = f"{p}/{method}/seed-{seed}/{pair}.output.raw.log"
+                fname = f"{p}/{method}/seed-{seed}/{pair}.output.raw.bleu.log"
                 try:
                     with open(fname, 'r') as f:
                         bleu_report = f.readlines()[-1]
