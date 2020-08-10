@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -exo pipefail
 
 # Created by argbash-init v2.8.1
 # ARG_OPTIONAL_SINGLE([folder])
@@ -287,7 +287,11 @@ for split in "train" "dev" "test"; do
     for lang in "${_arg_src}" "${_arg_tgt}"; do
         interim_path="${interim_data_folder}/${split}"
         final_path="${final_data_folder}/${split}"
-        output_fname="${split}.${lang}"
+        if [ ! "${split}" = "train"  ]; then
+            output_fname="${split}.${_arg_src}${_arg_tgt}.${lang}"
+        else
+            output_fname="${split}.${lang}"
+        fi
         if [ "${_arg_tokenize}" = "on" ]; then
             moses_pipeline \
                 "${interim_path}/${output_fname}" \
@@ -310,13 +314,15 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
 
     echo "subword-nmt detected!"
 
-    test -z "${_arg_bpe_num_merges}" \
-        && echo "Please provide BPE vocab size!" && exit 1
+    test -z "${_arg_bpe_num_merges}" &&
+        echo "Please provide BPE vocab size!" && exit 1
 
     model_name="subword-nmt"
+    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
+    mkdir -p "${data_bin_folder}"
 
     # concatenate training sets to one big file
-    rm -f "${interim_data_folder}/train.all.tok.lower"
+    rm -f "${interim_data_folder}/train/train.all.tok.lower"
     cat "${interim_data_folder}/train/"train.*.tok.lower \
         >"${interim_data_folder}/train/train.all.tok.lower"
 
@@ -336,8 +342,15 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     # apply bpe and output segmentation
     for split in "train" "dev" "test"; do
         for lang in "${_arg_src}" "${_arg_tgt}"; do
-            segm_input_file="${interim_data_folder}/${split}/${split}.${lang}.tok.lower"
-            segm_output_file=${final_data_folder}/${split}/${split}.${model_name}.${lang}
+
+            input_stub="${interim_data_folder}/$split/$split"
+            output_stub=${final_data_folder}/$split/$split.${model_name}
+            if [ ! "${split}" = "train" ]; then 
+                input_stub="${input_stub}.${_arg_src}${_arg_tgt}"
+                output_stub="${output_stub}.${_arg_src}${_arg_tgt}"
+            fi
+            segm_input_file="${input_stub}.${lang}.tok.lower"
+            segm_output_file=${output_stub}.${lang}
             bash "$SCRIPTS/segment.sh" \
                 --input "${segm_input_file}" \
                 --output "${segm_output_file}" \
@@ -349,25 +362,28 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
         done
     done
 
-    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/"
-    #mkdir -p "${data_bin_folder}"
     # binarize data
+    if [ "${foreign}" = "kk" ]; then
+        stub=".${_arg_src}${_arg_tgt}"
+    else
+        stub=""
+    fi
     fairseq-preprocess \
         --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
         --trainpref ${final_data_folder}/train/train.${model_name} \
-        --validpref ${final_data_folder}/dev/dev.${model_name} \
-        --testpref ${final_data_folder}/test/test.${model_name} \
+        --validpref ${final_data_folder}/dev/dev.${model_name}${stub} \
+        --testpref ${final_data_folder}/test/test.${model_name}${stub} \
         --destdir ${data_bin_folder} \
         --joined-dictionary \
         --workers 8
 
 elif [ "${_arg_sentencepiece}" = "on" ]; then
 
-    test -z "${_arg_bpe_vocab_size}" \
-        && echo "Please provide BPE vocab size!" && exit 1
+    test -z "${_arg_bpe_vocab_size}" &&
+        echo "Please provide BPE vocab size!" && exit 1
 
     model_name="sentencepiece"
-    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/"
+    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
     mkdir -p "${data_bin_folder}"
 
     # learn BPE with sentencepiece
@@ -380,19 +396,31 @@ elif [ "${_arg_sentencepiece}" = "on" ]; then
 
     # encode train/valid/test
     for split in "train" "dev" "test"; do
+
+        input_stub="${interim_data_folder}/$split/$split"
+        output_stub=${final_data_folder}/$split/$split.${model_name}
+        if [ ! "${split}" = "train" ]; then 
+            input_stub="${input_stub}.${_arg_src}${_arg_tgt}"
+            output_stub="${output_stub}.${_arg_src}${_arg_tgt}"
+        fi
         python $SPM_ENCODE \
             --model ${data_bin_folder}/sentencepiece.bpe.model \
             --output_format=piece \
-            --inputs ${interim_data_folder}/$split/$split.${_arg_src} ${interim_data_folder}/$split/$split.${_arg_tgt} \
-            --outputs ${final_data_folder}/$split/$split.${model_name}.${_arg_src} ${final_data_folder}/$split/$split.${model_name}.${_arg_tgt}
+            --inputs ${input_stub}.${_arg_src} ${input_stub}.${_arg_tgt} \
+            --outputs ${output_stub}.${_arg_src} ${output_stub}.${_arg_tgt}
     done
 
     # binarize data
+    if [ "${foreign}" = "kk" ]; then
+        stub=".${_arg_src}${_arg_tgt}"
+    else
+        stub=""
+    fi
     fairseq-preprocess \
         --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
         --trainpref ${final_data_folder}/train/train.${model_name} \
-        --validpref ${final_data_folder}/dev/dev.${model_name} \
-        --testpref ${final_data_folder}/test/test.${model_name} \
+        --validpref ${final_data_folder}/dev/dev.${model_name}${stub} \
+        --testpref ${final_data_folder}/test/test.${model_name}${stub} \
         --destdir ${data_bin_folder} \
         --joined-dictionary \
         --workers 8
