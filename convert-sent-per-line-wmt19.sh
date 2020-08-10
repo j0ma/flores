@@ -174,8 +174,14 @@ extract_kk() {
     done
 
     # step 3: concatenate everything together
-    for lang in "en" "kk"; do cat ${raw_data_folder}/dev/*.${lang} >"${interim_data_folder}/dev/dev.${lang}"; done
-    for lang in "en" "kk"; do cat ${raw_data_folder}/"test"/*.${lang} >"${interim_data_folder}/test/test.${lang}"; done
+    for lang in "en" "kk"; do 
+        cat ${raw_data_folder}/dev/*enkk*.${lang} >"${interim_data_folder}/dev/dev.enkk.${lang}"
+        cat ${raw_data_folder}/dev/*kken*.${lang} >"${interim_data_folder}/dev/dev.kken.${lang}"
+    done
+    for lang in "en" "kk"; do 
+        cat ${raw_data_folder}/"test"/*enkk*.${lang} >"${interim_data_folder}/test/test.enkk.${lang}" 
+        cat ${raw_data_folder}/"test"/*kken*.${lang} >"${interim_data_folder}/test/test.kken.${lang}"
+    done
 }
 
 sgm_to_txt() {

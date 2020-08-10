@@ -6,7 +6,50 @@ My main reason for forking was to create training and evaluation scripts that ar
 ## Notes
 - manually removed extraneous empty line from lmvr tuned segmentations in the interest of time (8/9/20)
 
+### WMT19 KK-EN
+
+```
+### Raw results
+                  bleu      
+pair             en-kk kk-en
+method      seed            
+baseline    10     0.8   2.0
+            11     0.7   2.2
+            12     0.6   2.3
+            13     0.6   2.0
+            14     0.8   1.9
+subword-nmt 10     0.8   2.7
+            11     0.9   2.8
+            12     0.9   2.9
+            13     0.9   2.8
+            14     0.9   2.9
+
+### Summary statistics
+                   count  mean    std  25%  50%  75%
+method      pair                                    
+baseline    en-kk    5.0  0.70  0.100  0.6  0.7  0.8
+            kk-en    5.0  2.08  0.164  2.0  2.0  2.2
+subword-nmt en-kk    5.0  0.88  0.045  0.9  0.9  0.9
+            kk-en    5.0  2.82  0.084  2.8  2.8  2.9
+
+### Confidence interval
+                   mean    std  std_err     lb     ub
+method      pair                                     
+baseline    en-kk  0.70  0.100    0.045  0.611  0.789
+            kk-en  2.08  0.164    0.073  1.933  2.227
+subword-nmt en-kk  0.88  0.045    0.020  0.840  0.920
+            kk-en  2.82  0.084    0.037  2.745  2.895
+
+### Reported results from paper
+en-ne    4.3
+ne-en    7.6
+en-si    1.2
+si-en    7.2
+dtype: float64
+```
+
 ### Experimental results as of 8/9/2020
+
 
 ```
 ### Raw results
