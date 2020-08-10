@@ -4,6 +4,7 @@
 # ARG_OPTIONAL_SINGLE([output-folder])
 # ARG_OPTIONAL_BOOLEAN([fi-en])
 # ARG_OPTIONAL_BOOLEAN([kk-en])
+# ARG_OPTIONAL_BOOLEAN([ignore-wikititles])
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
 # needed because of Argbash --> m4_ignore([
@@ -29,10 +30,11 @@ begins_with_short_option() {
 _arg_output_folder="./wmt19-data"
 _arg_fi_en="off"
 _arg_kk_en="off"
+_arg_ignore_wikititles="off"
 
 print_help() {
     printf '%s\n' "<The general help message of my script>"
-    printf 'Usage: %s [--output-folder <arg>] [--(no-)fi-en] [--(no-)kk-en] [-h|--help]\n' "$0"
+    printf 'Usage: %s [--output-folder <arg>] [--(no-)fi-en] [--(no-)kk-en] [--ignore-wikititles] [-h|--help]\n' "$0"
     printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -55,6 +57,9 @@ parse_commandline() {
         --no-kk-en | --kk-en)
             _arg_kk_en="on"
             test "${1:0:5}" = "--no-" && _arg_kk_en="off"
+            ;;
+        --ignore-wikititles)
+            _arg_ignore_wikititles="on"
             ;;
         -h | --help)
             print_help
@@ -93,10 +98,17 @@ fi_test_files=(
     "newstest2019-fien-src.fi"
 )
 
-kk_train_files=(
-    "news-commentary-v14-wmt19.en-kk.tsv"
-    "wikititles-v1.kk-en.tsv"
-)
+if [ "${_arg_ignore_wikititles}" = "off" ]; then
+    kk_train_files=(
+        "news-commentary-v14-wmt19.en-kk.tsv"
+        "wikititles-v1.kk-en.tsv"
+    )
+else
+    kk_train_files=(
+        "news-commentary-v14-wmt19.en-kk.tsv"
+    )
+fi
+
 kk_test_files=(
     "newstest2019-enkk-ref.kk"
     "newstest2019-enkk-src.en"

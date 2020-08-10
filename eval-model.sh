@@ -245,11 +245,20 @@ done
 
 echo "Done! Computing BLEU..."
 # compute the BLEU score
+for lang in "${_arg_src}" "${_arg_tgt}"; do
+    if [ "${lang}" = "fi" ] || [ "${lang}" = "kk" ]; then
+        mode="wmt19"
+    else
+        mode="flores"
+    fi
+done
+
 bash "$SCRIPTS/score-with-sacrebleu.sh" \
     "${_arg_src}" "${_arg_tgt}" \
     "${detok_output}" \
     "${_arg_reference}" \
-    "${_arg_output_file}.bleu.log"
+    "${_arg_output_file}.bleu.log" \
+    "${mode}"
 
 echo "Done! Computing CHRF3..."
 python "${SCRIPTS}/score-with-chrf.py" \
