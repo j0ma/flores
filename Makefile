@@ -24,10 +24,10 @@ eval_wmt19_enkk_sentencepiece:
 		--checkpoint-glob "./checkpoints/*wmt19-enkk-sentencepiece*" \
 		--src "en" --tgt "kk" --eval-on "test" \
 		--data-folder "data/wmt19/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-sentencepiece/kk-en" \
+		--data-bin-folder "data-bin/wmt19-sentencepiece/kk-en/en-kk" \
 		--segmentation-model-type "sentencepiece" \
 		--model-name "baseline" \
-		--reference "./data/wmt19/kk-en/interim/test/test.kk" \
+		--reference "./data/wmt19/kk-en/interim/test/test.enkk.kk" \
 		--remove-bpe-type "sentencepiece"
 
 eval_wmt19_kken_sentencepiece:
@@ -35,10 +35,10 @@ eval_wmt19_kken_sentencepiece:
 		--checkpoint-glob "./checkpoints/*wmt19-kken-sentencepiece*" \
 		--src "kk" --tgt "en" --eval-on "test" \
 		--data-folder "data/wmt19/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-sentencepiece/kk-en" \
+		--data-bin-folder "data-bin/wmt19-sentencepiece/kk-en/kk-en" \
 		--segmentation-model-type "sentencepiece" \
 		--model-name "baseline" \
-		--reference "./data/wmt19/kk-en/interim/test/test.en" \
+		--reference "./data/wmt19/kk-en/interim/test/test.kken.en" \
 		--remove-bpe-type "sentencepiece"
 
 eval_wmt19_enkk_subword_nmt:
@@ -46,10 +46,10 @@ eval_wmt19_enkk_subword_nmt:
 		--checkpoint-glob "./checkpoints/*wmt19-enkk-subword-nmt*" \
 		--src "en" --tgt "kk" --eval-on "test" \
 		--data-folder "data/wmt19/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-subword-nmt/kk-en" \
+		--data-bin-folder "data-bin/wmt19-subword-nmt/kk-en/en-kk" \
 		--segmentation-model-type "subword-nmt" \
 		--model-name "subword-nmt" \
-		--reference "./data/wmt19/kk-en/interim/test/test.kk" \
+		--reference "./data/wmt19/kk-en/interim/test/test.enkk.kk" \
 		--remove-bpe-type "regular"
 
 eval_wmt19_kken_subword_nmt:
@@ -57,24 +57,23 @@ eval_wmt19_kken_subword_nmt:
 		--checkpoint-glob "./checkpoints/*wmt19-kken-subword-nmt*" \
 		--src "kk" --tgt "en" --eval-on "test" \
 		--data-folder "data/wmt19/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-subword-nmt/kk-en" \
+		--data-bin-folder "data-bin/wmt19-subword-nmt/kk-en/kk-en" \
 		--segmentation-model-type "subword-nmt" \
 		--model-name "subword-nmt" \
-		--reference "./data/wmt19/kk-en/interim/test/test.en" \
+		--reference "./data/wmt19/kk-en/interim/test/test.kken.en" \
 		--remove-bpe-type "regular"
 
-
-train_wmt19_fien_subword_nmt:
-	bash ./train-wmt19.sh \
-		--src fi --tgt en \
-		--from-seed 10 --to-seed 10 \
-		--bpe-size 5000 --cuda-device 1 \
-		--model-name subword-nmt \
-		--clip-norm 0.1 \
-		--checkpoint-dir "auto" \
-		--log-dir "auto" \
-		--data-dir data-bin/wmt19-subword-nmt/fi-en \
-		--fp16 --slug "wmt19-fien-subword-nmt"
+#train_wmt19_fien_subword_nmt:
+#	bash ./train-wmt19.sh \
+#		--src fi --tgt en \
+#		--from-seed 10 --to-seed 10 \
+#		--bpe-size 5000 --cuda-device 1 \
+#		--model-name subword-nmt \
+#		--clip-norm 0.1 \
+#		--checkpoint-dir "auto" \
+#		--log-dir "auto" \
+#		--data-dir data-bin/wmt19-subword-nmt/fi-en \
+#		--fp16 --slug "wmt19-fien-subword-nmt"
 
 
 train_wmt19_enkk_subword_nmt:
