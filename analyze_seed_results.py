@@ -107,18 +107,6 @@ def main(input_file=None, translation_output=None, output_file=None):
     print('\n### Confidence interval')
     print(agg2)
 
-    print('\n### Reported results from paper')
-    print(reported)
-
-    # TODO: figure out a fast way to do this diff
-    #       when multiple models are present
-    if legacy_mode:
-        print('\n### Difference from reported')
-        print(raw - reported)
-
-        print('\n### Fraction of scores above paper')
-        print(((raw - reported) > 0).mean(axis=0))
-
     if output_file:
         print("Outputting to CSV...")
         raw.stack().reset_index().to_csv(output_file, index=False)
