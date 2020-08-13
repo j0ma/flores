@@ -10,6 +10,9 @@ set -eo pipefail
 # ARG_OPTIONAL_SINGLE([output-folder])
 # ARG_OPTIONAL_BOOLEAN([fi-en])
 # ARG_OPTIONAL_BOOLEAN([kk-en])
+# ARG_OPTIONAL_BOOLEAN([cs-en])
+# ARG_OPTIONAL_BOOLEAN([gu-en])
+# ARG_OPTIONAL_BOOLEAN([lt-en])
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
 # needed because of Argbash --> m4_ignore([
@@ -41,6 +44,9 @@ begins_with_short_option() {
 _arg_output_folder="./wmt19-data"
 _arg_fi_en="off"
 _arg_kk_en="off"
+_arg_cs_en="off"
+_arg_gu_en="off"
+_arg_lt_en="off"
 
 print_help() {
     printf '%s\n' "<The general help message of my script>"
@@ -68,6 +74,18 @@ parse_commandline() {
             _arg_kk_en="on"
             test "${1:0:5}" = "--no-" && _arg_kk_en="off"
             ;;
+        --no-cs-en | --cs-en)
+            _arg_cs_en="on"
+            test "${1:0:5}" = "--no-" && _arg_cs_en="off"
+            ;;
+        --no-gu-en | --gu-en)
+            _arg_gu_en="on"
+            test "${1:0:5}" = "--no-" && _arg_gu_en="off"
+            ;;
+        --no-lt-en | --lt-en)
+            _arg_lt_en="on"
+            test "${1:0:5}" = "--no-" && _arg_lt_en="off"
+            ;;
         -h | --help)
             print_help
             exit 0
@@ -94,7 +112,9 @@ parse_commandline "$@"
 printf 'Value of --%s: %s\n' 'output-folder' "$_arg_output_folder"
 printf "'%s' is %s\\n" 'fi-en' "$_arg_fi_en"
 printf "'%s' is %s\\n" 'kk-en' "$_arg_kk_en"
-
+printf "'%s' is %s\\n" 'cs-en' "$_arg_cs_en"
+printf "'%s' is %s\\n" 'gu-en' "$_arg_gu_en"
+printf "'%s' is %s\\n" 'lt-en' "$_arg_lt_en"
 mkdir -p "${_arg_output_folder}"
 
 # Hard-coded URLs for downloading translation data
@@ -120,6 +140,26 @@ kk_train_data_urls=(
     #http://data.statmt.org/wikititles/v1/wikititles-v1.kk-en.tsv.gz
 #)
 
+cs_train_data_urls=(
+    http://www.statmt.org/europarl/v9/training/europarl-v9.cs-en.tsv.gz
+    https://s3.amazonaws.com/web-language-models/paracrawl/release3/en-cs.bicleaner07.tmx.gz
+    http://www.statmt.org/wmt13/training-parallel-commoncrawl.tgz
+    http://data.statmt.org/news-commentary/v14/training/news-commentary-v14.cs-en.tsv.gz
+    http://data.statmt.org/wikititles/v1/wikititles-v1.cs-en.tsv.gz
+)
+
+gu_train_data_urls=(
+    http://data.statmt.org/wikititles/v1/wikititles-v1.gu-en.tsv.gz
+)
+
+lt_train_data_urls=(
+    http://www.statmt.org/europarl/v9/training/europarl-v9.lt-en.tsv.gz
+    https://s3.amazonaws.com/web-language-models/paracrawl/release3/en-lt.bicleaner07.tmx.gz
+    http://data.statmt.org/wikititles/v1/wikititles-v1.lt-en.tsv.gz
+    https://tilde-model.s3-eu-west-1.amazonaws.com/rapid2016.en-lt.tmx.zip
+)
+
+
 # Same for dev data
 all_dev_data_url="http://data.statmt.org/wmt19/translation-task/dev.tgz"
 #all_dev_data_url="http://0.0.0.0:8000/common/dev.tgz"
@@ -129,9 +169,9 @@ all_test_data_url="http://data.statmt.org/wmt19/translation-task/test.tgz"
 #all_test_data_url="http://0.0.0.0:8000/common/test.tgz"
 
 echo "Creating output folders..."
-for pair in "fi-en" "kk-en"; do
+for pair in "fi-en" "kk-en" "cs-en" "gu-en" "lt-en"; do
 
-    [ "${pair}" = "fi-en" ] && lang_flag="_arg_fi_en" || lang_flag="_arg_kk_en"
+    lang_flag="_arg_${pair//-/_}"
 
     if [ "${!lang_flag}" = "on" ]; then
         echo "Creating folders for ${pair}"
@@ -153,21 +193,14 @@ common_data_folder=${_arg_output_folder}/common/
 mkdir -p "${common_data_folder}"
 
 echo "Downloading train/valid/test data..."
-for pair in "fi-en" "kk-en"; do
-
-    [ "${pair}" = "fi-en" ] &&
-        lang_flag="_arg_fi_en" ||
-        lang_flag="_arg_kk_en"
+for pair in "fi-en" "kk-en" "cs-en" "gu-en" "lt-en"; do
+    lang_flag="_arg_${pair//-/_}"
 
     [ "${!lang_flag}" = "off" ] &&
         echo "Skipping ${pair} since it's off..." &&
         continue
 
     data_folder=${_arg_output_folder}/${pair}/
-
-    [ "${pair}" = "fi-en" ] &&
-        lang_flag="_arg_fi_en" ||
-        lang_flag="_arg_kk_en"
 
     echo "Downloading dev datasets from ${all_dev_data_url}"
     $WGET -O "${common_data_folder}/dev.tgz" "${all_dev_data_url}"
@@ -230,12 +263,6 @@ for pair in "fi-en" "kk-en"; do
         done
         wait
 
-        for file in ./*.zip; do
-            fname=$(basename "${file}" | sed "s/\.zip$//g")
-            unzip -v "${file}" >"${data_folder}/raw/train/${fname}" &
-        done
-        wait
-
         # delete extraneous file
         pushd "${data_folder}/raw/train" && rm "*" && popd
 
@@ -254,6 +281,114 @@ for pair in "fi-en" "kk-en"; do
         for file in ./*kk*; do cp -v "${file}" "${data_folder}/raw/test/"; done
         popd && popd
         rm -f "${data_folder}/raw/\*"
+
+    elif [ "${pair}" = "cs-en" ]; then
+
+        # Download training data
+        echo "Downloading training data for Gujarati..."
+        pushd "${data_folder}/compressed"
+        for url in "${cs_train_data_urls[@]}"; do
+            $WGET "${url}"
+        done
+        for file in ./*.gz; do
+            fname=$(basename "${file}" | sed "s/\.gz$//g")
+            gunzip -v -c "${file}" >"${data_folder}/raw/train/${fname}" &
+        done
+        wait
+
+        for file in ./*.zip; do
+            fname=$(basename "${file}" | sed "s/\.zip$//g")
+            unzip -d "${data_folder}/raw/train/" "${file}"  &
+        done
+        wait
+
+        popd
+
+        # Download dev data
+        echo "Creating CS-EN dev datasets..."
+        pushd "${common_data_folder}/dev/"
+        for file in ./*cs*; do cp -v "${file}" "${data_folder}/raw/dev"; done
+        popd
+
+        # Download test data
+        echo "Creating CS-EN test datasets..."
+        pushd "${common_data_folder}"
+
+        pushd "test"
+        for file in ./*cs*; do cp -v "${file}" "${data_folder}/raw/test"; done
+        popd && popd
+
+    elif [ "${pair}" = "gu-en" ]; then
+
+        # Download training data
+        echo "Downloading training data for Gujarati..."
+        pushd "${data_folder}/compressed"
+        for url in "${gu_train_data_urls[@]}"; do
+            $WGET "${url}"
+        done
+        for file in ./*.gz; do
+            fname=$(basename "${file}" | sed "s/\.gz$//g")
+            gunzip -v -c "${file}" >"${data_folder}/raw/train/${fname}" &
+        done
+        wait
+
+        for file in ./*.zip; do
+            fname=$(basename "${file}" | sed "s/\.zip$//g")
+            unzip -d "${data_folder}/raw/train/" "${file}"  &
+        done
+        wait
+
+        popd
+
+        # Download dev data
+        echo "Creating GU-EN dev datasets..."
+        pushd "${common_data_folder}/dev/"
+        for file in ./*gu*; do cp -v "${file}" "${data_folder}/raw/dev"; done
+        popd
+
+        # Download test data
+        echo "Creating GU-EN test datasets..."
+        pushd "${common_data_folder}"
+
+        pushd "test"
+        for file in ./*gu*; do cp -v "${file}" "${data_folder}/raw/test"; done
+        popd && popd
+
+    elif [ "${pair}" = "lt-en" ]; then
+
+        # Download training data
+        echo "Downloading training data for Lithuanian..."
+        pushd "${data_folder}/compressed"
+        for url in "${lt_train_data_urls[@]}"; do
+            $WGET "${url}"
+        done
+        for file in ./*.gz; do
+            fname=$(basename "${file}" | sed "s/\.gz$//g")
+            gunzip -v -c "${file}" >"${data_folder}/raw/train/${fname}" &
+        done
+        wait
+
+        for file in ./*.zip; do
+            fname=$(basename "${file}" | sed "s/\.zip$//g")
+            unzip -d "${data_folder}/raw/train/" "${file}"  &
+        done
+        wait
+
+        popd
+
+        # Download dev data
+        echo "Creating LT-EN dev datasets..."
+        pushd "${common_data_folder}/dev/"
+        for file in ./*lt*; do cp -v "${file}" "${data_folder}/raw/dev"; done
+        popd
+
+        # Download test data
+        echo "Creating LT-EN test datasets..."
+        pushd "${common_data_folder}"
+
+        pushd "test"
+        for file in ./*lt*; do cp -v "${file}" "${data_folder}/raw/test"; done
+        popd && popd
     else
         echo "Invalid language pair!"
         exit 1
