@@ -76,6 +76,30 @@ eval_wmt19_kken_subword_nmt:
 #		--fp16 --slug "wmt19-fien-subword-nmt"
 
 
+train_wmt19_enkk_lmvr_tuned:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 1 \
+		--model-name lmvr-tuned \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-lmvr-tuned/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-enkk-lmvr-tuned"
+
+train_wmt19_kken_lmvr_tuned:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 2 \
+		--model-name lmvr-tuned \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-lmvr-tuned/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-kken-lmvr-tuned"
+
 train_wmt19_enkk_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
