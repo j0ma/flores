@@ -1,11 +1,14 @@
+# -*- coding: UTF-8 -*-
+
 import click
 import sys
 import os
 import re
 
-# sys.stdin.reconfigure(encoding="utf-8")
-# sys.stdout.reconfigure(encoding="utf-8")
-# sys.stderr.reconfigure(encoding="utf-8")
+# if sys.version_info.major == 2:
+    # sys.stdin.reconfigure(encoding="utf-8")
+    # sys.stdout.reconfigure(encoding="utf-8")
+    # sys.stderr.reconfigure(encoding="utf-8")
 
 SUPPORTED_MODELS = {"lmvr", "morsel", "lmvr-tuned"}
 DOUBLE_PLUS = "⧺"
@@ -19,8 +22,7 @@ def read_lines(fp):
         return lines
 
 
-def read_lmvr_segmentations(fp, sep="@@"):
-    lines = read_lines(fp)
+def read_lmvr_segmentations(lines, sep="@@"):
     sentences = []
     curr_sent = []
 
@@ -70,7 +72,7 @@ def convert_lmvr_to_bpe_notation(sentences, sep="@@"):
                 cur = cur[1:]
 
             if is_lmvr_suffix(nxt):
-                cur = f"{cur}{sep}"
+                cur = "{}{}".format(cur, sep)
             tokens_bpe.append(cur)
 
         final = tokens_lmvr[-1]
@@ -84,12 +86,11 @@ def convert_lmvr_to_bpe_notation(sentences, sep="@@"):
 
     return sentences_bpe
 
-def desegment_lmvr(fp):
+def desegment_lmvr(sentences):
     """
     Read in a corpus of sentences, and desegment
-    words according to the MORSEL notation.
+    words according to the LMVR notation.
     """
-    sentences = read_lines(fp)
     sentences_joined = []
 
     for sent in sentences:
@@ -97,15 +98,15 @@ def desegment_lmvr(fp):
 
         for tok in sent.split(" "):
             if is_lmvr_suffix(tok):
-                out = f"{out}{tok[1:]}"
+                out = "{}{}".format(out, tok[1:])
             else:
-                out = f"{out} {tok}"
+                out = "{} {}".format(out, tok)
         
-        sentences_joined.append(out.strip())
+        sentences_joined.append(out.lstrip())
 
     return sentences_joined
 
-def desegment_morsel(fp):
+def desegment_morsel(sentences):
     """
     Read in a corpus of sentences, and desegment
     words according to the MORSEL notation.
@@ -116,7 +117,7 @@ def desegment_morsel(fp):
         .replace(DOUBLE_PLUS + " ", "")
         .replace(" " + DOUBLE_PLUS, "")
 
-        for line in read_lines(fp)
+        for line in sentences
     ]
 
     return lines
@@ -132,18 +133,19 @@ def main(
     input_path, output_path, model_type, bpe_separator, convert_to_bpe=False, desegment=False
 ):
     assert model_type in SUPPORTED_MODELS, "Error: Unsupported model!"
+    original_lines = read_lines(input_path)
 
     if 'lmvr' in model_type:
 
         if desegment:
-            sentences = desegment_lmvr(input_path)
+            sentences = desegment_lmvr(original_lines)
         else:
-            sentences = read_lmvr_segmentations(input_path)
+            sentences = read_lmvr_segmentations(original_lines)
             if convert_to_bpe:
                 sentences = convert_lmvr_to_bpe_notation(sentences, bpe_separator)
 
     elif model_type == 'morsel':
-        sentences = desegment_morsel(input_path)
+        sentences = desegment_morsel(original_lines)
 
     with open(output_path, "w") as f:
         f.write("\n".join(sentences)+"\n")

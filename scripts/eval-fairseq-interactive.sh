@@ -19,7 +19,7 @@
 # Argbash is a bash code generator used to get arguments parsing right.
 # Argbash is FREE SOFTWARE, see https://argbash.io for more info
 
-set -eo pipefail
+set -exo pipefail
 
 die()
 {
@@ -230,8 +230,15 @@ printf 'Value of --%s: %s\n' 'remove-bpe' "$_arg_remove_bpe"
 if [ ! -z "${_arg_input_path}" ]; then
     INPUT_PATH="${_arg_input_path}"
 else
+    if [ "${_arg_src}" = "kk" ] || [ "${_arg_src}" = "fi" ] || \
+       [ "${_arg_tgt}" = "kk" ] || [ "${_arg_tgt}" = "fi" ]; then
+        lang_slug="${_arg_src}${_arg_tgt}.${_arg_src}"
+    else
+        lang_slug="${_arg_src}"
+    fi
+    INPUT_PATH="${_arg_data_folder}/${_arg_eval_on}.${_arg_model_type}.${lang_slug}"
     echo "using default input path..."
-    INPUT_PATH="${_arg_data_folder}/${_arg_eval_on}.${_arg_model_type}.${_arg_src}"
+    echo "${INPUT_PATH}"
 fi
 
 cat "${INPUT_PATH}" |
