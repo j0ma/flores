@@ -36,7 +36,6 @@ fi
 
 ROOT=$(dirname "$0")
 SCRIPTS=$ROOT/scripts
-DATA=$ROOT/data
 SPM_TRAIN=$SCRIPTS/spm_train.py
 SPM_ENCODE=$SCRIPTS/spm_encode.py
 
@@ -285,26 +284,30 @@ final_data_folder="${_arg_folder}/${foreign}-en/final/"
 
 for split in "train" "dev" "test"; do
     for lang in "${_arg_src}" "${_arg_tgt}"; do
+
+        suffix=""
         interim_path="${interim_data_folder}/${split}"
         final_path="${final_data_folder}/${split}"
-        if [ ! "${split}" = "train"  ]; then
+        if [ ! "${split}" = "train" ]; then
             output_fname="${split}.${_arg_src}${_arg_tgt}.${lang}"
         else
             output_fname="${split}.${lang}"
         fi
         if [ "${_arg_tokenize}" = "on" ]; then
+            suffix="${suffix}.tok"
             moses_pipeline \
                 "${interim_path}/${output_fname}" \
-                "${interim_path}/${output_fname}.tok" \
+                "${interim_path}/${output_fname}${suffix}" \
                 "${lang}"
-            output_fname="${output_fname}.tok"
+            output_fname="${output_fname}${suffix}"
         fi
 
         if [ "${_arg_lowercase}" = "on" ]; then
+            suffix="${suffix}.lower"
             convert_lowercase \
                 "${interim_path}/${output_fname}" \
-                "${interim_path}/${output_fname}.lower"
-            output_fname="${output_fname}.lower"
+                "${interim_path}/${output_fname}${suffix}"
+            output_fname="${output_fname}${suffix}"
         fi
 
     done
@@ -322,12 +325,12 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     mkdir -p "${data_bin_folder}"
 
     # concatenate training sets to one big file
-    rm -f "${interim_data_folder}/train/train.all.tok.lower"
-    cat "${interim_data_folder}/train/"train.*.tok.lower \
-        >"${interim_data_folder}/train/train.all.tok.lower"
+    rm -f "${interim_data_folder}/train/train.all${suffix}"
+    cat "${interim_data_folder}/train/"train.*"${suffix}" \
+        >"${interim_data_folder}/train/train.all${suffix}"
 
     # perform bpe training without outputting segmentation
-    segm_input_file="${interim_data_folder}/train/train.all.tok.lower"
+    segm_input_file="${interim_data_folder}/train/train.all${suffix}"
     joint_codes_file="${interim_data_folder}/train/subword-nmt.codes"
 
     bash "$SCRIPTS/segment.sh" \
@@ -345,11 +348,11 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
 
             input_stub="${interim_data_folder}/$split/$split"
             output_stub=${final_data_folder}/$split/$split.${model_name}
-            if [ ! "${split}" = "train" ]; then 
+            if [ ! "${split}" = "train" ]; then
                 input_stub="${input_stub}.${_arg_src}${_arg_tgt}"
                 output_stub="${output_stub}.${_arg_src}${_arg_tgt}"
             fi
-            segm_input_file="${input_stub}.${lang}.tok.lower"
+            segm_input_file="${input_stub}.${lang}${suffix}"
             segm_output_file=${output_stub}.${lang}
             bash "$SCRIPTS/segment.sh" \
                 --input "${segm_input_file}" \
@@ -363,11 +366,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     done
 
     # binarize data
-    if [ "${foreign}" = "kk" ]; then
-        stub=".${_arg_src}${_arg_tgt}"
-    else
-        stub=""
-    fi
+    stub=".${_arg_src}${_arg_tgt}"
     fairseq-preprocess \
         --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
         --trainpref ${final_data_folder}/train/train.${model_name} \
@@ -394,12 +393,12 @@ elif [ "${_arg_sentencepiece}" = "on" ]; then
         --character_coverage=1.0 \
         --model_type=bpe
 
-    # encode train/valid/test
+    # encode train/dev/test
     for split in "train" "dev" "test"; do
 
         input_stub="${interim_data_folder}/$split/$split"
         output_stub=${final_data_folder}/$split/$split.${model_name}
-        if [ ! "${split}" = "train" ]; then 
+        if [ ! "${split}" = "train" ]; then
             input_stub="${input_stub}.${_arg_src}${_arg_tgt}"
             output_stub="${output_stub}.${_arg_src}${_arg_tgt}"
         fi
@@ -411,11 +410,7 @@ elif [ "${_arg_sentencepiece}" = "on" ]; then
     done
 
     # binarize data
-    if [ "${foreign}" = "kk" ]; then
-        stub=".${_arg_src}${_arg_tgt}"
-    else
-        stub=""
-    fi
+    stub=".${_arg_src}${_arg_tgt}"
     fairseq-preprocess \
         --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
         --trainpref ${final_data_folder}/train/train.${model_name} \
@@ -428,22 +423,74 @@ elif [ "${_arg_sentencepiece}" = "on" ]; then
 elif [ "${_arg_lmvr}" = "on" ]; then
     echo "LMVR not implemented" && exit 1
 elif [ "${_arg_lmvr_tuned}" = "on" ]; then
-    echo "LMVR-tuned not implemented" && exit 1
+    #echo "LMVR-tuned not implemented" && exit 1
+
+    model_name="lmvr-tuned"
+    segm_model_folder=$ROOT/segmentation-models/
+
+    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
+
+    # activate virtual environment
+    echo "activating LMVR virtual environment..."
+    if [ -z "$LMVR_ENV_PATH" ]; then
+        source "$(pwd)/scripts/lmvr-environment-variables.sh"
+    fi
+    source "$LMVR_ENV_PATH/bin/activate"
+
+    # make sure we're actually running 2.7
+    if [ -z "$(python -c "import sys; print(sys.version)" | grep -E "^2\.7")" ]; then
+        echo "Need to be running Python 2.7 for LMVR!"
+        exit 1
+    fi
+
+    for split in "train" "dev" "test"; do
+        for lang in "${_arg_src}" "${_arg_tgt}"; do
+
+            echo "Check python version"
+            which python
+            python --version
+
+            input_stub="${interim_data_folder}/$split/$split"
+            output_stub=${final_data_folder}/$split/$split.${model_name}
+            if [ ! "${split}" = "train" ]; then
+                input_stub="${input_stub}.${_arg_src}${_arg_tgt}"
+                output_stub="${output_stub}.${_arg_src}${_arg_tgt}"
+            fi
+            segm_input_file="${input_stub}.${lang}${suffix}"
+            segm_output_file=${output_stub}.${lang}
+
+            if [ "${lang}" = "en" ]; then
+                lang_alias="${foreign}_en"
+            else
+                lang_alias="${lang}"
+            fi
+            lmvr_model_file="${segm_model_folder}/wmt19.2500.lmvr-tuned.model.${lang_alias}.tar.gz"
+            bash "$SCRIPTS/segment.sh" \
+                --input "${segm_input_file}" \
+                --output "${segm_output_file}" \
+                --model "${model_name}" \
+                --model-binary "${lmvr_model_file}" \
+                --lang "${lang}" \
+                --kind "${split}"
+        done
+    done
+
+    # deactivate the environment
+    deactivate
+
+    echo "Done! Time to binarize the data..."
+
+    # binarize data
+    stub=".${_arg_src}${_arg_tgt}"
+    fairseq-preprocess \
+        --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
+        --trainpref ${final_data_folder}/train/train.${model_name} \
+        --validpref ${final_data_folder}/dev/dev.${model_name}${stub} \
+        --testpref ${final_data_folder}/test/test.${model_name}${stub} \
+        --destdir ${data_bin_folder} \
+        --joined-dictionary \
+        --workers 8
+
 elif [ "${_arg_morsel}" = "on" ]; then
-    echo "MORSEL no implmemented" && exit 1
+    echo "MORSEL not implmemented" && exit 1
 fi
-
-# finally output everything to /final
-#cp -v "${interim_p}/${output_fname}" \
-#"${final_path}/${output_fname}"
-
-## binarize data
-#fairseq-preprocess \
-#--source-lang $SRC --target-lang $TGT \
-#--trainpref ${interim_path}/train.bpe \
-#--validpref ${interim_path}/valid.bpe \
-#--testpref ${interim_path}/test.bpe \
-#--destdir ${data_bin_folder} \
-#--joined-dictionary \
-#--workers 4
-# ] <-- needed because of Argbash

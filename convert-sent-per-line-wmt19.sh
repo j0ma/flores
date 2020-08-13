@@ -4,6 +4,9 @@
 # ARG_OPTIONAL_SINGLE([output-folder])
 # ARG_OPTIONAL_BOOLEAN([fi-en])
 # ARG_OPTIONAL_BOOLEAN([kk-en])
+# ARG_OPTIONAL_BOOLEAN([cs-en])
+# ARG_OPTIONAL_BOOLEAN([gu-en])
+# ARG_OPTIONAL_BOOLEAN([lt-en])
 # ARG_OPTIONAL_BOOLEAN([ignore-wikititles])
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
@@ -30,11 +33,14 @@ begins_with_short_option() {
 _arg_output_folder="./wmt19-data"
 _arg_fi_en="off"
 _arg_kk_en="off"
+_arg_cs_en="off"
+_arg_gu_en="off"
+_arg_lt_en="off"
 _arg_ignore_wikititles="off"
 
 print_help() {
     printf '%s\n' "<The general help message of my script>"
-    printf 'Usage: %s [--output-folder <arg>] [--(no-)fi-en] [--(no-)kk-en] [--ignore-wikititles] [-h|--help]\n' "$0"
+    printf 'Usage: %s [--output-folder <arg>] [--(no-)fi-en] [--(no-)kk-en] [--(no-)cs-en] [--(no-)gu-en] [--(no-)lt-en] [--ignore-wikititles] [-h|--help]\n' "$0"
     printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -57,6 +63,18 @@ parse_commandline() {
         --no-kk-en | --kk-en)
             _arg_kk_en="on"
             test "${1:0:5}" = "--no-" && _arg_kk_en="off"
+            ;;
+        --no-cs-en | --cs-en)
+            _arg_cs_en="on"
+            test "${1:0:5}" = "--no-" && _arg_cs_en="off"
+            ;;
+        --no-gu-en | --gu-en)
+            _arg_gu_en="on"
+            test "${1:0:5}" = "--no-" && _arg_gu_en="off"
+            ;;
+        --no-lt-en | --lt-en)
+            _arg_lt_en="on"
+            test "${1:0:5}" = "--no-" && _arg_lt_en="off"
             ;;
         --ignore-wikititles)
             _arg_ignore_wikititles="on"
@@ -123,6 +141,23 @@ kk_dev_files=(
     "newsdev2019-kken-src.kk"
 )
 
+gu_train_files=(
+    "wikititles-v1.gu-en.tsv"
+)
+
+gu_dev_files=(
+    "newsdev2019-engu-ref.gu"
+    "newsdev2019-engu-src.en"
+    "newsdev2019-guen-ref.en"
+    "newsdev2019-guen-src.gu"
+)
+
+gu_test_files=(
+    "newstest2019-engu-ref.gu"
+    "newstest2019-engu-src.en"
+    "newstest2019-guen-ref.en"
+    "newstest2019-guen-src.gu"
+)
 extract_fi() {
     local raw_data_folder="${_arg_output_folder}/fi-en/raw"
     local interim_data_folder="${_arg_output_folder}/fi-en/interim"
@@ -186,13 +221,52 @@ extract_kk() {
     done
 
     # step 3: concatenate everything together
-    for lang in "en" "kk"; do 
+    for lang in "en" "kk"; do
         cat ${raw_data_folder}/dev/*enkk*.${lang} >"${interim_data_folder}/dev/dev.enkk.${lang}"
         cat ${raw_data_folder}/dev/*kken*.${lang} >"${interim_data_folder}/dev/dev.kken.${lang}"
     done
-    for lang in "en" "kk"; do 
-        cat ${raw_data_folder}/"test"/*enkk*.${lang} >"${interim_data_folder}/test/test.enkk.${lang}" 
+    for lang in "en" "kk"; do
+        cat ${raw_data_folder}/"test"/*enkk*.${lang} >"${interim_data_folder}/test/test.enkk.${lang}"
         cat ${raw_data_folder}/"test"/*kken*.${lang} >"${interim_data_folder}/test/test.kken.${lang}"
+    done
+}
+
+extract_cs() {
+    exit
+}
+
+extract_gu() {
+    local raw_data_folder="${_arg_output_folder}/gu-en/raw"
+    local interim_data_folder="${_arg_output_folder}/gu-en/interim"
+    local output_data_folder="${_arg_output_folder}/gu-en/final"
+
+    # step 0: handling tsv files
+    for f in "${gu_train_files[@]}"; do
+        if [ "${f}" = "wikititles-v1.gu-en.tsv" ]; then
+            cut -f 1 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.gu}"
+            cut -f 2 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.en}"
+        fi
+    done
+
+    # step 1: concatenate everything together
+    for lang in "en" "gu"; do cat ${raw_data_folder}/train/*.${lang} >"${interim_data_folder}/train/train.${lang}"; done
+
+    # step 2: strip extraneous XML
+    for f in "${gu_dev_files[@]}"; do
+        sgm_to_txt <"${raw_data_folder}/dev/${f}.sgm" >"${raw_data_folder}/dev/${f//.sgm/}"
+    done
+    for f in "${gu_test_files[@]}"; do
+        sgm_to_txt <"${raw_data_folder}/test/${f}.sgm" >"${raw_data_folder}/test/${f//.sgm/}"
+    done
+
+    # step 3: concatenate everything together
+    for lang in "en" "gu"; do
+        cat ${raw_data_folder}/dev/*engu*.${lang} >"${interim_data_folder}/dev/dev.engu.${lang}"
+        cat ${raw_data_folder}/dev/*guen*.${lang} >"${interim_data_folder}/dev/dev.guen.${lang}"
+    done
+    for lang in "en" "gu"; do
+        cat ${raw_data_folder}/"test"/*engu*.${lang} >"${interim_data_folder}/test/test.engu.${lang}"
+        cat ${raw_data_folder}/"test"/*guen*.${lang} >"${interim_data_folder}/test/test.guen.${lang}"
     done
 }
 
@@ -209,8 +283,14 @@ sgm_to_txt() {
 printf 'Value of --%s: %s\n' 'output-folder' "$_arg_output_folder"
 printf "'%s' is %s\\n" 'fi-en' "$_arg_fi_en"
 printf "'%s' is %s\\n" 'kk-en' "$_arg_kk_en"
+printf "'%s' is %s\\n" 'cs-en' "$_arg_cs_en"
+printf "'%s' is %s\\n" 'gu-en' "$_arg_gu_en"
+printf "'%s' is %s\\n" 'lt-en' "$_arg_lt_en"
 
 [ "${_arg_fi_en}" = "on" ] && extract_fi "${_arg_output_folder}"
 [ "${_arg_kk_en}" = "on" ] && extract_kk "${_arg_output_folder}"
+[ "${_arg_cs_en}" = "on" ] && extract_cs "${_arg_output_folder}"
+[ "${_arg_gu_en}" = "on" ] && extract_gu "${_arg_output_folder}"
+[ "${_arg_lt_en}" = "on" ] && extract_lt "${_arg_output_folder}"
 
 # ] <-- needed because of Argbash
