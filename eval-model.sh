@@ -211,11 +211,19 @@ fi
 
 echo "Done! Detokenizing..."
 # grep the actual translation output
-detok_output="${_arg_output_file}.stitched.detok.${_arg_tgt}"
-bash "$SCRIPTS/detokenize.sh" \
-    "${stitch_output}" \
-    "${detok_output}" \
-    "${_arg_tgt}"
+
+# for gujarati, we need tokenized bleu
+if [ "${_arg_tgt}" = "gu" ]; then
+    detok_output="${_arg_output_file}.stitched.${_arg_tgt}"
+    cp "${stitch_output}" "${detok_output}"
+else
+    detok_output="${_arg_output_file}.stitched.detok.${_arg_tgt}"
+    bash "$SCRIPTS/detokenize.sh" \
+        "${stitch_output}" \
+        "${detok_output}" \
+        "${_arg_tgt}"
+fi
+
 
 echo "Done! Validating number of lines..."
 # validate that there are were no lines lost
@@ -239,10 +247,13 @@ done
 echo "Done! Computing BLEU..."
 # compute the BLEU score
 for lang in "${_arg_src}" "${_arg_tgt}"; do
-    if [ "${lang}" = "fi" ] || [ "${lang}" = "kk" ]; then
-        mode="wmt19"
-    else
+    # ignore english
+    if [ "${lang}" = "en" ]; then
+        continue
+    elif [ "${lang}" = "ne" ] || [ "${lang}" = "si" ]; then
         mode="flores"
+    else
+        mode="wmt19"
     fi
 done
 

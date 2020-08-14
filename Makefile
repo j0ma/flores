@@ -19,6 +19,28 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+eval_wmt19_enkk_lmvr_tuned:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-enkk-lmvr-tuned*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-lmvr-tuned/kk-en/en-kk" \
+		--segmentation-model-type "lmvr-tuned" \
+		--model-name "lmvr-tuned" \
+		--reference "./data/wmt19/kk-en/interim/test/test.enkk.kk" \
+		--remove-bpe-type "off"
+
+eval_wmt19_kken_lmvr_tuned:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-kken-lmvr-tuned*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-lmvr-tuned/kk-en/kk-en" \
+		--segmentation-model-type "lmvr-tuned" \
+		--model-name "lmvr-tuned" \
+		--reference "./data/wmt19/kk-en/interim/test/test.kken.en" \
+		--remove-bpe-type "off"
+
 eval_wmt19_enkk_sentencepiece:
 	bash ./eval-wmt19.sh \
 		--checkpoint-glob "./checkpoints/*wmt19-enkk-sentencepiece*" \
