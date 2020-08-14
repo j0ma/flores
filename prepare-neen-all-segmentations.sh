@@ -12,7 +12,6 @@
 #   - sentencepiece lowercase + joint (vanilla model)
 #   - subword-nmt
 #   - morfessor baseline
-#   - morfessor flatcat
 #   - ataman lmvr
 #   - morsel
 
