@@ -131,7 +131,7 @@ train_wmt19_enkk_subword_nmt:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-subword-nmt/kk-en \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en/en-kk/ \
 		--fp16 --slug "wmt19-enkk-subword-nmt"
 
 train_wmt19_kken_subword_nmt:
@@ -143,7 +143,7 @@ train_wmt19_kken_subword_nmt:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-subword-nmt/kk-en \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en/kk-en/ \
 		--fp16 --slug "wmt19-kken-subword-nmt"
 
 train_wmt19_enkk_sentencepiece:
@@ -155,7 +155,7 @@ train_wmt19_enkk_sentencepiece:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-sentencepiece/kk-en \
+		--data-dir data-bin/wmt19-sentencepiece/kk-en/en-kk/ \
 		--fp16 --slug "wmt19-enkk-sentencepiece"
 
 train_wmt19_kken_sentencepiece:
@@ -167,7 +167,7 @@ train_wmt19_kken_sentencepiece:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-sentencepiece/kk-en \
+		--data-dir data-bin/wmt19-sentencepiece/kk-en/kk-en/ \
 		--fp16 --slug "wmt19-kken-sentencepiece"
 
 exp26:
