@@ -97,6 +97,53 @@ eval_wmt19_kken_subword_nmt:
 #		--data-dir data-bin/wmt19-subword-nmt/fi-en \
 #		--fp16 --slug "wmt19-fien-subword-nmt"
 
+train_wmt19_engu_subword_nmt:
+	bash ./train-wmt19.sh \
+		--src en --tgt gu \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 1 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-subword-nmt/gu-en/en-gu/ \
+		--fp16 --slug "wmt19-engu-subword-nmt"
+
+train_wmt19_guen_subword_nmt:
+	bash ./train-wmt19.sh \
+		--src gu --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-subword-nmt/gu-en/gu-en/ \
+		--fp16 --slug "wmt19-guen-subword-nmt"
+
+train_wmt19_engu_sentencepiece:
+	bash ./train-wmt19.sh \
+		--src en --tgt gu \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 1 \
+		--model-name sentencepiece \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-sentencepiece/gu-en/en-gu/ \
+		--fp16 --slug "wmt19-engu-sentencepiece"
+
+train_wmt19_guen_sentencepiece:
+	bash ./train-wmt19.sh \
+		--src gu --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name sentencepiece \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-sentencepiece/gu-en/gu-en/ \
+		--fp16 --slug "wmt19-guen-sentencepiece"
 
 train_wmt19_enkk_lmvr_tuned:
 	bash ./train-wmt19.sh \
