@@ -224,7 +224,7 @@ parse_commandline "$@"
 
 ROOT=$(dirname "$0")
 SCRIPTS=$ROOT/scripts
-INDIC_TOKENIZER="bash $SCRIPTS/indic_norm_tok.sh"
+INDIC_TOKENIZER="$SCRIPTS/indic_norm_tok.sh"
 
 tokenization_pipeline() {
 
@@ -236,10 +236,9 @@ tokenization_pipeline() {
     fi
 
     if [ "${LANGUAGE}" = "gu" ]; then
-        "${INDIC_TOKENIZER}" \
-            "${INPUT_FILE}" \
-            "${LANGUAGE}" \
-            >"${OUTPUT_FILE}"
+        file "${INDIC_TOKENIZER//bash /}" || exit
+        file "${INPUT_FILE}" || exit
+        bash "${INDIC_TOKENIZER}" "${LANGUAGE}" "${INPUT_FILE}" >"${OUTPUT_FILE}"
     else
         cat "${INPUT_FILE}" |
             sed "s/--/ -- /g" |
@@ -306,19 +305,21 @@ for split in "train" "dev" "test"; do
         fi
         if [ "${_arg_tokenize}" = "on" ]; then
             suffix="${suffix}.tok"
+            new_output_fname="${output_fname}.tok"
             tokenization_pipeline \
                 "${interim_path}/${output_fname}" \
-                "${interim_path}/${output_fname}${suffix}" \
+                "${interim_path}/${new_output_fname}" \
                 "${lang}"
-            output_fname="${output_fname}${suffix}"
+            #output_fname="${output_fname}${suffix}"
         fi
 
         if [ "${_arg_lowercase}" = "on" ]; then
             suffix="${suffix}.lower"
+            new_output_fname="${new_output_fname}.lower"
             convert_lowercase \
                 "${interim_path}/${output_fname}" \
-                "${interim_path}/${output_fname}${suffix}"
-            output_fname="${output_fname}${suffix}"
+                "${interim_path}/${new_output_fname}"
+            #output_fname="${output_fname}${suffix}"
         fi
 
     done
@@ -329,7 +330,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
     echo "subword-nmt detected!"
 
     test -z "${_arg_bpe_num_merges}" &&
-        echo "Please provide BPE vocab size!" && exit 1
+        echo "Please provide number of BPE merges!" && exit 1
 
     model_name="subword-nmt"
     data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
