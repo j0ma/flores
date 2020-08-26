@@ -264,6 +264,22 @@ bash "$SCRIPTS/score-with-sacrebleu.sh" \
     "${_arg_output_file}.bleu.log" \
     "${mode}"
 
+echo "Done! Computing LeBLEU..."
+# activate virtual environment
+echo "activating LeBLEU virtual environment..."
+if [ -z "$LEBLEU_ENV_PATH" ]; then
+    source "${SCRIPTS}/lebleu-environment-variables.sh"
+fi
+source "$LEBLEU_ENV_PATH/bin/activate"
+
+bash "$SCRIPTS/score-with-lebleu.sh" \
+    "${detok_output}" \
+    "${_arg_reference}" \
+    "${_arg_output_file}.lebleu.log"
+
+# deactive virtual environment
+deactivate
+
 echo "Done! Computing CHRF3..."
 python "${SCRIPTS}/score-with-chrf.py" \
     --hypotheses-file "${detok_output}" \
