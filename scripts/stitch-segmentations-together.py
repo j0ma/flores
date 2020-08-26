@@ -6,9 +6,9 @@ import os
 import re
 
 # if sys.version_info.major == 2:
-    # sys.stdin.reconfigure(encoding="utf-8")
-    # sys.stdout.reconfigure(encoding="utf-8")
-    # sys.stderr.reconfigure(encoding="utf-8")
+# sys.stdin.reconfigure(encoding="utf-8")
+# sys.stdout.reconfigure(encoding="utf-8")
+# sys.stderr.reconfigure(encoding="utf-8")
 
 SUPPORTED_MODELS = {"lmvr", "morsel", "lmvr-tuned"}
 DOUBLE_PLUS = "⧺"
@@ -23,6 +23,7 @@ def read_lines(fp):
 
 
 def read_lmvr_segmentations(lines, sep="@@"):
+    print("Reading LMVR segmentations...")
     sentences = []
     curr_sent = []
 
@@ -39,17 +40,21 @@ def read_lmvr_segmentations(lines, sep="@@"):
             curr_sent.append(line)
 
     final = " ".join(curr_sent)
-    try:
-        if final != sentences[-1]:
-            sentences.append(final)
-    except IndexError:
-        sentences.append(final)
+    if final:
+        try:
+            if final != sentences[-1]:
+                sentences.append(final)
+        except IndexError:
+            if final != "":
+                print("Adding final sentence...")
+                sentences.append(final)
 
     return sentences
 
 
 def is_lmvr_suffix(s):
     return s.startswith(LMVR_SEP) and len(s) > 1
+
 
 def convert_lmvr_to_bpe_notation(sentences, sep="@@"):
     def is_lmvr_suffix(s):
@@ -86,6 +91,7 @@ def convert_lmvr_to_bpe_notation(sentences, sep="@@"):
 
     return sentences_bpe
 
+
 def desegment_lmvr(sentences):
     """
     Read in a corpus of sentences, and desegment
@@ -101,10 +107,11 @@ def desegment_lmvr(sentences):
                 out = "{}{}".format(out, tok[1:])
             else:
                 out = "{} {}".format(out, tok)
-        
+
         sentences_joined.append(out.lstrip())
 
     return sentences_joined
+
 
 def desegment_morsel(sentences):
     """
@@ -122,6 +129,7 @@ def desegment_morsel(sentences):
 
     return lines
 
+
 @click.command()
 @click.option("--input-path")
 @click.option("--output-path")
@@ -130,25 +138,34 @@ def desegment_morsel(sentences):
 @click.option("--convert-to-bpe", is_flag=True, default=False)
 @click.option("--desegment", is_flag=True, default=False)
 def main(
-    input_path, output_path, model_type, bpe_separator, convert_to_bpe=False, desegment=False
+    input_path,
+    output_path,
+    model_type,
+    bpe_separator,
+    convert_to_bpe=False,
+    desegment=False,
 ):
     assert model_type in SUPPORTED_MODELS, "Error: Unsupported model!"
     original_lines = read_lines(input_path)
 
-    if 'lmvr' in model_type:
+    if "lmvr" in model_type:
 
         if desegment:
             sentences = desegment_lmvr(original_lines)
         else:
             sentences = read_lmvr_segmentations(original_lines)
-            if convert_to_bpe:
-                sentences = convert_lmvr_to_bpe_notation(sentences, bpe_separator)
 
-    elif model_type == 'morsel':
+            if convert_to_bpe:
+                sentences = convert_lmvr_to_bpe_notation(
+                    sentences, bpe_separator
+                )
+
+    elif model_type == "morsel":
         sentences = desegment_morsel(original_lines)
 
     with open(output_path, "w") as f:
-        f.write("\n".join(sentences)+"\n")
+        f.write("\n".join(sentences) + "\n")
+
 
 if __name__ == "__main__":
     main()
