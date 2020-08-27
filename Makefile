@@ -13,6 +13,7 @@ create_output_folders:
 install:
 	pip install fairseq sacrebleu sentencepiece
 	bash ./scripts/download-lmvr.sh
+	bash ./scripts/download-lebleu.sh
 
 download:
 	bash download-data.sh
