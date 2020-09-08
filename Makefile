@@ -13,11 +13,57 @@ create_output_folders:
 install:
 	pip install fairseq sacrebleu sentencepiece
 	bash ./scripts/download-lmvr.sh
+	bash ./scripts/download-lebleu.sh
 
 download:
 	bash download-data.sh
 	bash prepare-neen.sh
 	bash prepare-sien.sh
+
+eval_wmt19_engu_sentencepiece:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-engu-sentencepiece*" \
+		--src "en" --tgt "gu" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-sentencepiece/gu-en/en-gu" \
+		--segmentation-model-type "sentencepiece" \
+		--model-name "baseline" \
+		--reference "./data/wmt19/gu-en/interim/test/test.engu.gu" \
+		--remove-bpe-type "sentencepiece"
+
+eval_wmt19_guen_sentencepiece:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-guen-sentencepiece*" \
+		--src "gu" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-sentencepiece/gu-en/gu-en" \
+		--segmentation-model-type "sentencepiece" \
+		--model-name "baseline" \
+		--reference "./data/wmt19/gu-en/interim/test/test.guen.en" \
+		--remove-bpe-type "sentencepiece"
+
+eval_wmt19_engu_subword_nmt:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-engu-subword-nmt*" \
+		--src "en" --tgt "gu" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-subword-nmt/gu-en/en-gu" \
+		--segmentation-model-type "subword-nmt" \
+		--model-name "subword-nmt" \
+		--reference "./data/wmt19/gu-en/interim/test/test.engu.gu" \
+		--remove-bpe-type "regular"
+
+eval_wmt19_guen_subword_nmt:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-guen-subword-nmt*" \
+		--src "gu" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-subword-nmt/gu-en/gu-en" \
+		--segmentation-model-type "subword-nmt" \
+		--model-name "subword-nmt" \
+		--reference "./data/wmt19/gu-en/interim/test/test.guen.en" \
+		--remove-bpe-type "regular"
+
 
 eval_wmt19_enkk_lmvr_tuned:
 	bash ./eval-wmt19.sh \
@@ -202,7 +248,7 @@ train_wmt19_enkk_subword_nmt:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-subword-nmt/kk-en \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en/en-kk/ \
 		--fp16 --slug "wmt19-enkk-subword-nmt"
 
 train_wmt19_kken_subword_nmt:
@@ -214,7 +260,7 @@ train_wmt19_kken_subword_nmt:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-subword-nmt/kk-en \
+		--data-dir data-bin/wmt19-subword-nmt/kk-en/kk-en/ \
 		--fp16 --slug "wmt19-kken-subword-nmt"
 
 train_wmt19_enkk_sentencepiece:
@@ -226,7 +272,7 @@ train_wmt19_enkk_sentencepiece:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-sentencepiece/kk-en \
+		--data-dir data-bin/wmt19-sentencepiece/kk-en/en-kk/ \
 		--fp16 --slug "wmt19-enkk-sentencepiece"
 
 train_wmt19_kken_sentencepiece:
@@ -238,7 +284,7 @@ train_wmt19_kken_sentencepiece:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-sentencepiece/kk-en \
+		--data-dir data-bin/wmt19-sentencepiece/kk-en/kk-en/ \
 		--fp16 --slug "wmt19-kken-sentencepiece"
 
 exp26:
