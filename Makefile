@@ -97,6 +97,30 @@ eval_wmt19_kken_subword_nmt:
 #		--data-dir data-bin/wmt19-subword-nmt/fi-en \
 #		--fp16 --slug "wmt19-fien-subword-nmt"
 
+train_wmt19_engu_lmvr_tuned:
+	bash ./train-wmt19.sh \
+		--src en --tgt gu \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 1 \
+		--model-name lmvr-tuned \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-lmvr-tuned/gu-en/en-gu/ \
+		--fp16 --slug "wmt19-engu-lmvr-tuned"
+
+train_wmt19_guen_lmvr_tuned:
+	bash ./train-wmt19.sh \
+		--src gu --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 2 \
+		--model-name lmvr-tuned \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-lmvr-tuned/gu-en/gu-en/ \
+		--fp16 --slug "wmt19-guen-lmvr-tuned"
+
 train_wmt19_engu_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src en --tgt gu \
