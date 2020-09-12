@@ -4,7 +4,7 @@ import numpy as np
 import click
 import os
 
-PAIRS = ("en-ne", "ne-en", "en-si", "si-en", "kk-en", "en-kk")
+PAIRS = ("en-ne", "ne-en", "en-si", "si-en", "kk-en", "en-kk", "gu-en", "en-gu")
 SEEDS = range(10, 15)
 METRICS = ('BLEU', 'CHRF3')
 

@@ -30,4 +30,9 @@ virtualenv "$LEBLEU_ENV_PATH" --python="$PYTHON2_EXECUTABLE"
 cd "$LEBLEU_PATH"
 source "$LEBLEU_ENV_PATH/bin/activate"
 python setup.py install
+pip install numpy
+git submodule init
+git submodule update
+cd python-Levenshtein
+python setup.py install
 deactivate

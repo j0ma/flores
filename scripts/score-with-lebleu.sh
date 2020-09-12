@@ -15,5 +15,5 @@ fi
     echo "LEBLEU_PATH variable must be set!" \
     && exit 1
 
-LEBLEU="${LEBLEU_PATH}/cmd.py"
+LEBLEU="${LEBLEU_PATH}/lebleu/cmd.py"
 python "${LEBLEU}" "${PRED}" "${REF}" > "${LOGFILE}"

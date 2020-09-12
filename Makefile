@@ -20,6 +20,28 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+eval_wmt19_engu_lmvr_tuned:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-engu-lmvr-tuned*" \
+		--src "en" --tgt "gu" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-lmvr-tuned/gu-en/en-gu" \
+		--segmentation-model-type "lmvr-tuned" \
+		--model-name "lmvr-tuned" \
+		--reference "./data/wmt19/gu-en/interim/test/test.engu.gu" \
+		--remove-bpe-type "off"
+
+eval_wmt19_guen_lmvr_tuned:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-guen-lmvr-tuned*" \
+		--src "gu" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-lmvr-tuned/gu-en/gu-en" \
+		--segmentation-model-type "lmvr-tuned" \
+		--model-name "lmvr-tuned" \
+		--reference "./data/wmt19/gu-en/interim/test/test.guen.en" \
+		--remove-bpe-type "off"
+
 eval_wmt19_engu_sentencepiece:
 	bash ./eval-wmt19.sh \
 		--checkpoint-glob "./checkpoints/*wmt19-engu-sentencepiece*" \

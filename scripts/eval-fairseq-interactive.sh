@@ -19,7 +19,7 @@
 # Argbash is a bash code generator used to get arguments parsing right.
 # Argbash is FREE SOFTWARE, see https://argbash.io for more info
 
-set -exo pipefail
+set -eo pipefail
 
 die()
 {
@@ -198,15 +198,15 @@ evaluate_fairseq_interactive () {
             echo "Not removing BPE!"
     esac 
 
-    #if [ "${REMOVE_BPE}" = "regular" ] || [ "${REMOVE_BPE}" = "standard" ]
-    #then
-        #FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe"
-    #elif [ "${REMOVE_BPE}" = "sentencepiece" ]
-    #then
-        #FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe=sentencepiece"
-    #else
-        #echo "Not removing BPE!"
-    #fi
+    if [ "${REMOVE_BPE}" = "regular" ] || [ "${REMOVE_BPE}" = "standard" ]
+    then
+        FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe"
+    elif [ "${REMOVE_BPE}" = "sentencepiece" ]
+    then
+        FAIRSEQ_CMD="${FAIRSEQ_CMD} --remove-bpe=sentencepiece"
+    else
+        echo "Not removing BPE!"
+    fi
 
     if [ ! "${SRC_LANG}" = "en" ];
     then
@@ -230,8 +230,12 @@ printf 'Value of --%s: %s\n' 'remove-bpe' "$_arg_remove_bpe"
 if [ ! -z "${_arg_input_path}" ]; then
     INPUT_PATH="${_arg_input_path}"
 else
-    if [ "${_arg_src}" = "kk" ] || [ "${_arg_src}" = "fi" ] || \
-       [ "${_arg_tgt}" = "kk" ] || [ "${_arg_tgt}" = "fi" ]; then
+    if [ "${_arg_src}" = "kk" ] || \
+       [ "${_arg_src}" = "fi" ] || \
+       [ "${_arg_src}" = "gu" ] || \
+       [ "${_arg_tgt}" = "kk" ] || \
+       [ "${_arg_tgt}" = "gu" ] || \
+       [ "${_arg_tgt}" = "fi" ]; then
         lang_slug="${_arg_src}${_arg_tgt}.${_arg_src}"
     else
         lang_slug="${_arg_src}"
