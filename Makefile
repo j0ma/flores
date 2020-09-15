@@ -193,7 +193,7 @@ train_wmt19_engu_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src en --tgt gu \
 		--from-seed 10 --to-seed 14 \
-		--bpe-size 5000 --cuda-device 1 \
+		--bpe-size 5000 --cuda-device 0 \
 		--model-name subword-nmt \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
@@ -205,7 +205,7 @@ train_wmt19_guen_subword_nmt:
 	bash ./train-wmt19.sh \
 		--src gu --tgt en \
 		--from-seed 10 --to-seed 14 \
-		--bpe-size 5000 --cuda-device 2 \
+		--bpe-size 5000 --cuda-device 0 \
 		--model-name subword-nmt \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
