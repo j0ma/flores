@@ -506,5 +506,43 @@ elif [ "${_arg_lmvr_tuned}" = "on" ]; then
         --workers 8
 
 elif [ "${_arg_morsel}" = "on" ]; then
-    echo "MORSEL not implmemented" && exit 1
+
+    #echo "MORSEL not implmemented" && exit 1
+
+    echo "MORSEL from Lignos (2010) ..."
+    model_name="morsel"
+    data_bin_folder="data-bin/wmt19-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
+    mkdir -p "${data_bin_folder}"
+
+    for split in "train" "dev" "test"; do
+        for lang in "$_arg_src" "$_arg_tgt"; do
+
+            echo "Processing ${split} set for ${lang}"
+            echo "Actual segmentation..."
+            input_stub="${interim_data_folder}/${split}/${split}"
+            output_stub=${final_data_folder}/${split}/${split}.${model_name}
+            if [ ! "${split}" = "train" ]; then
+                input_stub="${input_stub}.${_arg_src}${_arg_tgt}"
+                output_stub="${output_stub}.${_arg_src}${_arg_tgt}"
+            fi
+            segm_input_file="${input_stub}.${lang}${suffix}"
+            segm_output_file=${output_stub}.${lang}
+            morsel_root="./segmentation-models/morsel/${foreign}_en/${lang}/"
+            bash ./scripts/segment_using_morsel.sh \
+                --sentences "${segm_input_file}" \
+                --morsel-segmentations "${morsel_root}/morsel_seg_bpe_map.txt" \
+                --bpe-codes "${morsel_root}/stem_code.txt" \
+                --output-file "${segm_output_file}"
+        done
+    done
+
+    stub=".${_arg_src}${_arg_tgt}"
+    fairseq-preprocess \
+        --source-lang ${_arg_src} --target-lang ${_arg_tgt} \
+        --trainpref ${final_data_folder}/train/train.${model_name} \
+        --validpref ${final_data_folder}/dev/dev.${model_name}${stub} \
+        --testpref ${final_data_folder}/test/test.${model_name}${stub} \
+        --destdir ${data_bin_folder} \
+        --joined-dictionary \
+        --workers 8
 fi
