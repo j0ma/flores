@@ -146,7 +146,11 @@ def main(input_file=None, translation_output=None, output_file=None):
 
     if output_file:
         print("Outputting to CSV...")
-        raw.stack().reset_index().to_csv(output_file, index=False)
+        if legacy_mode:
+            raw.stack().reset_index().to_csv(output_file, index=False)
+        else:
+            raw.to_csv(output_file, index=False)
+
 
 
 if __name__ == "__main__":
