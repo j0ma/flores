@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PERL_CMD="$HOME/perl-local/bin/perl"
+
 set -exo pipefail
 
 # Created by argbash-init v2.8.1
@@ -242,10 +244,10 @@ tokenization_pipeline() {
     else
         cat "${INPUT_FILE}" |
             sed "s/--/ -- /g" |
-            perl "${MOSES_NORM_PUNC}" "${LANGUAGE}" |
-            perl "${MOSES_REM_NON_PRINT_CHAR}" |
-            perl "${MOSES_TOKENIZER_SCRIPT}" -l "${LANGUAGE}" |
-            perl -C -MHTML::Entities -pe 'decode_entities($_);' \
+            $PERL_CMD "${MOSES_NORM_PUNC}" "${LANGUAGE}" |
+            $PERL_CMD "${MOSES_REM_NON_PRINT_CHAR}" |
+            $PERL_CMD "${MOSES_TOKENIZER_SCRIPT}" -l "${LANGUAGE}" |
+            $PERL_CMD -C -MHTML::Entities -pe 'decode_entities($_);' \
                 >"${OUTPUT_FILE}"
     fi
 }
