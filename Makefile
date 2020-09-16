@@ -20,6 +20,28 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+eval_wmt19_engu_morsel:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-engu-morsel*" \
+		--src "en" --tgt "gu" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-morsel/gu-en/en-gu" \
+		--segmentation-model-type "morsel" \
+		--model-name "morsel" \
+		--reference "./data/wmt19/gu-en/interim/test/test.engu.gu" \
+		--remove-bpe-type "off"
+
+eval_wmt19_guen_morsel:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-guen-morsel*" \
+		--src "gu" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/gu-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-morsel/gu-en/gu-en" \
+		--segmentation-model-type "morsel" \
+		--model-name "morsel" \
+		--reference "./data/wmt19/gu-en/interim/test/test.guen.en" \
+		--remove-bpe-type "off"
+
 eval_wmt19_engu_lmvr_tuned:
 	bash ./eval-wmt19.sh \
 		--checkpoint-glob "./checkpoints/*wmt19-engu-lmvr-tuned*" \
@@ -86,6 +108,27 @@ eval_wmt19_guen_subword_nmt:
 		--reference "./data/wmt19/gu-en/interim/test/test.guen.en" \
 		--remove-bpe-type "regular"
 
+eval_wmt19_enkk_morsel:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-enkk-morsel*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-morsel/kk-en/en-kk" \
+		--segmentation-model-type "morsel" \
+		--model-name "morsel" \
+		--reference "./data/wmt19/kk-en/interim/test/test.enkk.kk" \
+		--remove-bpe-type "off"
+
+eval_wmt19_kken_morsel:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-kken-morsel*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-morsel/kk-en/kk-en" \
+		--segmentation-model-type "morsel" \
+		--model-name "morsel" \
+		--reference "./data/wmt19/kk-en/interim/test/test.kken.en" \
+		--remove-bpe-type "off"
 
 eval_wmt19_enkk_lmvr_tuned:
 	bash ./eval-wmt19.sh \
@@ -169,7 +212,7 @@ train_wmt19_engu_morsel:
 	bash ./train-wmt19.sh \
 		--src en --tgt gu \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 1 \
+		--cuda-device 0 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
@@ -181,7 +224,7 @@ train_wmt19_guen_morsel:
 	bash ./train-wmt19.sh \
 		--src gu --tgt en \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 2 \
+		--cuda-device 0 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
@@ -265,7 +308,7 @@ train_wmt19_enkk_morsel:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 1 \
+		--cuda-device 0 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
@@ -277,7 +320,7 @@ train_wmt19_kken_morsel:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 2 \
+		--cuda-device 0 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
