@@ -28,18 +28,18 @@ train () {
             --clip-norm 0.1 \
             --checkpoint-dir "auto" \
             --log-dir "auto" \
-            --data-dir "data-bin/wmt19-subword-nmt/${foreign}-en/${src}-${tgt}/" \
+            --data-dir "data-bin/wmt19-bpe${bpe_size}-subword-nmt/${foreign}-en/${src}-${tgt}/" \
             --fp16 --slug "wmt19-${src}${tgt}-subword-nmt-sweep"
 
         # eval subword-nmt
         bash ./eval-wmt19.sh \
             --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-subword-nmt-sweep*" \
             --src "${src}" --tgt "${tgt}" --eval-on "test" \
-            --data-folder "data/wmt19/${foreign}-en/final/test" \
-            --data-bin-folder "data-bin/wmt19-subword-nmt/${foreign}-en/${src}-${tgt}" \
+            --data-folder "data/wmt19-bpe${bpe_size}/${foreign}-en/final/test" \
+            --data-bin-folder "data-bin/wmt19-bpe${bpe_size}-subword-nmt/${foreign}-en/${src}-${tgt}" \
             --segmentation-model-type "subword-nmt" \
             --model-name "subword-nmt" \
-            --reference "./data/wmt19/${foreign}-en/interim/test/test.${src}${tgt}.${tgt}" \
+            --reference "./data/wmt19-bpe${bpe_size}/${foreign}-en/interim/test/test.${src}${tgt}.${tgt}" \
             --remove-bpe-type "regular"
 
         # train sentencepiece
@@ -51,18 +51,18 @@ train () {
             --clip-norm 0.1 \
             --checkpoint-dir "auto" \
             --log-dir "auto" \
-            --data-dir "data-bin/wmt19-sentencepiece/${foreign}-en/${src}-${tgt}/" \
+            --data-dir "data-bin/wmt19-bpe${bpe_size}-sentencepiece/${foreign}-en/${src}-${tgt}/" \
             --fp16 --slug "wmt19-${src}${tgt}-sentencepiece-sweep"
 
         # eval sentencepiece
         bash ./eval-wmt19.sh \
             --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-sentencepiece-sweep*" \
             --src "${src}" --tgt "${tgt}" --eval-on "test" \
-            --data-folder "data/wmt19/${foreign}-en/final/test" \
-            --data-bin-folder "data-bin/wmt19-sentencepiece/${foreign}-en/${src}-${tgt}" \
+            --data-folder "data/wmt19-bpe${bpe_size}/${foreign}-en/final/test" \
+            --data-bin-folder "data-bin/wmt19-bpe${bpe_size}-sentencepiece/${foreign}-en/${src}-${tgt}" \
             --segmentation-model-type "sentencepiece" \
             --model-name "baseline" \
-            --reference "./data/wmt19/${foreign}-en/interim/test/test.${src}${tgt}.${tgt}" \
+            --reference "./data/wmt19-bpe${bpe_size}/${foreign}-en/interim/test/test.${src}${tgt}.${tgt}" \
             --remove-bpe-type "sentencepiece"
 
     done
