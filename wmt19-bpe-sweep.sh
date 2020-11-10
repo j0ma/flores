@@ -40,7 +40,8 @@ train () {
             --segmentation-model-type "subword-nmt" \
             --model-name "subword-nmt" \
             --reference "./data/wmt19-bpe${bpe_size}/${foreign}-en/interim/test/test.${src}${tgt}.${tgt}" \
-            --remove-bpe-type "regular"
+            --remove-bpe-type "regular" \
+            --translation-output-folder "./translation-output-wmt19-bpe${bpe_size}"
 
         # train sentencepiece
         bash ./train-wmt19.sh \
@@ -63,7 +64,8 @@ train () {
             --segmentation-model-type "sentencepiece" \
             --model-name "baseline" \
             --reference "./data/wmt19-bpe${bpe_size}/${foreign}-en/interim/test/test.${src}${tgt}.${tgt}" \
-            --remove-bpe-type "sentencepiece"
+            --remove-bpe-type "sentencepiece" \
+            --translation-output-folder "./translation-output-wmt19-bpe${bpe_size}"
 
     done
 }
