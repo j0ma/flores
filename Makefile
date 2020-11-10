@@ -20,6 +20,18 @@ download:
 	bash prepare-neen.sh
 	bash prepare-sien.sh
 
+bpe_sweep_wmt19_engu:
+	bash wmt19-bpe-sweep.sh "en" "gu" 1
+
+bpe_sweep_wmt19_guen:
+	bash wmt19-bpe-sweep.sh "gu" "en" 2
+
+bpe_sweep_wmt19_enkk:
+	bash wmt19-bpe-sweep.sh "en" "kk" 1
+
+bpe_sweep_wmt19_kken:
+	bash wmt19-bpe-sweep.sh "kk" "en" 2
+
 eval_wmt19_engu_morsel:
 	bash ./eval-wmt19.sh \
 		--checkpoint-glob "./checkpoints/*wmt19-engu-morsel*" \
