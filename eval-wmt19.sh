@@ -12,6 +12,7 @@ set -eo pipefail
 # ARG_OPTIONAL_SINGLE([model-name])
 # ARG_OPTIONAL_SINGLE([reference])
 # ARG_OPTIONAL_SINGLE([remove-bpe-type])
+# ARG_OPTIONAL_SINGLE([translation-output-folder])
 # ARG_HELP([<The general help message of my script>])
 # ARGBASH_GO()
 # needed because of Argbash --> m4_ignore([
@@ -44,6 +45,7 @@ _arg_segmentation_model_type=
 _arg_model_name=
 _arg_reference=
 _arg_remove_bpe_type=
+_arg_translation_output_folder="translation-output-wmt19"
 
 print_help() {
     printf '%s\n' "<The general help message of my script>"
@@ -135,6 +137,14 @@ parse_commandline() {
         --remove-bpe-type=*)
             _arg_remove_bpe_type="${_key##--remove-bpe-type=}"
             ;;
+        --translation-output-folder)
+            test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+            _arg_translation_output_folder="$2"
+            shift
+            ;;
+        --translation-output-folder=*)
+            _arg_translation_output_folder="${_key##--remove-bpe-type=}"
+            ;;
         -h | --help)
             print_help
             exit 0
@@ -168,6 +178,7 @@ printf 'Value of --%s: %s\n' 'segmentation-model-type' "$_arg_segmentation_model
 printf 'Value of --%s: %s\n' 'model-name' "$_arg_model_name"
 printf 'Value of --%s: %s\n' 'reference' "$_arg_reference"
 printf 'Value of --%s: %s\n' 'remove-bpe-type' "$_arg_remove_bpe_type"
+printf 'Value of --%s: %s\n' 'translation-output-folder' "$_arg_translation_output_folder"
 
 get_seed() {
     echo "$1" |
@@ -188,7 +199,7 @@ for checkpoint in $checkpoint_files; do
         --data-bin-folder "${_arg_data_bin_folder}" \
         --model-checkpoint "${checkpoint}" \
         --model-type "${_arg_segmentation_model_type}" \
-        --output-file "./translation-output-wmt19/${_arg_model_name}/seed-${_seed}/${_arg_src}-${_arg_tgt}.output.raw" \
+        --output-file "${_arg_translation_output_folder}/${_arg_model_name}/seed-${_seed}/${_arg_src}-${_arg_tgt}.output.raw" \
         --reference "${_arg_reference}" \
         --remove-bpe "${_arg_remove_bpe_type}" &
 done
