@@ -29,11 +29,11 @@ train () {
             --checkpoint-dir "auto" \
             --log-dir "auto" \
             --data-dir "data-bin/wmt19-bpe${bpe_size}-subword-nmt/${foreign}-en/${src}-${tgt}/" \
-            --fp16 --slug "wmt19-${src}${tgt}-subword-nmt-sweep"
+            --fp16 --slug "wmt19-${src}${tgt}-bpe${bpe_size}-subword-nmt-sweep"
 
         # eval subword-nmt
         bash ./eval-wmt19.sh \
-            --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-subword-nmt-sweep*" \
+            --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-bpe${bpe_size}-subword-nmt-sweep*" \
             --src "${src}" --tgt "${tgt}" --eval-on "test" \
             --data-folder "data/wmt19-bpe${bpe_size}/${foreign}-en/final/test" \
             --data-bin-folder "data-bin/wmt19-bpe${bpe_size}-subword-nmt/${foreign}-en/${src}-${tgt}" \
@@ -53,11 +53,11 @@ train () {
             --checkpoint-dir "auto" \
             --log-dir "auto" \
             --data-dir "data-bin/wmt19-bpe${bpe_size}-sentencepiece/${foreign}-en/${src}-${tgt}/" \
-            --fp16 --slug "wmt19-${src}${tgt}-sentencepiece-sweep"
+            --fp16 --slug "wmt19-${src}${tgt}-bpe${bpe_size}-sentencepiece-sweep"
 
         # eval sentencepiece
         bash ./eval-wmt19.sh \
-            --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-sentencepiece-sweep*" \
+            --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-bpe${bpe_size}sentencepiece-sweep*" \
             --src "${src}" --tgt "${tgt}" --eval-on "test" \
             --data-folder "data/wmt19-bpe${bpe_size}/${foreign}-en/final/test" \
             --data-bin-folder "data-bin/wmt19-bpe${bpe_size}-sentencepiece/${foreign}-en/${src}-${tgt}" \
