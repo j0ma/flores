@@ -57,7 +57,7 @@ train () {
 
         # eval sentencepiece
         bash ./eval-wmt19.sh \
-            --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-bpe${bpe_size}sentencepiece-sweep*" \
+            --checkpoint-glob "./checkpoints/*wmt19-${src}${tgt}-bpe${bpe_size}-sentencepiece-sweep*" \
             --src "${src}" --tgt "${tgt}" --eval-on "test" \
             --data-folder "data/wmt19-bpe${bpe_size}/${foreign}-en/final/test" \
             --data-bin-folder "data-bin/wmt19-bpe${bpe_size}-sentencepiece/${foreign}-en/${src}-${tgt}" \
