@@ -7,6 +7,7 @@ set -eo pipefail
 
 # Created by argbash-init v2.8.1
 # ARG_OPTIONAL_SINGLE([folder])
+# ARG_OPTIONAL_SINGLE([data-bin-folder-prefix])
 # ARG_OPTIONAL_SINGLE([src])
 # ARG_OPTIONAL_SINGLE([tgt])
 # ARG_OPTIONAL_SINGLE([bpe-num-merges])
@@ -65,6 +66,7 @@ begins_with_short_option() {
 
 # THE DEFAULTS INITIALIZATION - OPTIONALS
 _arg_folder=
+_arg_data_bin_folder_prefix="data-bin/wmt19-kk-additional-"
 _arg_src=
 _arg_tgt=
 _arg_bpe_num_merges=
@@ -101,6 +103,14 @@ parse_commandline() {
             ;;
         --folder=*)
             _arg_folder="${_key##--folder=}"
+            ;;
+        --data-bin-folder-prefix)
+            test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+            _arg_data_bin_folder_prefix="$2"
+            shift
+            ;;
+        --data-bin-folder-prefix=*)
+            _arg_data_bin_folder_prefix="${_key##--data-bin-folder-prefix=}"
             ;;
         --src)
             test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
@@ -336,7 +346,7 @@ if [ "${_arg_subword_nmt}" = "on" ]; then
         echo "Please provide number of BPE merges!" && exit 1
 
     model_name="subword-nmt"
-    data_bin_folder="data-bin/wmt19-kk-additional-bpe${_arg_bpe_num_merges}-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
+    data_bin_folder="${_arg_data_bin_folder_prefix}-bpe${_arg_bpe_num_merges}-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
     mkdir -p "${data_bin_folder}"
 
     # concatenate training sets to one big file
@@ -397,7 +407,7 @@ elif [ "${_arg_sentencepiece}" = "on" ]; then
         echo "Please provide BPE vocab size!" && exit 1
 
     model_name="sentencepiece"
-    data_bin_folder="data-bin/wmt19-kk-additional-bpe${_arg_bpe_vocab_size}-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
+    data_bin_folder="${_arg_data_bin_folder_prefix}-bpe${_arg_bpe_vocab_size}-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
     mkdir -p "${data_bin_folder}"
 
     # learn BPE with sentencepiece
@@ -443,7 +453,7 @@ elif [ "${_arg_lmvr_tuned}" = "on" ]; then
     model_name="lmvr-tuned"
     segm_model_folder=$ROOT/segmentation-models/
 
-    data_bin_folder="data-bin/wmt19-kk-additional-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
+    data_bin_folder="${_arg_data_bin_folder_prefix}-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
 
     # activate virtual environment
     echo "activating LMVR virtual environment..."
@@ -512,7 +522,7 @@ elif [ "${_arg_morsel}" = "on" ]; then
 
     echo "MORSEL from Lignos (2010) ..."
     model_name="morsel"
-    data_bin_folder="data-bin/wmt19-kk-additional-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
+    data_bin_folder="${_arg_data_bin_folder_prefix}-${model_name}/${foreign}-en/${_arg_src}-${_arg_tgt}"
     mkdir -p "${data_bin_folder}"
 
     for split in "train" "dev" "test"; do
