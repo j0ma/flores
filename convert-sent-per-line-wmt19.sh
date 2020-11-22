@@ -122,10 +122,12 @@ if [ "${_arg_ignore_wikititles}" = "off" ]; then
     kk_train_files=(
         "news-commentary-v14-wmt19.en-kk.tsv"
         "wikititles-v1.kk-en.tsv"
+        "kazakhtv.kk-en.tsv"
     )
 else
     kk_train_files=(
         "news-commentary-v14-wmt19.en-kk.tsv"
+        "kazakhtv.kk-en.tsv"
     )
 fi
 
@@ -206,6 +208,9 @@ extract_kk() {
             cut -f 1 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.en}"
             cut -f 2 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.kk}"
         elif [ "${f}" = "wikititles-v1.kk-en.tsv" ]; then
+            cut -f 1 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.kk}"
+            cut -f 2 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.en}"
+        elif [ "${f}" = "kazakhtv.kk-en.tsv" ]; then
             cut -f 1 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.kk}"
             cut -f 2 "${raw_data_folder}/train/${f}" >"${raw_data_folder}/train/${f//.tsv/.en}"
         fi

@@ -137,6 +137,7 @@ fi_train_data_urls=(
 kk_train_data_urls=(
     http://data.statmt.org/news-commentary/v14/training/news-commentary-v14-wmt19.en-kk.tsv.gz
     http://data.statmt.org/wikititles/v1/wikititles-v1.kk-en.tsv.gz
+    http://data.statmt.org/wmt19/translation-task/kazakhtv.kk-en.tsv.gz
 )
 
 #kk_train_data_urls=(
