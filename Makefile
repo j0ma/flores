@@ -32,6 +32,106 @@ bpe_sweep_wmt19_enkk:
 bpe_sweep_wmt19_kken:
 	bash wmt19-bpe-sweep.sh "kk" "en" 2
 
+############# BEGIN ADDITIONAL KK ####################
+
+train_wmt19_additional_enkk_morsel:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 0 \
+		--model-name morsel \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-morsel/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-additional-enkk-morsel"
+
+train_wmt19_additional_kken_morsel:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 0 \
+		--model-name morsel \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-morsel/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-additional-kken-morsel"
+
+train_wmt19_additional_enkk_lmvr_tuned:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 1 \
+		--model-name lmvr-tuned \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-additional-enkk-lmvr-tuned"
+
+train_wmt19_additional_kken_lmvr_tuned:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--cuda-device 2 \
+		--model-name lmvr-tuned \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-additional-kken-lmvr-tuned"
+
+train_wmt19_additional_enkk_subword_nmt:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 1 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-additional-enkk-subword-nmt"
+
+train_wmt19_additional_kken_subword_nmt:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-additional-kken-subword-nmt"
+
+train_wmt19_additional_enkk_sentencepiece:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name sentencepiece \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-bpe5000-sentencepiece/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-additional-enkk-sentencepiece"
+
+train_wmt19_additional_kken_sentencepiece:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name sentencepiece \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-bpe5000-sentencepiece/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-additional-kken-sentencepiece"
+
+############# END ADDITIONAL KK ####################
+
 eval_wmt19_engu_morsel:
 	bash ./eval-wmt19.sh \
 		--checkpoint-glob "./checkpoints/*wmt19-engu-morsel*" \
