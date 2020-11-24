@@ -55,7 +55,8 @@ eval_wmt19_additional_enkk_morsel:
 		--segmentation-model-type "morsel" \
 		--model-name "morsel" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
-		--remove-bpe-type "off"
+		--remove-bpe-type "off" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 train_wmt19_additional_kken_morsel:
 	bash ./train-wmt19.sh \
@@ -78,7 +79,8 @@ eval_wmt19_additional_kken_morsel:
 		--segmentation-model-type "morsel" \
 		--model-name "morsel" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
-		--remove-bpe-type "off"
+		--remove-bpe-type "off" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 train_wmt19_additional_enkk_lmvr_tuned:
 	bash ./train-wmt19.sh \
@@ -101,7 +103,8 @@ eval_wmt19_additional_enkk_lmvr_tuned:
 		--segmentation-model-type "lmvr-tuned" \
 		--model-name "lmvr-tuned" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
-		--remove-bpe-type "off"
+		--remove-bpe-type "off" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 train_wmt19_additional_kken_lmvr_tuned:
 	bash ./train-wmt19.sh \
@@ -124,7 +127,8 @@ eval_wmt19_additional_kken_lmvr_tuned:
 		--segmentation-model-type "lmvr-tuned" \
 		--model-name "lmvr-tuned" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
-		--remove-bpe-type "off"
+		--remove-bpe-type "off" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 train_wmt19_additional_enkk_sentencepiece:
 	bash ./train-wmt19.sh \
@@ -147,7 +151,8 @@ eval_wmt19_additional_enkk_sentencepiece:
 		--segmentation-model-type "sentencepiece" \
 		--model-name "baseline" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
-		--remove-bpe-type "sentencepiece"
+		--remove-bpe-type "sentencepiece" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 train_wmt19_additional_kken_sentencepiece:
 	bash ./train-wmt19.sh \
@@ -170,7 +175,8 @@ eval_wmt19_additional_kken_sentencepiece:
 		--segmentation-model-type "sentencepiece" \
 		--model-name "baseline" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
-		--remove-bpe-type "sentencepiece"
+		--remove-bpe-type "sentencepiece" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 train_wmt19_additional_enkk_subword_nmt:
 	bash ./train-wmt19.sh \
@@ -193,7 +199,8 @@ eval_wmt19_additional_enkk_subword_nmt:
 		--segmentation-model-type "subword-nmt" \
 		--model-name "subword-nmt" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
-		--remove-bpe-type "regular"
+		--remove-bpe-type "regular" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 train_wmt19_additional_kken_subword_nmt:
 	bash ./train-wmt19.sh \
@@ -216,7 +223,8 @@ eval_wmt19_additional_kken_subword_nmt:
 		--segmentation-model-type "subword-nmt" \
 		--model-name "subword-nmt" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
-		--remove-bpe-type "regular"
+		--remove-bpe-type "regular" \
+		--translation-output-folder "translation-output-wmt19-additional"
 
 ############# END ADDITIONAL KK ####################
 
