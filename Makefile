@@ -38,7 +38,7 @@ train_wmt19_additional_enkk_morsel:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 0 \
+		--cuda-device 2 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
@@ -50,7 +50,7 @@ train_wmt19_additional_kken_morsel:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 0 \
+		--cuda-device 1 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
@@ -122,7 +122,7 @@ train_wmt19_additional_kken_sentencepiece:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
 		--from-seed 10 --to-seed 14 \
-		--bpe-size 5000 --cuda-device 2 \
+		--bpe-size 5000 --cuda-device 1 \
 		--model-name sentencepiece \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
