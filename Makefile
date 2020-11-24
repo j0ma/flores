@@ -46,6 +46,17 @@ train_wmt19_additional_enkk_morsel:
 		--data-dir data-bin/wmt19-kk-additional-morsel/kk-en/en-kk/ \
 		--fp16 --slug "wmt19-additional-enkk-morsel"
 
+eval_wmt19_additional_enkk_morsel:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional*enkk*morsel*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-morsel/kk-en/en-kk/" \
+		--segmentation-model-type "morsel" \
+		--model-name "morsel" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
+		--remove-bpe-type "off"
+
 train_wmt19_additional_kken_morsel:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
@@ -57,6 +68,17 @@ train_wmt19_additional_kken_morsel:
 		--log-dir "auto" \
 		--data-dir data-bin/wmt19-kk-additional-morsel/kk-en/kk-en/ \
 		--fp16 --slug "wmt19-additional-kken-morsel"
+
+eval_wmt19_additional_kken_morsel:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional*kken*morsel*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-morsel/kk-en/kk-en/" \
+		--segmentation-model-type "morsel" \
+		--model-name "morsel" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
+		--remove-bpe-type "off"
 
 train_wmt19_additional_enkk_lmvr_tuned:
 	bash ./train-wmt19.sh \
@@ -70,6 +92,17 @@ train_wmt19_additional_enkk_lmvr_tuned:
 		--data-dir data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/en-kk/ \
 		--fp16 --slug "wmt19-additional-enkk-lmvr-tuned"
 
+eval_wmt19_additional_enkk_lmvr_tuned:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-enkk-lmvr-tuned*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/en-kk/" \
+		--segmentation-model-type "lmvr-tuned" \
+		--model-name "lmvr-tuned" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
+		--remove-bpe-type "off"
+
 train_wmt19_additional_kken_lmvr_tuned:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
@@ -82,29 +115,16 @@ train_wmt19_additional_kken_lmvr_tuned:
 		--data-dir data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/kk-en/ \
 		--fp16 --slug "wmt19-additional-kken-lmvr-tuned"
 
-train_wmt19_additional_enkk_subword_nmt:
-	bash ./train-wmt19.sh \
-		--src en --tgt kk \
-		--from-seed 10 --to-seed 14 \
-		--bpe-size 5000 --cuda-device 2 \
-		--model-name subword-nmt \
-		--clip-norm 0.1 \
-		--checkpoint-dir "auto" \
-		--log-dir "auto" \
-		--data-dir data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/en-kk/ \
-		--fp16 --slug "wmt19-additional-enkk-subword-nmt"
-
-train_wmt19_additional_kken_subword_nmt:
-	bash ./train-wmt19.sh \
-		--src kk --tgt en \
-		--from-seed 10 --to-seed 14 \
-		--bpe-size 5000 --cuda-device 1 \
-		--model-name subword-nmt \
-		--clip-norm 0.1 \
-		--checkpoint-dir "auto" \
-		--log-dir "auto" \
-		--data-dir data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/kk-en/ \
-		--fp16 --slug "wmt19-additional-kken-subword-nmt"
+eval_wmt19_additional_kken_lmvr_tuned:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-kken-lmvr-tuned*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/kk-en/" \
+		--segmentation-model-type "lmvr-tuned" \
+		--model-name "lmvr-tuned" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
+		--remove-bpe-type "off"
 
 train_wmt19_additional_enkk_sentencepiece:
 	bash ./train-wmt19.sh \
@@ -118,6 +138,17 @@ train_wmt19_additional_enkk_sentencepiece:
 		--data-dir data-bin/wmt19-kk-additional-bpe5000-sentencepiece/kk-en/en-kk/ \
 		--fp16 --slug "wmt19-additional-enkk-sentencepiece"
 
+eval_wmt19_additional_enkk_sentencepiece:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-enkk-sentencepiece*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-bpe5000-sentencepiece/kk-en/en-kk/" \
+		--segmentation-model-type "sentencepiece" \
+		--model-name "baseline" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
+		--remove-bpe-type "sentencepiece"
+
 train_wmt19_additional_kken_sentencepiece:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
@@ -129,6 +160,63 @@ train_wmt19_additional_kken_sentencepiece:
 		--log-dir "auto" \
 		--data-dir data-bin/wmt19-kk-additional-bpe5000-sentencepiece/kk-en/kk-en/ \
 		--fp16 --slug "wmt19-additional-kken-sentencepiece"
+
+eval_wmt19_additional_kken_sentencepiece:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-kken-sentencepiece*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-bpe5000-sentencepiece/kk-en/kk-en/" \
+		--segmentation-model-type "sentencepiece" \
+		--model-name "baseline" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
+		--remove-bpe-type "sentencepiece"
+
+train_wmt19_additional_enkk_subword_nmt:
+	bash ./train-wmt19.sh \
+		--src en --tgt kk \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 1 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-additional-enkk-subword-nmt"
+
+eval_wmt19_additional_enkk_subword_nmt:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-enkk-subword-nmt*" \
+		--src "en" --tgt "kk" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/en-kk/" \
+		--segmentation-model-type "subword-nmt" \
+		--model-name "subword-nmt" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
+		--remove-bpe-type "regular"
+
+train_wmt19_additional_kken_subword_nmt:
+	bash ./train-wmt19.sh \
+		--src kk --tgt en \
+		--from-seed 10 --to-seed 14 \
+		--bpe-size 5000 --cuda-device 2 \
+		--model-name subword-nmt \
+		--clip-norm 0.1 \
+		--checkpoint-dir "auto" \
+		--log-dir "auto" \
+		--data-dir data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-additional-kken-subword-nmt"
+
+eval_wmt19_additional_kken_subword_nmt:
+	bash ./eval-wmt19.sh \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-kken-subword-nmt*" \
+		--src "kk" --tgt "en" --eval-on "test" \
+		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-bpe5000-subword-nmt/kk-en/kk-en/" \
+		--segmentation-model-type "subword-nmt" \
+		--model-name "subword-nmt" \
+		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
+		--remove-bpe-type "regular"
 
 ############# END ADDITIONAL KK ####################
 
