@@ -54,7 +54,7 @@ def load_seed_results_sacrebleu(p):
                     }
                 )
     raw = pd.DataFrame(results)
-    agg = raw.groupby(["method", "pair"])[['bleu', 'chrf3']].describe().copy()
+    agg = raw.groupby(["pair", "method"])[['bleu', 'chrf3']].describe().copy()
     agg_bleu = agg.bleu.copy()
     agg_chrf3 = agg.chrf3.copy()
     results = {"raw": raw}
