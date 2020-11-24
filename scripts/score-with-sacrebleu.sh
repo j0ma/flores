@@ -9,6 +9,7 @@ if [ "${MODE}" = "wmt19" ]; then
     cat "${PRED}" |
         sacrebleu \
             --test-set wmt19 \
+            -lc \
             --language-pair "${SRC}-${TGT}" \
             > "${LOGFILE}"
 else
