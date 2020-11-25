@@ -5,7 +5,7 @@ import sys
 
 def read_lines(fp):
     with open(fp, "r") as f:
-        lines = [line.strip() for line in f.readlines()]
+        lines = [line.lower().strip() for line in f.readlines()]
 
         return lines
 
