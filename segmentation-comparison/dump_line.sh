@@ -18,25 +18,25 @@ get_file_name () {
     local split=$2
     case $segm_method in
         "Reference")
-            echo "wiki_ne_en_bpe5000_lowercase/${split}.en"
+            echo "wiki_si_en_bpe5000_lowercase/${split}.en"
             ;;
         "Lowercased")
-            echo "wiki_ne_en_bpe5000_lowercase/${split}.lower.en"
+            echo "wiki_si_en_bpe5000_lowercase/${split}.lower.en"
             ;;
         "Moses-tokenized")
-            echo "wiki_ne_en_bpe5000_subwordnmt/${split}.en.tok.lower"
+            echo "wiki_si_en_bpe5000_subwordnmt/${split}.en.tok.lower"
             ;;
         "SentencePiece")       
-            echo "wiki_ne_en_bpe5000_lowercase/${split}.lower.bpe.en" 
+            echo "wiki_si_en_bpe5000_lowercase/${split}.lower.bpe.en" 
             ;;
         "Subword-NMT")
-            echo "wiki_ne_en_bpe5000_subwordnmt/${split}.subword-nmt.en" 
+            echo "wiki_si_en_bpe5000_subwordnmt/${split}.subword-nmt.en" 
             ;;            
         "LMVR")
-            echo "wiki_ne_en_lmvr-tuned/${split}.lmvr-tuned.en" 
+            echo "wiki_si_en_lmvr-tuned/${split}.lmvr-tuned.en" 
             ;;            
         "MORSEL")
-            echo "wiki_ne_en_morsel/${split}.morsel.en"
+            echo "wiki_si_en_morsel/${split}.morsel.en"
             ;;            
         *)
             echo "Improper segmentation method: ${segm_method}"
