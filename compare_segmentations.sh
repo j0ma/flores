@@ -18,25 +18,25 @@ get_file_name () {
     local split=$2
     case $segm_method in
         "Reference")
-            echo "wiki_si_en_bpe5000_lowercase/${split}.en"
+            echo "wiki_ne_en_bpe5000_lowercase/${split}.en"
             ;;
         "Lowercased")
-            echo "wiki_si_en_bpe5000_lowercase/${split}.lower.en"
+            echo "wiki_ne_en_bpe5000_lowercase/${split}.lower.en"
             ;;
         "Moses-tokenized")
-            echo "wiki_si_en_bpe5000_subwordnmt/${split}.en.tok.lower"
+            echo "wiki_ne_en_bpe5000_subwordnmt/${split}.en.tok.lower"
             ;;
         "SentencePiece")       
-            echo "wiki_si_en_bpe5000_lowercase/${split}.lower.bpe.en" 
+            echo "wiki_ne_en_bpe5000_lowercase/${split}.lower.bpe.en" 
             ;;
         "Subword-NMT")
-            echo "wiki_si_en_bpe5000_subwordnmt/${split}.subword-nmt.en" 
+            echo "wiki_ne_en_bpe5000_subwordnmt/${split}.subword-nmt.en" 
             ;;            
         "LMVR")
-            echo "wiki_si_en_lmvr-tuned/${split}.lmvr-tuned.en" 
+            echo "wiki_ne_en_lmvr-tuned/${split}.lmvr-tuned.en" 
             ;;            
         "MORSEL")
-            echo "wiki_si_en_morsel/${split}.morsel.en"
+            echo "wiki_ne_en_morsel/${split}.morsel.en"
             ;;            
         *)
             echo "Improper segmentation method: ${segm_method}"
@@ -50,10 +50,16 @@ get_nth_line () {
     head -n ${n} ${file_path} | tail -1
 }
 
-echo "Segmentation comparison:"
+echo "Segmentation comparison:" && echo
 for method in "${SEGM_METHODS[@]}"; do
     file_path=$(get_file_name ${method} ${split})
-    full_path="../data/${file_path}"
+    full_path="./data/${file_path}"
+
+    # weird hack for MORSEL, the lines seem scrambled
+    if [ "${method}" = "MORSEL" ] && [ "${split}" = "train" ]; then
+        let "line_num = $line_num + 8192"
+    fi
+
     line=$(get_nth_line ${line_num} ${full_path})
     echo "${method}: ${line}"
     echo
