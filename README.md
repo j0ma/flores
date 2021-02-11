@@ -6,13 +6,17 @@ My main reason for forking was to create training and evaluation scripts that ar
 ## Notes
 - manually removed extraneous empty line from lmvr tuned segmentations in the interest of time (8/9/20)
 
+- wrote script `remove_slashes.py` to remove slashes in lmvr tuned segmentations (2/11/21)
+
+- edited `download_segmentation_models.sh` and wrote script `update_kk_segmentations.sh` to switch to 225k segmentations without having to edit a bunch of paths
+
 ### WMT19 KK-EN
 
 ```
 ### Raw results
-                  bleu      
+                  bleu
 pair             en-kk kk-en
-method      seed            
+method      seed
 baseline    10     0.8   2.0
             11     0.7   2.2
             12     0.6   2.3
@@ -26,7 +30,7 @@ subword-nmt 10     0.8   2.7
 
 ### Summary statistics
                    count  mean    std  25%  50%  75%
-method      pair                                    
+method      pair
 baseline    en-kk    5.0  0.70  0.100  0.6  0.7  0.8
             kk-en    5.0  2.08  0.164  2.0  2.0  2.2
 subword-nmt en-kk    5.0  0.88  0.045  0.9  0.9  0.9
@@ -34,7 +38,7 @@ subword-nmt en-kk    5.0  0.88  0.045  0.9  0.9  0.9
 
 ### Confidence interval
                    mean    std  std_err     lb     ub
-method      pair                                     
+method      pair
 baseline    en-kk  0.70  0.100    0.045  0.611  0.789
             kk-en  2.08  0.164    0.073  1.933  2.227
 subword-nmt en-kk  0.88  0.045    0.020  0.840  0.920
@@ -53,9 +57,9 @@ dtype: float64
 
 ```
 ### Raw results
-                    bleu                  
+                    bleu
 pair               en-ne en-si ne-en si-en
-method        seed                        
+method        seed
 baseline      10     4.6   1.2   8.3   7.3
               11     4.4   1.4   8.5   7.5
               12     4.6   0.8   8.3   7.3
@@ -89,7 +93,7 @@ subword-nmt   10     4.2   0.8   8.6   7.7
 
 ### Summary statistics
                      count  mean    std  25%  50%  75%
-method        pair                                    
+method        pair
 baseline      en-ne    5.0  4.54  0.089  4.5  4.6  4.6
               en-si    5.0  1.08  0.228  1.0  1.0  1.2
               ne-en    5.0  8.30  0.141  8.3  8.3  8.3
@@ -117,7 +121,7 @@ subword-nmt   en-ne    5.0  4.42  0.164  4.3  4.5  4.5
 
 ### Confidence interval
                      mean    std  std_err     lb     ub
-method        pair                                     
+method        pair
 baseline      en-ne  4.54  0.089    0.040  4.460  4.620
               en-si  1.08  0.228    0.102  0.876  1.284
               ne-en  8.30  0.141    0.063  8.174  8.426
@@ -158,9 +162,9 @@ These are based on evaluation using `fairseq-interactive` and `sacrebleu`. All B
 
 ```
 ### Raw results
-                    bleu                  
+                    bleu
 pair               en-ne en-si ne-en si-en
-method        seed                        
+method        seed
 baseline      10     4.6   1.2   8.3   7.3
               11     4.4   1.4   8.5   7.5
               12     4.6   0.8   8.3   7.3
@@ -184,7 +188,7 @@ subword-nmt   10     4.2   0.8   8.6   7.7
 
 ### Summary statistics
                      count  mean    std  25%  50%  75%
-method        pair                                    
+method        pair
 baseline      en-ne    5.0  4.54  0.089  4.5  4.6  4.6
               en-si    5.0  1.08  0.228  1.0  1.0  1.2
               ne-en    5.0  8.30  0.141  8.3  8.3  8.3
@@ -204,7 +208,7 @@ subword-nmt   en-ne    5.0  4.42  0.164  4.3  4.5  4.5
 
 ### Confidence interval
                      mean    std  std_err     lb     ub
-method        pair                                     
+method        pair
 baseline      en-ne  4.54  0.089    0.040  4.460  4.620
               en-si  1.08  0.228    0.102  0.876  1.284
               ne-en  8.30  0.141    0.063  8.174  8.426
@@ -247,7 +251,7 @@ si-en    7.2
 ```
 ### Raw results
       en-ne  ne-en  en-si  si-en
-seed                            
+seed
 10     4.17   6.66   0.86   5.87
 11     4.29   6.57   1.01   6.08
 12     4.33   6.99   1.06   5.88
@@ -282,7 +286,7 @@ dtype: float64
 
 ### Difference from reported
       en-ne  ne-en  en-si  si-en
-seed                            
+seed
 10    -0.13  -0.94  -0.34  -1.33
 11    -0.01  -1.03  -0.19  -1.12
 12     0.03  -0.61  -0.14  -1.32
@@ -308,7 +312,7 @@ dtype: float64
 ```
 ### Raw results
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10     4.06   1.15   7.17   6.49
 11     4.14   0.70   7.08   6.10
 12     4.30   0.81   6.43   6.28
@@ -343,7 +347,7 @@ dtype: float64
 
 ### Difference from reported
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10    -0.24  -0.05  -0.43  -0.71
 11    -0.16  -0.50  -0.52  -1.10
 12     0.00  -0.39  -1.17  -0.92
@@ -369,7 +373,7 @@ dtype: float64
 ```
 ### Raw results
       en-si  si-en  en-ne  ne-en
-seed                            
+seed
 10     0.81   6.62   4.17   7.64
 11     0.60   6.50   4.10   7.21
 12     0.74   6.38   4.18   7.56
@@ -404,7 +408,7 @@ dtype: float64
 
 ### Difference from reported
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10    -0.13  -0.39   0.04  -0.58
 11    -0.20  -0.60  -0.39  -0.70
 12    -0.12  -0.46  -0.04  -0.82
@@ -427,7 +431,7 @@ dtype: float64
 Recall joint bpe:
 ```
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10     4.42   1.64   7.59   6.69
 ```
 
@@ -438,7 +442,7 @@ seed
 ```
 ### Raw results
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10     4.42   1.64   7.59   6.69
 11     4.33   1.04   7.56   6.43
 12     4.51   1.28   7.51   6.42
@@ -473,7 +477,7 @@ dtype: float64
 
 ### Difference from reported
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10     0.12   0.44  -0.01  -0.51
 11     0.03  -0.16  -0.04  -0.77
 12     0.21   0.08  -0.09  -0.78
@@ -498,7 +502,7 @@ si-en    0.0
 
 ### Raw results
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10     4.29   1.00   7.83   6.90
 11     4.54   1.41   7.33   6.42
 12     4.61   1.12   7.91   6.56
@@ -533,7 +537,7 @@ dtype: float64
 
 ### Difference from reported
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10    -0.01  -0.20   0.23  -0.30
 11     0.24   0.21  -0.27  -0.78
 12     0.31  -0.08   0.31  -0.64
@@ -558,7 +562,7 @@ dtype: float64
 ```
 ### Raw results
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10     4.57   1.07   7.52   7.40
 11     4.51   1.00   7.38   6.69
 12     4.55   0.88   7.26   6.66
@@ -593,7 +597,7 @@ dtype: float64
 
 ### Difference from reported
       en-ne  en-si  ne-en  si-en
-seed                            
+seed
 10     0.27  -0.13  -0.08   0.20
 11     0.21  -0.20  -0.22  -0.51
 12     0.25  -0.32  -0.34  -0.54
@@ -814,7 +818,7 @@ Training time: 8.79 hours on single Titan RTX
 Training time: 8.91 hours on single Titan RTX
 
 ### Larger batch size, FP16, learning rate 7e-4
-- Batch size enlarged using `--max-tokens 16000` 
+- Batch size enlarged using `--max-tokens 16000`
 - FP16 `--fp16`
 - Removed `--update_freq 4`
 - Learning rate set to `7e-14`
@@ -829,7 +833,7 @@ Training time: 8.91 hours on single Titan RTX
 Training time: 8.91 hours on single Titan RTX
 
 ### Larger batch size, with FP16, learning rate 5e-4
-- Batch size enlarged using `--max-tokens 16000` 
+- Batch size enlarged using `--max-tokens 16000`
 - FP16 `--fp16`
 - Removed `--update_freq 4`
 - Learning rate first set to `--lr 5e-3` -> error
@@ -845,7 +849,7 @@ Training time: 8.91 hours on single Titan RTX
 Training time: 8.91 hours on single Titan RTX
 
 ### Larger batch size, with FP16
-- Batch size enlarged using `--max-tokens 16000` 
+- Batch size enlarged using `--max-tokens 16000`
 - FP16 `--fp16`
 - Removed `--update_freq 4`
 
@@ -899,7 +903,7 @@ Interestingly, evaluation is just as slow here as it was on Azure/AWS.
 
 ### Reproduction on AWS/Azure
 
-In all experiments, the GPU used was a Tesla K80. Overall, I ran everything for 100 epochs, with about 20 min per epoch being the average runtime. 
+In all experiments, the GPU used was a Tesla K80. Overall, I ran everything for 100 epochs, with about 20 min per epoch being the average runtime.
 
 | Lang. pair | Reported | Reproduced | Difference | Cloud provider |
 |------------|----------|------------|------------|----------------|
@@ -910,7 +914,7 @@ In all experiments, the GPU used was a Tesla K80. Overall, I ran everything for 
 
 ## Notes
 - old log files from azure/aws located in `./log/old_from_awsazure`
-- old eval files located in `evaluate/old-eval-scripts` 
+- old eval files located in `evaluate/old-eval-scripts`
 - old eval results located in `evalute/aws-azure-results`
 
 ---
@@ -929,7 +933,7 @@ The data sets can be downloaded [HERE](https://github.com/facebookresearch/flore
 
 **New**: two new languages, Khmer and Pashto, are added to the dataset.
 
-This repository contains data and baselines from the paper:  
+This repository contains data and baselines from the paper:
 [The FLoRes Evaluation Datasets for Low-Resource Machine Translation: Nepali-English and Sinhala-English](https://arxiv.org/abs/1902.01382).
 
 ## Baselines
@@ -998,11 +1002,11 @@ To train on 4 GPUs, remove the `--update-freq` flag and run `CUDA_VISIBLE_DEVICE
 If you have a Volta or newer GPU you can further improve training speed by adding the `--fp16` flag.
 
 This same architecture can be used for En-Ne, Si-En and En-Si:
-- For En-Ne, update the training command with:  
+- For En-Ne, update the training command with:
   `fairseq-train data-bin/wiki_ne_en_bpe5000 --source-lang en --target-lang ne`
-- For Si-En, update the training command with:  
+- For Si-En, update the training command with:
   `fairseq-train data-bin/wiki_si_en_bpe5000 --source-lang si --target-lang en`
-- For En-Si, update the training command with:  
+- For En-Si, update the training command with:
   `fairseq-train data-bin/wiki_si_en_bpe5000 --source-lang en --target-lang si`
 
 ### Compute BLEU using sacrebleu
