@@ -7,3 +7,5 @@ do
     unzip "${ZIP_FILE}"
     rm "${ZIP_FILE}"
 done
+
+./update_kk_segmentations.sh
