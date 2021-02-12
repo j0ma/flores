@@ -86,49 +86,49 @@ train_wmt19_additional_enkk_lmvr_tuned:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 0 \
+		--cuda-device 1 \
 		--model-name lmvr-tuned \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/en-kk/ \
-		--fp16 --slug "wmt19-additional-enkk-lmvr-tuned"
+		--data-dir data-bin/wmt19-kk-additional-225k-lmvr-tuned/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-additional-225k-enkk-lmvr-tuned"
 
 eval_wmt19_additional_enkk_lmvr_tuned:
 	bash ./eval-wmt19.sh \
-		--checkpoint-glob "./checkpoints/*wmt19-additional-enkk-lmvr-tuned*" \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-225k-enkk-lmvr-tuned*" \
 		--src "en" --tgt "kk" --eval-on "test" \
 		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/en-kk/" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-225k-lmvr-tuned/kk-en/en-kk/" \
 		--segmentation-model-type "lmvr-tuned" \
 		--model-name "lmvr-tuned" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
 		--remove-bpe-type "off" \
-		--translation-output-folder "translation-output-wmt19-additional"
+		--translation-output-folder "translation-output-wmt19-additional-225k"
 
 train_wmt19_additional_kken_lmvr_tuned:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 0 \
+		--cuda-device 1 \
 		--model-name lmvr-tuned \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/kk-en/ \
-		--fp16 --slug "wmt19-additional-kken-lmvr-tuned"
+		--data-dir data-bin/wmt19-kk-additional-225k-lmvr-tuned/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-additional-225k-kken-lmvr-tuned"
 
 eval_wmt19_additional_kken_lmvr_tuned:
 	bash ./eval-wmt19.sh \
-		--checkpoint-glob "./checkpoints/*wmt19-additional-kken-lmvr-tuned*" \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-225k-kken-lmvr-tuned*" \
 		--src "kk" --tgt "en" --eval-on "test" \
 		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-kk-additional-lmvr-tuned/kk-en/kk-en/" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-225k-lmvr-tuned/kk-en/kk-en/" \
 		--segmentation-model-type "lmvr-tuned" \
 		--model-name "lmvr-tuned" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
 		--remove-bpe-type "off" \
-		--translation-output-folder "translation-output-wmt19-additional"
+		--translation-output-folder "translation-output-wmt19-additional-225k"
 
 train_wmt19_additional_enkk_sentencepiece:
 	bash ./train-wmt19.sh \
