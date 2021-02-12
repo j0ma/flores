@@ -9,6 +9,7 @@ do
     do
         mkdir -p "$(pwd)/translation-output/${model}/seed-${seed}"
         mkdir -p "$(pwd)/translation-output-wmt19/${model}/seed-${seed}"
+        mkdir -p "$(pwd)/translation-output-wmt19-additional/${model}/seed-${seed}"
         for bpe_size in "${BPE_SIZES[@]}"; do
             mkdir -p "$(pwd)/translation-output-wmt19-bpe${bpe_size}/${model}/seed-${seed}"
         done
