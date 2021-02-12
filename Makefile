@@ -43,44 +43,44 @@ train_wmt19_additional_enkk_morsel:
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-kk-additional-morsel/kk-en/en-kk/ \
-		--fp16 --slug "wmt19-additional-enkk-morsel"
+		--data-dir data-bin/wmt19-kk-additional-225k-morsel/kk-en/en-kk/ \
+		--fp16 --slug "wmt19-additional-225k-enkk-morsel"
 
 eval_wmt19_additional_enkk_morsel:
 	bash ./eval-wmt19.sh \
-		--checkpoint-glob "./checkpoints/*wmt19-additional*enkk*morsel*" \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-225k*enkk*morsel*" \
 		--src "en" --tgt "kk" --eval-on "test" \
 		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-kk-additional-morsel/kk-en/en-kk/" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-225k-morsel/kk-en/en-kk/" \
 		--segmentation-model-type "morsel" \
 		--model-name "morsel" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.enkk.kk" \
 		--remove-bpe-type "off" \
-		--translation-output-folder "translation-output-wmt19-additional"
+		--translation-output-folder "translation-output-wmt19-additional-225k"
 
 train_wmt19_additional_kken_morsel:
 	bash ./train-wmt19.sh \
 		--src kk --tgt en \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 1 \
+		--cuda-device 0 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
 		--log-dir "auto" \
-		--data-dir data-bin/wmt19-kk-additional-morsel/kk-en/kk-en/ \
-		--fp16 --slug "wmt19-additional-kken-morsel"
+		--data-dir data-bin/wmt19-kk-additional-225k-morsel/kk-en/kk-en/ \
+		--fp16 --slug "wmt19-additional-225k-kken-morsel"
 
 eval_wmt19_additional_kken_morsel:
 	bash ./eval-wmt19.sh \
-		--checkpoint-glob "./checkpoints/*wmt19-additional*kken*morsel*" \
+		--checkpoint-glob "./checkpoints/*wmt19-additional-225k*kken*morsel*" \
 		--src "kk" --tgt "en" --eval-on "test" \
 		--data-folder "data/wmt19-kk-additional/kk-en/final/test" \
-		--data-bin-folder "data-bin/wmt19-kk-additional-morsel/kk-en/kk-en/" \
+		--data-bin-folder "data-bin/wmt19-kk-additional-225k-morsel/kk-en/kk-en/" \
 		--segmentation-model-type "morsel" \
 		--model-name "morsel" \
 		--reference "./data/wmt19-kk-additional/kk-en/interim/test/test.kken.en" \
 		--remove-bpe-type "off" \
-		--translation-output-folder "translation-output-wmt19-additional"
+		--translation-output-folder "translation-output-wmt19-additional-225k"
 
 train_wmt19_additional_enkk_lmvr_tuned:
 	bash ./train-wmt19.sh \
