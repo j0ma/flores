@@ -38,7 +38,7 @@ train_wmt19_additional_enkk_morsel:
 	bash ./train-wmt19.sh \
 		--src en --tgt kk \
 		--from-seed 10 --to-seed 14 \
-		--cuda-device 2 \
+		--cuda-device 0 \
 		--model-name morsel \
 		--clip-norm 0.1 \
 		--checkpoint-dir "auto" \
